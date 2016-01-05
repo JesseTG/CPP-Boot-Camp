@@ -1,0 +1,77 @@
+%!TEX options = -shell-escape
+
+\documentclass[glossy]{beamer}
+\usepackage{minted}
+\usepackage{tikz}
+\usepackage[utf8]{inputenc} % Unicode support (Umlauts etc.)
+
+\useoutertheme{wuerzburg}
+\useinnertheme[realshadow,corners=2pt,padding=2pt]{chamfered}
+\usecolortheme{shark}
+
+
+
+\usetikzlibrary{tikzmark}
+\newminted{cpp}{linenos}
+\newcommand<>{\hover}[1]{\uncover#2{%
+ \begin{tikzpicture}[remember picture,overlay]%
+ \draw[fill,opacity=0.4] (current page.south west)
+ rectangle (current page.north east);
+ \node at (current page.center) {#1};
+ \end{tikzpicture}}
+}
+
+\title{C++ Boot Camp 1/2}
+\author{Jesse Talavera-Greenberg}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}
+\frametitle{Disclaimer}
+    \begin{itemize}
+        \item I am not the grader for this course
+        \begin{itemize}
+            \item Undergrads can't grade assignments
+        \end{itemize}
+        \item The boot camp is always part of the course, but I volunteered to lead it this year.
+        \item Any opinions expressed are my own and are not necessarily condoned by McKenna.
+        \item I don't know very much about DirectX.
+    \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Basic Structure}
+  \begin{cppcode}
+#include <iostream>
+
+using std::cout;
+using std::endl;
+// Now do this to use names (or prefix them with "std::")
+
+// Main entry point of a C++ program
+int main(int argc, char** argv, char** env) {
+  // All these args are optional, third one is not as common
+  // argc == number of command-line arguments 
+  // argv == the actual arguments as an array of strings
+  // env == environment variables
+
+  cout << "Hello!  My name is " << argv[0] << endl;
+
+  return 0;
+  // Return code of 0 tells the OS the program exited normally
+  // Anything else == something went wrong (you decide what the numbers mean)
+  // Leaving it off implies "return 0"
+}
+
+  \end{cppcode}
+\end{frame}
+
+\end{document}
