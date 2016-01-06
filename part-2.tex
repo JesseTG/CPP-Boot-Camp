@@ -1,0 +1,65 @@
+%!TEX options = -shell-escape
+
+\documentclass[glossy]{beamer}
+\usepackage[utf8]{inputenc} % Unicode support (Umlauts etc.)
+\usepackage{graphicx} % Add pictures to your document
+\usepackage{hyperref} % Add a link to your document
+\usepackage{minted}
+\usepackage{tikz}
+
+\useoutertheme{wuerzburg}
+\useinnertheme[realshadow,corners=2pt,padding=2pt]{chamfered}
+\usecolortheme{shark}
+
+\setbeamertemplate{navigation symbols}{}
+
+\usetikzlibrary{tikzmark}
+\newminted{cpp}{linenos, autogobble, fontsize=\tiny, escapeinside=@@}
+\newmintinline{cpp}{}
+
+\newcommand<>{\hover}[1]{\uncover#2{%
+ \begin{tikzpicture}[remember picture,overlay]%
+ \draw[fill,opacity=0.4] (current page.south west)
+ rectangle (current page.north east);
+ \node at (current page.center) {#1};
+ \end{tikzpicture}}
+}
+
+
+
+\title{C++ Boot Camp 2/2}
+\author{Jesse Talavera-Greenberg}
+\date{\today}
+
+% Concepts to cover:
+% Memory management
+% Pointers and references
+% Scope vs. lifetime
+% const-correctness
+% RAII
+% OOP
+% Rule of three
+\begin{document}
+
+\newcommand{\cppref}[2]{\href{http://en.cppreference.com/w/cpp/#1}{\underline{#2}}}
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}
+  \frametitle{This Week}
+  \begin{itemize}
+    \item Last week: The language
+    \item This week: The tools
+    \item Compiling and linking code
+    \item Box2D, specifically
+    \item You will be using it for your course project
+    \item Splitting classes into headers and source files
+    \item What that means and why you must do it
+    \item Overview of popular C++ libraries and tools
+    \item Tips about the course
+  \end{itemize}
+\end{frame}
+
+\end{document}

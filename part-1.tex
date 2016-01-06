@@ -1,0 +1,995 @@
+%!TEX options = -shell-escape
+
+\documentclass[glossy]{beamer}
+\usepackage[utf8]{inputenc} % Unicode support (Umlauts etc.)
+\usepackage{graphicx} % Add pictures to your document
+\usepackage{hyperref} % Add a link to your document
+\usepackage{minted}
+\usepackage{tikz}
+
+\useoutertheme{wuerzburg}
+\useinnertheme[realshadow,corners=2pt,padding=2pt]{chamfered}
+\usecolortheme{shark}
+
+\setbeamertemplate{navigation symbols}{}
+
+\usetikzlibrary{tikzmark}
+\newminted{cpp}{linenos, autogobble, fontsize=\tiny, escapeinside=@@}
+\newmintinline{cpp}{}
+
+\newcommand<>{\hover}[1]{\uncover#2{%
+ \begin{tikzpicture}[remember picture,overlay]%
+ \draw[fill,opacity=0.4] (current page.south west)
+ rectangle (current page.north east);
+ \node at (current page.center) {#1};
+ \end{tikzpicture}}
+}
+
+
+
+\title{C++ Boot Camp 1/2}
+\author{Jesse Talavera-Greenberg}
+\date{\today}
+
+% Concepts to cover:
+% Memory management
+% Pointers and references
+% Scope vs. lifetime
+% const-correctness
+% RAII
+% OOP
+% Rule of three
+\begin{document}
+
+\newcommand{\cppref}[2]{\href{http://en.cppreference.com/w/cpp/#1}{\underline{#2}}}
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}
+\frametitle{This Week}
+  \begin{itemize}
+    \item No need to download anything this week
+    \item Go to \href{www.cppreference.com}{www.cppreference.com} to follow code
+    \item This is your C++ Bible this semester
+    \item Online compiler
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Disclaimer}
+    \begin{itemize}
+        \item I am not the grader for this course
+        \begin{itemize}
+            \item Undergrads can't grade assignments
+        \end{itemize}
+        \item The boot camp is always part of the course, but I volunteered to lead it this year.
+        \item Any opinions expressed are my own and are not necessarily condoned by McKenna.
+        \item I don't know very much about DirectX.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Today}
+  \begin{itemize}
+    \item Core language features
+    \item Memory management
+    \item Gotchas
+    \item How to do common things
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Distinct Points}
+  \begin{itemize}
+    \item Balance high-level language constructs and low-level resource management
+    \item Huge-ass language
+    \item Designed for C compatibility
+    \item Accumulated lots of cruft over the years
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Basic Structure}
+  \begin{cppcode}
+#include <iostream>
+
+using std::cout;
+using std::endl;
+// Now do this to use names (or prefix them with "std::")
+
+// Main entry point of a C++ program
+int |\cppref{language/main_function}{main}|(int argc, char** argv, char** env) {
+  // All these args are optional, third one is not as common
+  // argc == number of command-line arguments 
+  // argv == the actual arguments as an array of strings
+  // env == environment variables
+  cout << "Hello!  My name is " << argv[0] << endl;
+
+  return 0;
+  // Return code of 0 tells the OS the program exited normally
+  // Anything else == something went wrong (you decide what the numbers mean)
+  // Leaving it off implies "return 0"
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{if, else, for, while}
+  \begin{cppcode}
+if (somethingIsTrue()) {
+  for (int i = 0; i < 10; ++i) {
+    break; // Exactly the same
+  }
+}
+else if (somethingElseIsTrue()) {
+  while (true) break; // You can omit braces for single statements like in Java
+}
+else {
+  do {
+    continue; // Exactly the same
+  } while (false);
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{switch}
+  \begin{cppcode}
+switch (someInteger) { // All okay
+case 0:
+  break;
+case SOME_CONSTANT:
+  break;
+default:
+  // nop
+}
+
+switch (someString) { // ERROR
+case "No way":
+case "Too bad":
+case "Don't bother":
+default:
+  // nop
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Exceptions}
+  \begin{cppcode}
+using std::exception;
+
+try {
+  functionThatMightThrowException(); // No checked exceptions in C++
+  throw exception("No new statement; we'll come back to this");
+}
+catch (exception e) {
+  std::cout << e.what(); // Print the exception info
+}
+
+try {
+  throw 5; // You can throw anything in C++
+} catch (int i) {
+  // Stick to exception objects and their subclasses, though
+} catch (...) {
+  // Catch anything, but you can't access it; can only be used last
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Fundamental Types}
+  \begin{itemize}
+    \item Sizes are not well-defined like in Java
+    \item No \verb|byte| (use \cppinline|uint8_t|)
+    \item \verb|boolean| to \cppinline|bool|
+    \item Use \cppinline|nullptr| instead of \verb|null| or \cppinline|NULL|
+    \item Signed and unsigned types
+    \item signed types are the same
+    \item unsigned types double the max value, but can't represent negative numbers
+    \item Need a specific number size?
+    \item First \cppinline|#include <cstdint>|
+    \item Then use \verb!std::u?int(8|16|32|64)_t!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{typedef and typeid}
+  \begin{cppcode}
+#include <cstdint>
+#include <iostream>
+#include <typeinfo>
+// ^ Must include typeinfo to use the typeid operator
+
+typedef std::uint8_t byte; // Declares another name for the same type
+// Syntax:
+//    typedef existing_type new_name;
+using std::cout;
+using std::endl; 
+
+int main() { 
+  std::uint8_t a = 5; 
+  byte b = a; 
+  // Totally okay; the distinction is compile-time only 
+
+  cout << typeid(std::uint8_t).name() << endl; 
+  cout << typeid(byte).name() << endl; 
+  // Both printouts will be implementation-defined, but identical 
+
+  /* Common standard typedefs: 
+        size_t: Sizes of objects (usually an unsigned int)
+        ptrdiff_t: Difference between pointers (usually an unsigned int or long) 
+        std::string: Convenient form of std::basic_string<char> 
+  */ 
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Declaring Variables}
+  \begin{cppcode}
+#include <string>
+#include <vector>
+
+using std::string;
+using std::vector;
+
+int main() {
+  string empty; // default constructor
+  string empty2(); // default constructor with parens
+  string value = "I'm really a char*";
+  string value2("Parens are fine, too");
+  string copy = value; // Copy assignment
+  string& ref = value; // Reference assignment (points to value)
+  const string& constref = value; // Constant (read-only) reference assignment
+  // All of an object's members are initialized!
+
+  string* ptr; // Unassigned pointer; not necessarily nullptr
+  vector<int> ints = {1, 2, 3, 4, 5, 6}; // Initializer list
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Undefined Behavior}
+  \begin{itemize}
+    \item Whenever something happens in Java, you can rely on something else to happen
+    \item C++ lets the compiler do anything it wants in certain situations
+    \item For performance reasons, mostly
+    \item Many, many ways to do this
+    \item Do not rely on undefined behavior
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Some examples}
+  \begin{cppcode}
+#include <string>
+#include <cstdint> 
+#include <limits> 
+
+int32_t something(int32_t param) { 
+  if (param > 0) return param; 
+  // No return down here; now what? 
+} 
+
+std::string& returnsALocal() { 
+  std::string reference = "Why are you doing this"; 
+  return reference; // Uh-oh 
+} 
+
+int main() { 
+  int32_t a = std::numeric_limits<int32_t>::max(); 
+  a++; // Oops 
+
+  int32_t* pointer; // What's inside?  Beats me.
+  int32_t number = *pointer; // Crash (or worse; no crash)
+
+  int32_t[10] array; 
+  number = array[12]; // WTF 
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Namespaces}
+  \begin{cppcode}
+#include <iostream>
+#include <string>
+#include <array>
+#include <utility>
+
+using namespace std;
+// ^ Don't do this for the same reason you don't do java.util.*
+
+namespace sbcs { // Nest them as much as you'd like
+  namespace cse380 {
+    struct Game {
+      string name;
+      string teamName;
+      array<string, 3> members;
+    };
+  }
+
+  namespace cse381 {
+    typedef pair<string, string> Team;
+  }
+}
+
+int main() {
+  sbcs::cse380::Game game; // Fully-qualified type name
+  using sbcs::cse381::Team; // Or use it in the current namespace (global in this case)
+
+  Team team("Jesse", "Karl");
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{The Preprocessor}
+  \begin{cppcode}
+#include <iostream>
+// Use <angle_brackets> for standard library/third-party code, "quotes" for your own 
+
+#define DEBUG 
+// You can also add #defines through your build system (e.g. the command line or 
+// your Visual Studio project file) 
+
+// #define WINDOWS 
+// #define MAC 
+// ^ Uncomment one of these 
+
+using std::cout; 
+using std::endl; 
+
+int main() { 
+  #ifdef DEBUG 
+  cout << "Logging! Or sanity checking!" << endl;
+  #endif 
+
+  #ifdef WINDOWS
+  cout << "Use DirectX!" << endl; 
+  #else 
+  cout << "Use OpenGL!" << endl; 
+  #endif 
+
+  #ifdef MAC 
+    #error "Jesse doesn't like Apple"
+    // ^ Intentionally causes a compiler error
+  #endif
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{assert/static\_assert}
+  \begin{cppcode}
+#include <cassert>
+#include <type_traits>
+
+// #define NDEBUG
+// ^ Uncomment this or define it in the build system to disable asserts
+
+using std::is_base_of;
+using std::is_same;
+
+template<class T, class U>
+void failIfUnrelated() {
+  static_assert(
+    is_base_of<T, U>::value
+    || is_base_of<U, T>::value
+    || is_same<T, U>::value,
+    "Both types should be the same, or one should be a parent of the other"
+  );
+}
+
+class Parent {};
+class Child : public Parent {};
+
+int main() {
+  assert(1 + 1 == 2);
+  assert(true && "Idiom for providing informative text in an assert()");
+
+  failIfUnrelated<int, int>(); // Okay
+  failIfUnrelated<int, Child>(); // Causes a compiler error, as desired
+  failIfUnrelated<Parent, Child>(); // Okay
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{enums}
+  \begin{cppcode}
+#include <iostream> 
+
+using std::cout; 
+using std::endl; 
+
+enum class Direction { 
+  North, 
+  South, 
+  East,
+  West, // Trailing comma is okay 
+}; 
+
+// NOT OBJECTS; just ints with some compile-time meaning 
+enum class Speakers { 
+  Mute = 0, // Assigning values is okay 
+  Mono = 1, 
+  Stereo = 2, 
+  Surround = 4 
+}; 
+
+int main() { 
+  Direction dir = Direction::North;
+  Speakers audio = Speakers::Stereo;
+  audio = Speakers(4); // Make sure int is a valid Speakers value!
+  cout << int(audio) << endl;
+  // int <-> enum class conversions must be explicit
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Pointers}
+  \begin{cppcode}
+#include <string> 
+
+using std::string; 
+
+int main() { 
+  string a = "I'm a little teapot"; 
+  string* ptr = &a; // &some_object returns the address of some_object 
+  string b = *ptr; // *some_pointer dereferences 
+
+  int ints[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}; 
+  // Raw arrays are pointers 
+
+  int* int_ptr = ints; // Points to ints[0] 
+  int* int_ptr2 = ints + 1; // Points to ints[1] 
+                            // Increments the address sizeof(int) bytes 
+  int** double_array = &int_ptr;
+  // Pointers to pointers okay; never usually need more than two**
+
+  void* pointer_to_anything = ints;
+  // Pointer to arbitrary data; very error-prone and unsafe; avoid unless you know
+  // exactly why you need one
+
+  pointer_to_anything = nullptr;
+  // nullptr == Java's null; assignable to any pointer type, but not to objects
+
+  float* garbage;  // Uninitialized pointer; value is undefined
+                   // Could be garbage, could be nullptr; initialize it ASAP!
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{References}
+  \begin{cppcode}
+#include <string> 
+#include <iostream> 
+
+using namespace std; // Only for slide space constraints 
+
+class StringHolder { 
+  public:
+    StringHolder(const string& str) : _str(str) {}
+
+    const string& getStringReference() const { return this->_str; }
+
+    string getStringCopy() const { return this->_str; }
+
+    void append(const string& str) { this->_str += str; }
+    // ^ Passes an unmodifiable reference rather than a copy
+  private:
+    string _str;
+};
+
+int main() {
+  StringHolder holder("France");
+  const string& a = holder.getStringReference();
+  string b = holder.getStringCopy();
+
+  cout << (a == b) << endl; // True; comparing object values
+  cout << (&a == &b) << endl; // False; different addresses, different objects
+
+  holder.append(b);
+  cout << holder.getStringReference() << endl; // FranceFrance
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Pointers Vs. References (similarities)}
+  \begin{itemize}
+    \item Access large objects without copying them
+    \item Left dangling (invalid) if the referenced object is deallocated
+    \item No way to check for this
+    \item Will likely cause a crash if you try to use it
+    \item Both can point to an instance of the given type's superclass
+    \item Both compiled to similar machine code
+    \item Multiple pointers/references can refer to one object
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Pointers Vs. References (differences)}
+  \begin{itemize}
+    \item Can represent absence of data
+    \item More prone to becoming invalid
+    \item Syntax needed to convert between pointers and objects
+    \item Can be assigned to different objects
+    \item Always initialized with a valid object
+    \item No syntax needed to use references aside from declarations or method signatures
+    \item Always points to one location in memory
+    \item Easier to deal with objects that shouldn't change
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{new/delete}
+  \begin{cppcode}
+#include <string>
+
+using std::string;
+
+void wasteMemory() {
+  string stack_allocated = "I disappear when I go out of scope";
+  string* wasted = new string("I only disappear when explicitly deallocated");
+
+  string* cleaned = new string("I'm about to get cleaned up properly");
+
+  delete cleaned;
+}
+
+int main() {
+  for (int i = 0; i < 10000; i++) {
+    wasteMemory();
+  }
+
+  // stack_allocated disappeared when wasteMemory() returned
+  // All instances of wasted are still in memory
+  // cleaned disappeared when "delete cleaned;" was called
+  // See: Scope vs. Lifetime
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Exceptions}
+  \begin{cppcode}
+#include <iostream>
+#include <string>
+#include <exception>
+#include <array>
+
+using namespace std; // Again, slide space constraints
+
+int main() {
+  array<int, 5> ints = {1, 2, 3, 4, 5};
+
+  try {
+    cout << ints.at(10) << endl; // at() checks bounds, operator[] doesn't
+  }
+  catch (const out_of_range& e) {
+    // You can (and should) catch by reference
+    cout << "Out of range in an array" << endl;
+  }
+  catch (const runtime_error& e) {
+    cout << "Didn't see this coming: " << e.what() << endl;
+  }
+  catch (const exception& e) {
+    cout << "Unknown exception: " << e.what() << endl;
+  }
+  catch (...) {
+    cout << "WTF?" << endl;
+  }
+  // There is no finally clause; use destructors to guarantee exception safety
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Declaring Classes}
+  \begin{cppcode}
+// public/protected/private semantics same as in Java
+// no specifier == private in classes, public in structs
+
+class ItHoldsThings {
+  public: 
+    int cantBeOverridden(int a, int b) {
+      // Technically you can, but things get weird
+      return this->_integer + b;
+    }
+
+    virtual float canBeOverridden(const double d) {
+      // virtual == overrideable
+      return d * 2;
+    }
+
+    virtual void abstractMethod() = 0;
+
+  protected:
+    float _number;
+
+  private:
+    int _integer;
+}; // Don't forget the semicolon
+// When a class is constructed, ALL of its members are too
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Constructors}
+  \begin{cppcode}
+#include <string>
+
+using std::string; 
+
+class StringWrapper { 
+  public: 
+    StringWrapper() { /* other code here */ } // _str == ""
+    // Default constructor can be auto-generated with some caveats (see the wiki)
+
+    StringWrapper(const string& value) : _str(value) {} // _str == value
+    // Copy constructor can be auto-generated (but see wiki)
+    // Base class constructors are called like this, too
+
+  private:
+    string _str;
+    // All members are initialized on construction, whether you like it or not
+};
+
+int main() { 
+  StringWrapper a;
+  StringWrapper b("There will be a copy of me in c");
+  StringWrapper c(b);
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Destructors}
+  \begin{cppcode}
+// Using constructors to allocate resources and destructors to clean them up is 
+// called Resource Acquisition Is Initialization (RAII). Only needed for low-level 
+// resources; high-level classes like std::iostream do RAII themselves. 
+
+#include <cstdlib> 
+
+using std::malloc;
+using std::free;
+
+class LotsOfResources {
+  public:
+    LotsOfResources() {
+      _floats = new float[64];
+      _buffer = malloc(64);
+    }
+
+    ~LotsOfResources() {
+      // Called when this object's lifetime ends delete[] _floats;
+      // Remember the [] when deleting a raw array free(_buffer);
+    }
+
+  private:
+    float* _floats;
+    void* _buffer;
+};
+
+int main() {
+  LotsOfResources* resources = new LotsOfResources;
+  delete resources; // No memory leaks!
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{new/delete}
+  \begin{cppcode}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Abstract classes and inheritance}
+  \begin{cppcode}
+#include <exception> 
+#include <iostream> 
+
+// There are no interfaces; use abstract classes without any concrete methods 
+struct ProgramCrasher { 
+  virtual void crash() = 0; // "= 0" means the method is abstract 
+  // virtual == method can be overridden 
+  // only one abstract method needed to define a class as abstract
+}; 
+
+struct IPastryChef { 
+  virtual void bake() = 0; 
+};
+
+struct SegfaultCrasher : public ProgramCrasher {
+  // Actually several types of inheritance; it's complicated, just use public
+
+  void crash() override {
+    int* a;
+    int b = *a;
+  }
+};
+// Multiple inheritance; don't do it if more than one parent class is not an interface
+
+struct ExceptionCrasher : public ProgramCrasher, public IPastryChef {
+  void crash() override {
+    throw std::exception();
+  }
+
+  void bake() override {
+    std::cout << "This is just my day job\n";
+  }
+};
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Casting}
+  \begin{cppcode}
+#include <iostream>
+#include <string>
+
+using namespace std; // Slide space constraints 
+
+struct Base { 
+  virtual ~Base() {}
+  string baseMethod() { return "base"; }
+};
+
+struct Derived : Base {
+  virtual string derivedMethod() { return "derived"; }
+};
+
+int main() {
+  Base* b1 = new Derived;
+  Derived* d1_s = dynamic_cast<Derived*>(b1);
+  cout << d1_s << ' ' << d1_s->baseMethod() << ' ' << d1_s->derivedMethod() << endl; 
+  // Checking at runtime that you're casting to the right type 
+
+  Derived* d1_d = static_cast<Derived*>(b1); 
+  cout << d1_d << ' ' << d1_d->baseMethod() << ' ' << d1_d->derivedMethod() << endl; 
+  // Static (compile-time) downcasts are OK (and faster) if you know you're 
+  // casting to the right type 
+
+  Base* b2 = new Base; 
+  Derived* d2_d = dynamic_cast<Derived*>(b2); 
+  cout << d2_d << endl; 
+  // Cast was not valid, so dynamic_cast returned nullptr 
+  // If it were a reference, it would've thrown std::bad_cast 
+
+  Derived* d2_s = static_cast<Derived*>(b2); 
+  // cout << d2_s << ' ' << d2_s->baseMethod() << ' ' << d2_s->derivedMethod() << endl; 
+  // ^ This is undefined, since the cast is wrong (and not checked at runtime) 
+
+  delete b1; // Remember to clean up! 
+  delete b2; 
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Templates}
+  \begin{cppcode}
+#include <string>
+#include <vector>
+
+template<class T>
+class Value {
+  public:
+    Value(const T& data) : _data(data) {}
+    const T& getData() { return this->_data; }
+  private:
+    T _data;
+};
+// Templates are used A LOT in the standard library
+
+using std::string; 
+using std::vector; 
+
+int main() { 
+  Value<string> str("My name is Beavis");
+  Value<vector<int>> ints({1, 2, 3, 4, 5, 6}); 
+  // Two different classes, with two different bits of machine code 
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Templates}
+  \begin{cppcode}
+#include <iostream>
+#include <array> 
+#include <vector> 
+#include <string> 
+
+using namespace std; // Slide space constraints 
+
+template<class T> 
+void printIt(const T& object) { 
+  cout << object << endl; 
+} 
+
+template<class Container> 
+void needsABeginMethod(Container& container) { 
+  auto iterator = container.begin(); // The begin() method returns an iterator 
+} 
+
+int main() { 
+  printIt(42); // Type parameters in function templates are usually inferred 
+  printIt<float>(7.3); // You can specify them explicitly if you need to 
+
+  array<int, 3> ints = {1, 2, 3}; 
+  vector<int> vec = {5, 6, 7, 8, 9}; 
+  string str = "Strings are containers"; 
+
+  needsABeginMethod(ints); 
+  needsABeginMethod(vec); 
+  needsABeginMethod(str); 
+  // needsABeginMethod(47); ERROR: ints don't have such a method 
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Templates}
+  \begin{cppcode}
+#include <array> 
+#include <iostream> 
+#include <typeinfo> 
+#include <string> 
+
+sing namespace std; // slide space limits 
+
+template<class T, int ArrayLength = 10> 
+class SomeTypedefs { 
+  public: 
+    SomeTypedefs() = delete; // Prevent instantiation 
+
+    typedef T Type; 
+    typedef T* Pointer; 
+    typedef T& Reference; 
+    typedef T RawArray[ArrayLength]; 
+    typedef array<T, ArrayLength> STLArray; 
+};
+// The standard library does this a lot ^
+
+int main() {
+  cout << typeid(SomeTypedefs<int>::Type).name() << endl;
+  cout << typeid(SomeTypedefs<float>::Pointer).name() << endl; 
+  cout << typeid(SomeTypedefs<string>::Reference).name() << endl; 
+  cout << typeid(SomeTypedefs<int, 14>::RawArray).name() << endl;
+  cout << typeid(SomeTypedefs<double, 3>::STLArray).name() << endl; 
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{new}
+  \begin{cppcode}
+#include <string>
+
+using std::string; 
+
+const int SOME_CONSTANT = 34; 
+const string ANOTHER_CONSTANT = "More type-safe than macros!"; 
+
+class ConstStuff { 
+  public: 
+    int getData() const { 
+      // The method doesn't modify the object 
+      return this->_data; 
+    } 
+
+    const string& getText() const { 
+      // Gives you an immutable reference to _text; you must assign it to 
+      // a const std::string& if you don't want to copy it 
+      return this->_text; 
+    } 
+
+    void concatenate(const string& str) { 
+      // str itself can't be modified, and it's not copied
+      this->_text += str; 
+    }
+
+  private: 
+    int _data; 
+    string _text; 
+};
+// Attempting to violate const-correctness through runtime tricks is UB
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Operator Overloading}
+  \begin{cppcode}
+#include <iostream> 
+
+using std::cout; 
+using std::endl; 
+using std::ostream; 
+
+// cout is an ostream 
+struct Vector2 { 
+  float x, y; 
+  Vector2(const float x, const float y) : x(x), y(y) {} 
+
+  Vector2 operator+(const Vector2& other) { 
+    return Vector2(x + other.x, y + other.y); 
+  } 
+}; 
+
+// This is how most types in the standard library are printed out 
+ostream& operator<<(ostream& out, const Vector2& v) { 
+  return out << '[' << v.x << ", " << v.y << ']';
+}
+
+int main() {
+  Vector2 a(1, 2); 
+  Vector2 b(2, 1); 
+  Vector2 c = a + b; 
+
+  cout << c << endl; 
+}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{String to numbers and back}
+  \begin{cppcode}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Data Structures}
+  \begin{itemize}
+    \item Stuff
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Random Numbers}
+  \begin{cppcode}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{String Concatenation}
+  \begin{cppcode}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Iterators}
+  \begin{cppcode}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Anonymous functions and <algorithm>}
+  \begin{cppcode}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Time}
+  \begin{cppcode}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Next Week}
+  \begin{itemize}
+    \item Stuff
+  \end{itemize}
+\end{frame}
+
+\end{document}
