@@ -22,14 +22,6 @@
 \newmintinline{js}{}
 \usemintedstyle{vs}
 
-\newcommand<>{\hover}[1]{\uncover#2{%
- \begin{tikzpicture}[remember picture,overlay]%
- \draw[fill,opacity=0.4] (current page.south west)
- rectangle (current page.north east);
- \node at (current page.center) {#1};
- \end{tikzpicture}}
-}
-
 \tikzset{every picture/.style={font issue=\scriptsize},
          font issue/.style={execute at begin picture={#1\selectfont}}
         }
