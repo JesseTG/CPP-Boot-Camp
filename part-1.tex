@@ -1257,9 +1257,35 @@ int main() {
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{String Concatenation}
+  \frametitle{Formatted Output and String Concatenation}
   \begin{cppcode}
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <string>
+
+using std::cout;
+using std::endl;
+using std::setprecision;@\tikzmark{formatted_modifier}@
+using std::string;
+using std::stringstream;@\tikzmark{formatted_stringstream}@
+
+int main() { 
+  float x = 5.6435221, y = 7.1453634545, z = -23.452354215;
+
+  stringstream coords;
+
+  coords << "DEBUG LOG\n"
+    << "\tPosition: [" << setprecision(4) << x << ", " << y << ", " << z << "]\n";
+
+  cout << coords.str() << endl;@\tikzmark{formatted_str}@
+}
   \end{cppcode}
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (4cm, 16em) node [anchor=west] {\shortstack{Changes how floats are printed out\\(many modifiers exist)}} -> ([shift={(0em,.25em)}]pic cs:formatted_modifier);
+    \draw (4cm, 12em) node [anchor=west] {\shortstack{std::ostream that writes to a string}} -> ([shift={(0em,.25em)}]pic cs:formatted_stringstream);
+    \draw (5cm, 2em) node [anchor=north west] {\shortstack{Use stringstream for nontrivial formats (a la printf)\\Use string::operator+ for concatenation\\Use sto(i|u?ll?|f|l?d) for number conversions}} -> ([shift={(0em,.25em)}]pic cs:formatted_str);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
