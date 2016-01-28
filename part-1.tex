@@ -927,12 +927,46 @@ int main() {
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
+  \frametitle{\cppinline{assert}/\cppinline{static_assert}}
   \begin{cppcode}
+#include <cassert>
+#include <type_traits>
 
+// #define NDEBUG@\tikzmark{assert_ndebug}@
+// ^ Uncomment this or define it in the build system to disable asserts
+
+using std::is_base_of;
+using std::is_same;
+
+template<class T, class U>
+void failIfUnrelated() {
+  static_assert(
+    is_base_of<T, U>::value
+    || is_base_of<U, T>::value
+    || is_same<T, U>::value,
+    "Both types should be the same, or one should be a parent of the other"
+  );
+}
+
+class Parent {};
+class Child : public Parent {};
 
 int main() {
+  assert(1 + 1 == 2);@\tikzmark{assert_use}@
+
+  failIfUnrelated<int, int>();@\tikzmark{assert_ok_a}@
+  failIfUnrelated<Parent, Child>();@\tikzmark{assert_ok_b}@
+  failIfUnrelated<int, Child>();@\tikzmark{assert_error}@
 }
   \end{cppcode}
+
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (3cm, 24em) node [anchor=west] {\shortstack{Standard "debug mode" \#define}} -> ([shift={(0em,.25em)}]pic cs:assert_ndebug);
+    \draw (4cm, 8em) node [anchor=west] {\shortstack{Only run in debug builds (don't\\do side effects or error checking)}} -> ([shift={(0em,.25em)}]pic cs:assert_use);
+    \draw (6cm, 4em) node [anchor=west] {\shortstack{OK}} -> ([shift={(0em,.25em)}]pic cs:assert_ok_a);
+    \draw (6cm, 4em) -> ([shift={(0em,.25em)}]pic cs:assert_ok_b);
+    \draw (5cm, 2em) node [anchor=west] {\shortstack{Compiler error, as desired}} -> ([shift={(0em,.25em)}]pic cs:assert_error);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
