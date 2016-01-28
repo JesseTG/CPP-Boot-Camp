@@ -590,44 +590,52 @@ int main() {
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{enums}
+  \frametitle{Enumerations}
   \begin{cppcode}
 #include <iostream> 
 
 using std::cout; 
-using std::endl; 
+using std::endl;
 
-enum class Direction { 
-  North, 
-  South, 
+enum class Direction {@\tikzmark{enum_not_object}@
+  North,
+  South,
   East,
-  West, // Trailing comma is okay 
-}; 
-
-// NOT OBJECTS; just ints with some compile-time meaning 
-enum class Speakers { 
-  Mute = 0, // Assigning values is okay 
-  Mono = 1, 
-  Stereo = 2, 
-  Surround = 4 
-}; 
-
-int main() { 
-  Direction dir = Direction::North;
-  Speakers audio = Speakers::Stereo;
-  audio = Speakers(4); // Make sure int is a valid Speakers value!
-  cout << int(audio) << endl;
-  // int <-> enum class conversions must be explicit
-}
-  \end{cppcode}
-\end{frame}
-
+  West,@\tikzmark{enum_comma}@
 };
 
+enum class Speakers { 
+  Mute = 0, @\tikzmark{enum_value}@
+  Mono = 1, 
+  Stereo = 2, 
+  Surround = 4
+}; 
 
+enum NaturalBool {@\tikzmark{enum_old}@
+  Yes,
+  No
+};
+
+int main() { 
+  Direction dir = Direction::North;@\tikzmark{enum_scoped_a}@
+  Speakers audio = Speakers::Stereo;@\tikzmark{enum_scoped_b}@
+  NaturalBool yes = Yes;@\tikzmark{enum_unscoped}@
+
+  audio = Speakers(4);@\tikzmark{enum_ub}@
+  cout << int(audio) << endl;@\tikzmark{enum_int}@
 }
   \end{cppcode}
 
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (3cm, 25em) node [anchor=west] {\shortstack{Scoped integers, not objects}} -> ([shift={(0em,.25em)}]pic cs:enum_not_object);
+    \draw (3cm, 22em) node [anchor=west] {\shortstack{Trailing comma OK}} -> ([shift={(0em,.25em)}]pic cs:enum_comma);
+    \draw (3cm, 17em) node [anchor=west] {\shortstack{OK to assign values}} -> ([shift={(0em,.25em)}]pic cs:enum_value);
+    \draw (3cm, 13em) node [anchor=west] {\shortstack{Old-style enums\\(recognize, but avoid)}} -> ([shift={(0em,.25em)}]pic cs:enum_old);
+    \draw (5cm, 8em) node [anchor=west] {\shortstack{Scoped enum usage}} -> ([shift={(0em,.25em)}]pic cs:enum_scoped_a);
+    \draw (5cm, 8em) -> ([shift={(0em,.25em)}]pic cs:enum_scoped_b);
+    \draw (5cm, 5em) node [anchor=west] {\shortstack{Avoid this if the number may\\not be within the enum}} -> ([shift={(0em,.25em)}]pic cs:enum_ub);
+    \draw (4cm, 3em) node [anchor=west] {\shortstack{Explicitly convert enum to int}} -> ([shift={(0em,.25em)}]pic cs:enum_int);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
