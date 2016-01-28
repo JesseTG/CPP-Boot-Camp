@@ -1379,7 +1379,40 @@ int main() {
 \begin{frame}[fragile=singleslide]
   \frametitle{Time}
   \begin{cppcode}
+#include <chrono> 
+#include <iostream> 
+#include <thread>@\tikzmark{time_thread}@
+
+using std::chrono::duration_cast;@\tikzmark{time_cast}@
+using std::chrono::milliseconds;@\tikzmark{time_duration}@
+using std::chrono::system_clock;@\tikzmark{time_clock}@
+using std::cout;
+using std::endl;
+using std::this_thread::sleep_for;
+
+const int FPS = 60;
+
+int main() {
+  milliseconds ms_per_frame(1000 / FPS);@\tikzmark{time_ctor}@
+  system_clock::time_point start = system_clock::now();
+
+  for (int i = 0; i < 300; i++) {@\tikzmark{time_loop}@
+    cout << "Frame #" << i << endl;
+    sleep_for(ms_per_frame);
+  }
+
+  system_clock::time_point finish = system_clock::now();
+  cout << "Elapsed time: " << duration_cast<milliseconds>(end - start).count() / 1000.0f << " seconds\n";
+}
   \end{cppcode}
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (4cm, 23em) node [anchor=west] {\shortstack{Threading is a whole new\\can of worms (let's not open it)}} -> ([shift={(0em,.25em)}]pic cs:time_thread);
+    \draw (6cm, 20em) node [anchor=west] {\shortstack{Convert between units of time}} -> ([shift={(0em,.25em)}]pic cs:time_cast);
+    \draw (7cm, 17em) node [anchor=west] {\shortstack{Really a typedef for a generic duration\\(you can define your own units)}} -> ([shift={(0em,.25em)}]pic cs:time_duration);
+    \draw (6cm, 14em) node [anchor=west] {\shortstack{Several types of clocks exist}} -> ([shift={(0em,.25em)}]pic cs:time_clock);
+    \draw (7cm, 11em) node [anchor=west] {\shortstack{Durations accept integers (but\\you can define float typedefs)}} -> ([shift={(0em,.25em)}]pic cs:time_ctor);
+    \draw (5cm, 6em) node [anchor=west] {\shortstack{Your game's timer can\\(and should) use only std::chrono}} -> ([shift={(0em,.25em)}]pic cs:time_loop);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
