@@ -1097,9 +1097,38 @@ int main() {
   \end{columns}
 \end{frame}
 
+\begin{frame}[fragile=singleslide]
   \frametitle{String to numbers and back}
   \begin{cppcode}
+#include <cstdlib>
+#include <string>
+
+using std::size_t; 
+using std::stoi;@\tikzmark{stoi_stoi}@
+using std::stol; 
+using std::stoll; 
+using std::string; 
+using std::to_string;@\tikzmark{stoi_wstring}@
+
+int main() { 
+  int a = stoi("42");@\tikzmark{stoi_a}@
+  long b = stol(" 0x09", nullptr, 16);@\tikzmark{stoi_b}@
+
+  size_t first_nonnumeric_char_index;
+  long long c = stoll("12lbs", &first_nonnumeric_char_index, 0);@\tikzmark{stoi_c}@
+  // base-0 means assume either base 8, 10, or 16 depending on the prefix
+
+  string back = to_string(c);@\tikzmark{stoi_back}@
+}
   \end{cppcode}
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (4cm, 17em) node [anchor=west] {\shortstack{sto(i|u?ll?|f|l?d) is available, too}} -> ([shift={(0em,.25em)}]pic cs:stoi_stoi);
+    \draw (4cm, 12em) node [anchor=west] {\shortstack{Or std::to\_wstring}} -> ([shift={(0em,.25em)}]pic cs:stoi_wstring);
+    \draw (4cm, 10em) node [anchor=west] {\shortstack{a == 42}} -> ([shift={(0em,.25em)}]pic cs:stoi_a);
+    \draw (7cm, 8em) node [anchor=west] {\shortstack{b == 9\\(strips whitespace, reads as base-16)}} -> ([shift={(0em,.25em)}]pic cs:stoi_b);
+    \draw (8cm, 3em) node [anchor=north] {\shortstack{c == 2\\first\_nonnumeric\_char\_index == 2}} -> ([shift={(0em,.25em)}]pic cs:stoi_c);
+    \draw (4cm, 3em) node [anchor=west] {\shortstack{"12"}} -> ([shift={(0em,.25em)}]pic cs:stoi_back);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
