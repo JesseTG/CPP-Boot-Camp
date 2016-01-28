@@ -970,7 +970,7 @@ int main() {
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{new}
+  \frametitle{\cppinline{const}}
   \begin{cppcode}
 #include <string>
 
@@ -980,29 +980,39 @@ const int SOME_CONSTANT = 34;
 const string ANOTHER_CONSTANT = "More type-safe than macros!"; 
 
 class ConstStuff { 
-  public: 
-    int getData() const { 
-      // The method doesn't modify the object 
-      return this->_data; 
-    } 
+  public:
+    ConstStuff(int i, const string& s) : _data(i), _text(s) {}
 
-    const string& getText() const { 
-      // Gives you an immutable reference to _text; you must assign it to 
-      // a const std::string& if you don't want to copy it 
-      return this->_text; 
-    } 
+    int data() const { return _data; }@\tikzmark{const_nochange}@
+    const string& text() const { return _text; }@\tikzmark{const_ref}@
+    string& text() { return _text; }@\tikzmark{const_nonconst_ref}@
 
-    void concatenate(const string& str) { 
-      // str itself can't be modified, and it's not copied
-      this->_text += str; 
-    }
+    void concatenate(const string& str) { this->_text += str; }@\tikzmark{const_nonconst}@
 
   private: 
-    int _data; 
+    int _data;
     string _text; 
 };
-// Attempting to violate const-correctness through runtime tricks is UB
+
+int main() {
+  ConstStuff a(1, "France");
+  const@\tikzmark{const_ub}@ ConstStuff b(2, "Spain");
+
+  a.text()@\tikzmark{const_overload_a}@.append("FR");
+  a.concatenate(b.text());
+  // b.text()@\tikzmark{const_overload_b}@.append("SP");@\tikzmark{const_no_cat}@
+}
   \end{cppcode}
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (9cm, 21em) node [anchor=west] {\shortstack{No side effects\\(aka state changes)}} -> ([shift={(0em,.25em)}]pic cs:const_nochange);
+    \draw (9cm, 18em) node [anchor=west] {\shortstack{Immutable reference\\(no state changes)}} -> ([shift={(0em,.25em)}]pic cs:const_ref);
+    \draw (9cm, 15em) node [anchor=west] {\shortstack{Mutable reference\\(state changes possible)}} -> ([shift={(0em,.25em)}]pic cs:const_nonconst_ref);
+    \draw (8cm, 12em) node [anchor=west] {\shortstack{Side effects}} -> ([shift={(0em,.25em)}]pic cs:const_nonconst);
+    \draw (4cm, 11em) node [anchor=west] {\shortstack{Bypassing const through\\tricks is usually UB}} -> ([shift={(0em,.25em)}]pic cs:const_ub);
+    \draw (8cm, 3em) node [anchor=west] {\shortstack{const forbids state changes\\(thus won't compile)}} -> ([shift={(0em,.25em)}]pic cs:const_no_cat);
+    \draw (6cm, 7em) node [anchor=west] {\shortstack{One name, two overloads\\(chosen by compiler)}} -> ([shift={(0em,.25em)}]pic cs:const_overload_a);
+    \draw (6cm, 7em) -> ([shift={(0em,.25em)}]pic cs:const_overload_b);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
