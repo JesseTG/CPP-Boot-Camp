@@ -219,35 +219,47 @@ int main(int argc) {
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{typedef and typeid}
+  \frametitle{Type Aliases}
   \begin{cppcode}
+#include <array>
 #include <cstdint>
 #include <iostream>
-#include <typeinfo>
-// ^ Must include typeinfo to use the typeid operator
+#include <typeinfo>@\tikzmark{typedef_typeinfo}@
 
-typedef std::uint8_t byte; // Declares another name for the same type
-// Syntax:
+using byte = std::uint8_t;@\tikzmark{typedef_using_a}@
+
+template<class T>
+using Array10 = std::array<T, 10>;@\tikzmark{typedef_using_b}@
+
+// Traditional syntax uses "typedef" keyword:@\tikzmark{typedef_prefer}@
 //    typedef existing_type new_name;
 using std::cout;
 using std::endl; 
 
 int main() { 
-  std::uint8_t a = 5; 
-  byte b = a; 
-  // Totally okay; the distinction is compile-time only 
+  std::uint8_t a = 5;@\tikzmark{typedef_okay_a}@
+  byte b = a;@\tikzmark{typedef_okay_b}@
 
-  cout << typeid(std::uint8_t).name() << endl; 
-  cout << typeid(byte).name() << endl; 
-  // Both printouts will be implementation-defined, but identical 
+  cout << typeid(std::uint8_t).name() << ' ' << typeid(byte).name() << endl;@\tikzmark{typedef_same_a}@
 
-  /* Common standard typedefs: 
-        size_t: Sizes of objects (usually an unsigned int)
-        ptrdiff_t: Difference between pointers (usually an unsigned int or long) 
-        std::string: Convenient form of std::basic_string<char> 
-  */ 
+  Array10<byte> c;
+
+  cout << typeid(std::array<byte, 10>).name() << ' ' << typeid(c).name() << endl;@\tikzmark{typedef_same_b}@
+
+  // Many standard types are typedefs (but this is hidden from you)
 }
   \end{cppcode}
+
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (4cm, 22em) node [anchor=west] {\shortstack{Needed for the\\typeid operator}} -> ([shift={(.25em,.25em)}]pic cs:typedef_typeinfo);
+    \draw (3cm, 10.5em) node [anchor=west] {\shortstack{Difference is compile-time only}} -> ([shift={(.25em,.25em)}]pic cs:typedef_okay_a);
+    \draw (3cm, 10.5em) -> ([shift={(.25em,.25em)}]pic cs:typedef_okay_b);
+    \draw (6cm, 16em) node [anchor=west] {\shortstack{Prefer using, but recognize typedef}} -> ([shift={(.25em,.25em)}]pic cs:typedef_prefer);
+    \draw (10cm, 11em) node [anchor=south] {\shortstack{Both strings are the same\\(but implementation-defined)}} -> ([shift={(.25em,.25em)}]pic cs:typedef_same_a);
+    \draw (10cm, 11em) -> ([shift={(.25em,.25em)}]pic cs:typedef_same_b);
+    \draw (6cm, 19em) node [anchor=west] {\shortstack{Another name for\\the same type}} -> ([shift={(.25em,.25em)}]pic cs:typedef_using_a);
+    \draw (6cm, 19em) -> ([shift={(.25em,.25em)}]pic cs:typedef_using_b);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
