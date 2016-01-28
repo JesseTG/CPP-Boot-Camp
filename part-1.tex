@@ -98,69 +98,53 @@
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Basic Structure}
+  \frametitle{The Basics}
   \begin{cppcode}
-#include <iostream>
+#include <iostream>@\tikzmark{basic_include}@
 
-using std::cout;
-using std::endl;
-// Now do this to use names (or prefix them with "std::")
+// Comments
+/* Block comments */
+using std::cout; @\tikzmark{basic_using_a}@
+using std::endl; @\tikzmark{basic_using_b}@
+
+const int SOME_CONSTANT = 5;
 
 // Main entry point of a C++ program
-int |\cppref{language/main_function}{main}|(int argc, char** argv, char** env) {
-  // All these args are optional, third one is not as common
-  // argc == number of command-line arguments 
-  // argv == the actual arguments as an array of strings
-  // env == environment variables
-  cout << "Hello!  My name is " << argv[0] << endl;
+int @\cppref{language/main_function}{main}@(int argc@\tikzmark{basic_argc}@, char** argv@\tikzmark{basic_argv}@) {
+  // main() args are optional
 
-  return 0;
-  // Return code of 0 tells the OS the program exited normally
-  // Anything else == something went wrong (you decide what the numbers mean)
-  // Leaving it off implies "return 0"
-}
-  \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile=singleslide]
-  \frametitle{if, else, for, while}
-  \begin{cppcode}
-if (somethingIsTrue()) {
-  for (int i = 0; i < 10; ++i) {
-    break; // Exactly the same
+  for (int i = 0; i < argc; ++i) {
+    cout << "Arg #" << i << ": " << argv[i] << endl;@\tikzmark{basic_print}@
   }
-}
-else if (somethingElseIsTrue()) {
-  while (true) break; // You can omit braces for single statements like in Java
-}
-else {
-  do {
-    continue; // Exactly the same
-  } while (false);
+
+  cout << "You gave ";
+  switch (argc) {@\tikzmark{basic_switch}@
+    case 0:
+      cout << "exactly ";
+    case SOME_CONSTANT:
+      cout << SOME_CONSTANT;
+      break;
+    default:
+      cout << "some number of"
+  }
+  cout << " arguments." << endl;
+
+  return 0;@\tikzmark{basic_return}@
 }
   \end{cppcode}
+
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (4.5cm, 26em) node [anchor=west] {\shortstack{Include libraries, functions, etc.}} -> ([shift={(.25em,.25em)}]pic cs:basic_include);
+    \draw (7cm, 24em) node [anchor=west] {\shortstack{\# of command-line arguments}} -> ([shift={(.25em,.25em)}]pic cs:basic_argc);
+    \draw (7cm, 21em) node [anchor=west] {\shortstack{actual arguments as\\a string array}} -> ([shift={(.25em,.25em)}]pic cs:basic_argv);
+    \draw[decorate, decoration={brace}, -] ({pic cs:basic_using_a} |- {pic cs:basic_using_b}) +(0,1.5em) -- node [right, inner sep=1em] {Pulls into namespace\\(avoid long-ass prefixes)} ({pic cs:basic_using_a} |- {pic cs:basic_using_b});
+    \draw (7cm, 15em) node [anchor=west] {\shortstack{Formatted printout}} -> ([shift={(.25em,.25em)}]pic cs:basic_print);
+    \draw (5cm, 3em) node [anchor=west] {\shortstack{Return code (absence in main implies 0)}} -> ([shift={(.25em,.25em)}]pic cs:basic_return);
+    \draw (4cm, 12em) node [anchor=west] {\shortstack{Strings not allowed\\in switch statements}} -> ([shift={(.25em,.25em)}]pic cs:basic_switch);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{switch}
-  \begin{cppcode}
-switch (someInteger) { // All okay
-case 0:
-  break;
-case SOME_CONSTANT:
-  break;
-default:
-  // nop
-}
-
-switch (someString) { // ERROR
-case "No way":
-case "Too bad":
-case "Don't bother":
-default:
-  // nop
-}
-  \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
