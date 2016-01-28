@@ -775,25 +775,25 @@ int main() {
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Ignoring It Better\texttrademark  With \cppinline{unique_ptr}}
+  \frametitle{\cppinline{unique_ptr}}
   \begin{cppcode}
 #include <cstdint>
 #include <memory>
 
 using std::size_t;
-using std::unique_ptr;
+using std::unique_ptr;@\tikzmark{unique_ptr}@
 
 class FloatArray {
   public:
-    FloatArray(size_t size) : m_size(size), m_array(make_unique<float[]>(size)) {}
+    FloatArray(size_t size) : m_size(size), m_array(make_unique@\tikzmark{unique_multiple}@<float[]>(size)) {}
 
   private:
     size_t m_size;
-    unique_ptr<float[]> m_array;
+    unique_ptr<float[]> m_array;@\tikzmark{unique_delete}@
 };
 
 int main() {
-  FloatArray stack(64);@\tikzmark{deleted_should}@
+  FloatArray stack(64);
 
   FloatArray* heap = new FloatArray(42);
   delete heap;
@@ -801,7 +801,9 @@ int main() {
 }
   \end{cppcode}
   \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
-    \draw (8cm, 18em) node [anchor=west] {\shortstack{Forbids this special method\\(compiler error if used)}} -> ([shift={(0em,.25em)}]pic cs:deleted_a);
+    \draw (4cm, 20em) node [anchor=south west] {\shortstack{At most one unique\_ptr\\can manage an address}} -> ([shift={(0em,.25em)}]pic cs:unique_ptr);
+    \draw (8cm, 15em) node [anchor=south] {\shortstack{Use make\_unique, not existing\\pointers (else you risk double-deletes)}} -> ([shift={(0em,.25em)}]pic cs:unique_multiple);
+    \draw (5cm, 8em) node [anchor=west] {\shortstack{Cleaned up with RAII}} -> ([shift={(0em,.25em)}]pic cs:unique_delete);
   \end{tikzpicture}
 \end{frame}
 
