@@ -1331,9 +1331,49 @@ int main() {
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Anonymous functions and <algorithm>}
+  \frametitle{Anonymous functions and \cppinline{<algorithm>}}
   \begin{cppcode}
+#include <algorithm>
+#include <array>
+#include <functional>
+#include <iostream>
+
+using std::array;
+using std::cout;
+using std::endl;
+using std::function;
+using std::transform;
+
+int main() { 
+  array<int, 10> ints = {5, 7, 1, 2, 3, 9, 2, 1, 4, 2};
+
+  function<bool(int)> isEven = [](int n) -> bool@\tikzmark{lambda_return}@ {
+    return n % 2 == 0;
+  };
+
+  function<void(void)> printInts = [&ints] {@\tikzmark{lambda_parens}@
+    for (int i : ints) {
+      cout << i << ' ';
+    }
+    cout << endl;
+  };
+
+  printInts();
+
+  transform(ints.@\tikzmark{lambda_begin}@begin(), ints.@\tikzmark{lambda_end}@end(), ints.@\tikzmark{lambda_inplace}@begin(), [&isEven@\tikzmark{lambda_capture}@](int i) {
+    return isEven(i) ? i : i * 2;
+  }); // ^ Doubles all odd numbers
+  printInts();
+}
   \end{cppcode}
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (7cm, 18em) node [anchor=west] {\shortstack{Lambda return type\\(omit to deduce)}} -> ([shift={(0em,.25em)}]pic cs:lambda_return);
+    \draw (7cm, 14em) node [anchor=west] {\shortstack{Omit parens if there are no arguments}} -> ([shift={(0em,.25em)}]pic cs:lambda_parens);
+    \draw (7cm, 9em) node [anchor=south] {\shortstack{Capture ints by reference\\(omit \& for value capture)}} -> ([shift={(0em,.25em)}]pic cs:lambda_capture);
+    \draw (3.5cm, 7em) node [anchor=south] {\shortstack{Run over entire ints array}} -> ([shift={(0em,.25em)}]pic cs:lambda_begin);
+    \draw (3.5cm, 7em) -> ([shift={(0em,.25em)}]pic cs:lambda_end);
+    \draw (6cm, 3em) node [anchor=west] {\shortstack{Output iterator is same as input\\(so it operates in-place)}} -> ([shift={(0em,.25em)}]pic cs:lambda_inplace);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
