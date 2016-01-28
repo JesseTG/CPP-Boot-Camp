@@ -313,44 +313,194 @@ int main() {
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Undefined Behavior}
-  \begin{itemize}
-    \item Whenever something happens in Java, you can rely on something else to happen
-    \item C++ lets the compiler do anything it wants in certain situations
-    \item For performance reasons, mostly
-    \item Many, many ways to do this
-    \item Do not rely on undefined behavior
-  \end{itemize}
+  \frametitle{Memory Model and Lifetime (cont'd)}
+  \begin{columns}
+    \begin{column}{6cm}
+      \begin{itemize}
+        \item Stack allocation is fast, but size must be known at compile time
+        \item Heap allocation is flexible, but slow
+        \item Details vary by compiler, OS, and hardware
+        \item \textbf{All objects of a given type are the same size.}
+      \end{itemize}
+    \end{column}
+
+    \begin{column}{6cm}
+      \begin{tikzpicture}
+        \draw [fill=pink, ultra thick, rounded corners] (current page.north west) rectangle (6cm, 2cm);
+        \draw [fill=purple, ultra thick, rounded corners] (0cm, 2cm) rectangle (6cm, 4cm) node [align=center, anchor=center, fill=white] at (3cm, 3cm) {\huge{Stack}};
+        \draw [fill=green, ultra thick, rounded corners] (current page.north west) rectangle (6cm, 6cm);
+        \draw [fill=olive, ultra thick, rounded corners] (2cm, 9cm) rectangle +(1cm, 0.5cm) (3cm, 8cm) rectangle +(1cm, 0.5cm) (5cm, 8cm) rectangle +(1cm, 0.5cm) (0, 7cm) rectangle +(3cm, 0.5cm);
+        \draw node [align=center, anchor=center, fill=white, rounded corners] at (3cm, 8cm) {\huge{Heap}};
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (4cm, 22em) node [anchor=east] {\shortstack{Find enough space (expensive)}} -> (6.25cm, 5.25cm);
+    \draw (4cm, 3em) node [anchor=east] {\shortstack{Increment an address (cheap)}} -> (6.25cm, 1cm);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Some examples}
-  \begin{cppcode}
-#include <string>
-#include <cstdint> 
-#include <limits> 
+  \frametitle{Pointers Vs. References}
 
-int32_t something(int32_t param) { 
+  \begin{itemize}
+    \item Access lots of data without copying it
+    \item Left dangling (\textbf{invalid}) if the referenced object is deallocated
+    \begin{itemize}
+      \item No way to check for this
+      \item Will likely cause a crash if you try to use it
+    \end{itemize}
+    \item Polymorphism okay
+    \item Both compile to similar machine code
+    \item Multiple pointers/references can refer to one object
+  \end{itemize}
+
+  \begin{columns}
+    \begin{column}{6cm}
+      \textbf{Pointers:}
+      \begin{itemize}
+        \item More prone to becoming invalid
+        \item Can represent absence of data (\cppinline{nullptr})
+        \item Syntax to use and declare
+        \item Address can be reassigned
+      \end{itemize}
+    \end{column}
+
+    \begin{column}{6cm}
+      \textbf{References:}
+      \begin{itemize}
+        \item Must initialize properly
+        \item Always points to \textbf{one} address
+        \item No syntax to use, only to declare
+        \item Easier to deal with objects that shouldn't change
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Pointers and References}
+  \begin{columns}[t]
+    \begin{column}{6cm}
+      \textbf{Pointers:}
+      \begin{cppcode}
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
+struct Base {
+  int enormous[1024];
+};
+
+struct Derived : public Base {
+  float huge[1024];
+};
+
+int main() {
+  Base base;
+  Derived derived;
+  
+  Base* a = &base;
+  Base* b = &derived; // Polymorphism
+  Base* c; // Uninitialized (value undefined)
+  c = nullptr;
+  c = &derived; // Changed pointer
+  
+  const Base* d = a; // mutable pointer, const data
+  Base const* e = a; // const pointer, mutable data
+  const Base* const f = a; // pointer and data const
+  
+  int* ptr = a->enormous; // Pointer arithmetic
+  cout << *ptr << *(ptr + 1) << (*ptr) + 1 << endl;
+}
+      \end{cppcode}
+    \end{column}
+
+    \begin{column}{6cm}
+      \textbf{References:}
+      \begin{cppcode}
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
+struct Base {
+  int enormous[1024];
+};
+
+struct Derived : public Base {
+  float huge[1024];
+};
+
+int main() {
+  Base base;
+  Derived derived;
+  
+  Base& a = base;
+  Base& b = derived; // Polymorphism
+  // References must be initialized
+  // And to a valid object, too
+  a = derived; // Changed pointee (the object)
+  
+  const Base& d = a; // const data
+  // References never change (they always point
+  // to one address)
+
+  cout << a.enormous[0] << a.enormous[1] << endl;
+}
+      \end{cppcode}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Undefined Behavior}
+  \begin{columns}
+    \begin{column}{6cm}
+      \begin{itemize}
+        \item Java fully defines everything
+        \item C++ leaves certain edge cases up to the compiler
+        \item Many, many ways to invoke
+        \item \textbf{Do not rely on UB}
+        \begin{itemize}
+          \item Best case scenario: Crash
+          \item Worst case scenario: No crash
+        \end{itemize}
+      \end{itemize}
+    \end{column}
+
+    \begin{column}{6cm}
+      \begin{cppcode}
+#include <string>
+#include <limits>
+
+using std::string;
+
+int something(int param) { 
   if (param > 0) return param; 
   // No return down here; now what? 
 } 
 
-std::string& returnsALocal() { 
-  std::string reference = "Why are you doing this"; 
+string& returnsALocal() { 
+  string reference = "Why are you doing this"; 
   return reference; // Uh-oh 
 } 
 
 int main() { 
-  int32_t a = std::numeric_limits<int32_t>::max(); 
+  int a = std::numeric_limits<int>::max(); 
   a++; // Oops 
 
-  int32_t* pointer; // What's inside?  Beats me.
-  int32_t number = *pointer; // Crash (or worse; no crash)
+  int* pointer; // What's inside?  Beats me.
+  int number = *pointer;
 
-  int32_t[10] array; 
+  int[10] array; 
   number = array[12]; // WTF 
 }
-  \end{cppcode}
+      \end{cppcode}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
@@ -492,101 +642,12 @@ int main() {
   \end{cppcode}
 \end{frame}
 
-\begin{frame}[fragile=singleslide]
-  \frametitle{Pointers}
-  \begin{cppcode}
-#include <string> 
-
-using std::string; 
-
-int main() { 
-  string a = "I'm a little teapot"; 
-  string* ptr = &a; // &some_object returns the address of some_object 
-  string b = *ptr; // *some_pointer dereferences 
-
-  int ints[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}; 
-  // Raw arrays are pointers 
-
-  int* int_ptr = ints; // Points to ints[0] 
-  int* int_ptr2 = ints + 1; // Points to ints[1] 
-                            // Increments the address sizeof(int) bytes 
-  int** double_array = &int_ptr;
-  // Pointers to pointers okay; never usually need more than two**
-
-  void* pointer_to_anything = ints;
-  // Pointer to arbitrary data; very error-prone and unsafe; avoid unless you know
-  // exactly why you need one
-
-  pointer_to_anything = nullptr;
-  // nullptr == Java's null; assignable to any pointer type, but not to objects
-
-  float* garbage;  // Uninitialized pointer; value is undefined
-                   // Could be garbage, could be nullptr; initialize it ASAP!
-}
-  \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile=singleslide]
-  \frametitle{References}
-  \begin{cppcode}
-#include <string> 
-#include <iostream> 
-
-using namespace std; // Only for slide space constraints 
-
-class StringHolder { 
-  public:
-    StringHolder(const string& str) : _str(str) {}
-
-    const string& getStringReference() const { return this->_str; }
-
-    string getStringCopy() const { return this->_str; }
-
-    void append(const string& str) { this->_str += str; }
-    // ^ Passes an unmodifiable reference rather than a copy
-  private:
-    string _str;
 };
 
-int main() {
-  StringHolder holder("France");
-  const string& a = holder.getStringReference();
-  string b = holder.getStringCopy();
 
-  cout << (a == b) << endl; // True; comparing object values
-  cout << (&a == &b) << endl; // False; different addresses, different objects
-
-  holder.append(b);
-  cout << holder.getStringReference() << endl; // FranceFrance
 }
   \end{cppcode}
-\end{frame}
 
-\begin{frame}[fragile=singleslide]
-  \frametitle{Pointers Vs. References (similarities)}
-  \begin{itemize}
-    \item Access large objects without copying them
-    \item Left dangling (invalid) if the referenced object is deallocated
-    \item No way to check for this
-    \item Will likely cause a crash if you try to use it
-    \item Both can point to an instance of the given type's superclass
-    \item Both compiled to similar machine code
-    \item Multiple pointers/references can refer to one object
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile=singleslide]
-  \frametitle{Pointers Vs. References (differences)}
-  \begin{itemize}
-    \item Can represent absence of data
-    \item More prone to becoming invalid
-    \item Syntax needed to convert between pointers and objects
-    \item Can be assigned to different objects
-    \item Always initialized with a valid object
-    \item No syntax needed to use references aside from declarations or method signatures
-    \item Always points to one location in memory
-    \item Easier to deal with objects that shouldn't change
-  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
