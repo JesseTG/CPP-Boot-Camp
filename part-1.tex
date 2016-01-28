@@ -1132,6 +1132,49 @@ int main() {
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
+  \frametitle{Regexes}
+  \begin{cppcode}
+#include <iostream>
+#include <regex> // Test out regexes at @\href{https://www.regex101.com}{\underline{regex101}}@
+#include <string>
+#include <vector>
+
+using std::cout;
+using std::endl;
+using std::regex;
+using std::regex_search;@\tikzmark{regex_match}@
+using std::smatch;
+using std::string;
+using std::vector;
+
+int main() {
+  regex secret_council("(\\b[plurandy]+\\b ?){2}"@\tikzmark{regex_syntax}@, regex::icase@\tikzmark{regex_flags}@);
+  vector<string> members = {"Duran Duran", "Ayn Rand", "Paul Rudd", "Ann Druyan", "Randall Munroe"};
+
+  for (const auto &m : members) {
+      cout << m << ": " << regex_search(m, secret_council)@\tikzmark{regex_search}@ << endl;
+  }   
+ 
+  smatch member_match;@\tikzmark{regex_smatch_a}@
+  for (const auto &m : members) {
+    regex_search(m, member_match, secret_council);@\tikzmark{regex_smatch_b}@
+    cout << "matches for '" << m << "':" << endl;
+
+    for (size_t i = 0; i < member_match.size(); ++i) {
+      cout << "    " << i << ": " << member_match[i]@\tikzmark{regex_access_match}@ << endl;
+    }
+  }
+}
+  \end{cppcode}
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (4cm, 23em) node [anchor=west] {\shortstack{search for finding substrings,\\match for matching whole strings}} -> ([shift={(0em,.25em)}]pic cs:regex_match);
+    \draw (6cm, 17em) node [anchor=south] {\shortstack{ECMAScript syntax by\\default, but others available}} -> ([shift={(0em,.25em)}]pic cs:regex_syntax);
+    \draw (8cm, 16em) node [anchor=west] {\shortstack{Case insensitive flag}} -> ([shift={(0em,.25em)}]pic cs:regex_flags);
+    \draw (8cm, 11em) node [anchor=west] {\shortstack{Returns true if a\\match was found}} -> ([shift={(0em,.25em)}]pic cs:regex_search);
+    \draw (7cm, 8em) node [anchor=west] {\shortstack{Class to store actual match\\results and positions}} -> ([shift={(0em,.25em)}]pic cs:regex_smatch_a);
+    \draw (7cm, 8em) -> ([shift={(0em,.25em)}]pic cs:regex_smatch_b);
+    \draw (7cm, 2em) node [anchor=west] {\shortstack{Actually accessing matches}} -> ([shift={(0em,.25em)}]pic cs:regex_access_match);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
