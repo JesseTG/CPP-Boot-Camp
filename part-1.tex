@@ -511,11 +511,10 @@ int main() {
 #include <array>
 #include <utility>
 
-using namespace std;
-// ^ Don't do this for the same reason you don't do java.util.*
+using namespace std;@\tikzmark{namespace_std}@
 
-namespace sbcs { // Nest them as much as you'd like
-  namespace cse380 {
+namespace sbcs {@\tikzmark{namespace_nest_a}@
+  namespace cse380 {@\tikzmark{namespace_nest_b}@
     struct Game {
       string name;
       string teamName;
@@ -523,18 +522,27 @@ namespace sbcs { // Nest them as much as you'd like
     };
   }
 
-  namespace cse381 {
-    typedef pair<string, string> Team;
+  namespace cse381 {@\tikzmark{namespace_nest_c}@
+    using Team = pair<string, string>;
   }
 }
 
 int main() {
-  sbcs::cse380::Game game; // Fully-qualified type name
-  using sbcs::cse381::Team; // Or use it in the current namespace (global in this case)
+  sbcs::cse380::Game game;@\tikzmark{namespace_qualified}@
+  using sbcs::cse381::Team;@\tikzmark{namespace_using}@
 
   Team team("Jesse", "Karl");
 }
   \end{cppcode}
+
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (6cm, 22em) node [anchor=west] {\shortstack{Don't do this (or java.util.*)}} -> ([shift={(0em,.25em)}]pic cs:namespace_std);
+    \draw (5cm, 19em) node [anchor=west] {\shortstack{Nest them as much as you'd like}} -> ([shift={(0em,.25em)}]pic cs:namespace_nest_a);
+    \draw (5cm, 19em) -> ([shift={(0em,.25em)}]pic cs:namespace_nest_b);
+    \draw (5cm, 19em) -> ([shift={(0em,.25em)}]pic cs:namespace_nest_c);
+    \draw (5cm, 8em) node [anchor=west] {\shortstack{Fully-qualified name}} -> ([shift={(0em,.25em)}]pic cs:namespace_qualified);
+    \draw (6cm, 4em) node [anchor=west] {\shortstack{Or bring it into the\\current namespace}} -> ([shift={(0em,.25em)}]pic cs:namespace_using);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
