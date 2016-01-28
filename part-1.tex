@@ -548,16 +548,12 @@ int main() {
 \begin{frame}[fragile=singleslide]
   \frametitle{The Preprocessor}
   \begin{cppcode}
-#include <iostream>
-// Use <angle_brackets> for standard library/third-party code, "quotes" for your own 
+#include <iostream>@\tikzmark{cpp_include}@
 
-#define DEBUG 
-// You can also add #defines through your build system (e.g. the command line or 
-// your Visual Studio project file) 
+#define DEBUG@\tikzmark{cpp_define}@
 
-// #define WINDOWS 
-// #define MAC 
-// ^ Uncomment one of these 
+// #define WINDOWS@\tikzmark{cpp_windows}@
+// #define MAC@\tikzmark{cpp_mac}@
 
 using std::cout; 
 using std::endl; 
@@ -571,50 +567,26 @@ int main() {
   cout << "Use DirectX!" << endl; 
   #else 
   cout << "Use OpenGL!" << endl; 
-  #endif 
+  #endif
+
+  #ifndef LINUX@\tikzmark{cpp_linux}@
+  cout << "Why do you hate penguins?" << endl;
+  #endif
 
   #ifdef MAC 
-    #error "Jesse doesn't like Apple"
-    // ^ Intentionally causes a compiler error
+    #error "Jesse doesn't like Apple"@\tikzmark{cpp_error}@
   #endif
 }
   \end{cppcode}
-\end{frame}
 
-\begin{frame}[fragile=singleslide]
-  \frametitle{assert/static\_assert}
-  \begin{cppcode}
-#include <cassert>
-#include <type_traits>
-
-// #define NDEBUG
-// ^ Uncomment this or define it in the build system to disable asserts
-
-using std::is_base_of;
-using std::is_same;
-
-template<class T, class U>
-void failIfUnrelated() {
-  static_assert(
-    is_base_of<T, U>::value
-    || is_base_of<U, T>::value
-    || is_same<T, U>::value,
-    "Both types should be the same, or one should be a parent of the other"
-  );
-}
-
-class Parent {};
-class Child : public Parent {};
-
-int main() {
-  assert(1 + 1 == 2);
-  assert(true && "Idiom for providing informative text in an assert()");
-
-  failIfUnrelated<int, int>(); // Okay
-  failIfUnrelated<int, Child>(); // Causes a compiler error, as desired
-  failIfUnrelated<Parent, Child>(); // Okay
-}
-  \end{cppcode}
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (3cm, 25em) node [anchor=west] {\shortstack{Convention: <> for third-party or\\standard library, "" for your code}} -> ([shift={(0em,.25em)}]pic cs:cpp_include);
+    \draw (4cm, 21em) node [anchor=west] {\shortstack{Conditional compilation (you can also add\\\#defines through your build process)}} -> ([shift={(0em,.25em)}]pic cs:cpp_define);
+    \draw (3cm, 18em) node [anchor=west] {\shortstack{Uncomment these}} -> ([shift={(0em,.25em)}]pic cs:cpp_windows);
+    \draw (3cm, 18em) -> ([shift={(0em,.25em)}]pic cs:cpp_mac);
+    \draw (4cm, 9em) node [anchor=west] {\shortstack{Contents ignored (not compiled) if on Linux}} -> ([shift={(0em,.25em)}]pic cs:cpp_linux);
+    \draw (5cm, 3em) node [anchor=west] {\shortstack{Intentional compiler error}} -> ([shift={(0em,.25em)}]pic cs:cpp_error);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
