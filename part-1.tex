@@ -809,44 +809,49 @@ int main() {
   \frametitle{Casting}
   \begin{cppcode}
 #include <iostream>
-#include <string>
 
-using namespace std; // Slide space constraints 
+using std::cout;
+using std::endl;
 
 struct Base { 
   virtual ~Base() {}
-  string baseMethod() { return "base"; }
 };
 
-struct Derived : Base {
-  virtual string derivedMethod() { return "derived"; }
+struct Derived : public Base {
+  int thing;
 };
 
 int main() {
-  Base* b1 = new Derived;
-  Derived* d1_s = dynamic_cast<Derived*>(b1);
-  cout << d1_s << ' ' << d1_s->baseMethod() << ' ' << d1_s->derivedMethod() << endl; 
-  // Checking at runtime that you're casting to the right type 
+  Base base;@\tikzmark{cast_poly}@
+  Derived derived;
 
-  Derived* d1_d = static_cast<Derived*>(b1); 
-  cout << d1_d << ' ' << d1_d->baseMethod() << ' ' << d1_d->derivedMethod() << endl; 
-  // Static (compile-time) downcasts are OK (and faster) if you know you're 
-  // casting to the right type 
+  Base* b_base = &base;
+  Base* b_derived = &derived;@\tikzmark{cast_upcast_a}@
+  Base& base_ref = base;
+  Base& derived_ref = derived;@\tikzmark{cast_upcast_b}@
+  
+  Derived* d1 = dynamic_cast@\tikzmark{cast_dynamic}@<Derived*>(b_derived);@\tikzmark{cast_dynamic_pass}@
+  Derived* d2 = dynamic_cast<Derived*>(b_base);@\tikzmark{cast_dynamic_fail}@
 
-  Base* b2 = new Base; 
-  Derived* d2_d = dynamic_cast<Derived*>(b2); 
-  cout << d2_d << endl; 
-  // Cast was not valid, so dynamic_cast returned nullptr 
-  // If it were a reference, it would've thrown std::bad_cast 
+  Derived* d3 = static_cast@\tikzmark{cast_static}@<Derived*>(b_derived);@\tikzmark{cast_static_pass}@
+  Derived* d4 = static_cast<Derived*>(b_base);@\tikzmark{cast_static_fail}@
 
-  Derived* d2_s = static_cast<Derived*>(b2); 
-  // cout << d2_s << ' ' << d2_s->baseMethod() << ' ' << d2_s->derivedMethod() << endl; 
-  // ^ This is undefined, since the cast is wrong (and not checked at runtime) 
-
-  delete b1; // Remember to clean up! 
-  delete b2; 
+  cout << d1 << ' ' << d2 << ' ' << d3 << ' ' << d4 << endl;
+  d4->thing = 52;@\tikzmark{cast_ub}@
 }
   \end{cppcode}
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (6cm, 21em) node [anchor=west] {\shortstack{Polymorphism can't be done on values,\\must be pointers or references}} -> ([shift={(0em,.25em)}]pic cs:cast_poly);
+    \draw (5cm, 16em) node [anchor=west] {\shortstack{Explicit upcasts rarely necessary}} -> ([shift={(0em,.25em)}]pic cs:cast_upcast_a);
+    \draw (5cm, 16em) -> ([shift={(0em,.25em)}]pic cs:cast_upcast_b);
+    \draw (6cm, 13em) node [anchor=west] {\shortstack{Runtime type check (slow)}} -> ([shift={(0em,.25em)}]pic cs:cast_dynamic);
+    \draw (6cm, 12em) node [anchor=west] {\shortstack{Compile-time type assurance (fast)}} -> ([shift={(0em,.25em)}]pic cs:cast_static);
+    \draw (6cm, 9em) node [anchor=west] {\shortstack{Pointer to derived (success)}} -> ([shift={(0em,.25em)}]pic cs:cast_dynamic_pass);
+    \draw (6cm, 8em) node [anchor=west] {\shortstack{nullptr (failure, exception if a reference)}} -> ([shift={(0em,.25em)}]pic cs:cast_dynamic_fail);
+    \draw (6cm, 6em) node [anchor=west] {\shortstack{Pointer to derived (hopefully success?)}} -> ([shift={(0em,.25em)}]pic cs:cast_static_pass);
+    \draw (6cm, 5em) node [anchor=west] {\shortstack{Undefined behavior (hopefully success?)}} -> ([shift={(0em,.25em)}]pic cs:cast_static_fail);
+    \draw (3cm, 2em) node [anchor=west] {\shortstack{You fucked up!}} -> ([shift={(0em,.25em)}]pic cs:cast_ub);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
