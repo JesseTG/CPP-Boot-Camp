@@ -1227,7 +1227,33 @@ namespace std {@\tikzmark{map_std}@
 \begin{frame}[fragile=singleslide]
   \frametitle{Random Numbers}
   \begin{cppcode}
+#include <iostream> 
+#include <random> 
+
+using std::cout; 
+using std::default_random_engine; 
+using std::endl; 
+using std::normal_distribution; 
+using std::random_device; 
+
+int main() {
+  random_device seed;@\tikzmark{random_device}@
+  default_random_engine random(seed());@\tikzmark{random_init}@
+  normal_distribution<float>@\tikzmark{random_many}@ normal(0, 1); // mean == 0, stddev == 1
+
+  for (int i = 0; i < 100; ++i) {
+    cout << normal(random@\tikzmark{random_concept}@) << ' ';
+  }
+
+  cout << endl;
+}
   \end{cppcode}
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (4cm, 12em) node [anchor=west] {\shortstack{OS/hardware's source of randomness}} -> ([shift={(0em,.25em)}]pic cs:random_device);
+    \draw (5cm, 10em) node [anchor=west] {\shortstack{Initialize a PRNG with a seed}} -> ([shift={(0em,.25em)}]pic cs:random_init);
+    \draw (6cm, 6em) node [anchor=north west] {\shortstack{LOTS of distributions available\\(did you take AMS 310 yet?)}} -> ([shift={(0em,.25em)}]pic cs:random_many);
+    \draw (3cm, 1em) node [anchor=north] {\shortstack{Or use any UniformRandomNumberGenerator\\(including random\_device, but it's slow)}} -> ([shift={(0em,.25em)}]pic cs:random_concept);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
