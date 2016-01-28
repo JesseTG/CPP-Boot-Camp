@@ -145,6 +145,31 @@ int @\cppref{language/main_function}{main}@(int argc@\tikzmark{basic_argc}@, cha
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
+  \frametitle{Fundamental Types}
+  \begin{columns}[t]
+    \begin{column}{6cm}
+      \begin{itemize}
+        \item Integer sizes \textbf{can vary} by platform, compiler, and OS
+        \item No \javainline|byte| (use \cppinline|uint8_t|)
+        \item \javainline|boolean| $\rightarrow$ \cppinline|bool|
+        \item Numbers implicitly convert to \cppinline|bool| (0 $\rightarrow$ \javainline|false|, anything else $\rightarrow$ \javainline|true|)
+        \item Use \cppinline|nullptr| for null pointers, not \javainline|null| or \cppinline|NULL|
+        \item \cppinline|float| and \cppinline|double| are the same as in Java (\cppinline|long double| exists, too)
+      \end{itemize}
+    \end{column}
+
+    \begin{column}{6cm}
+      \begin{itemize}
+        \item \cppinline|signed| and \cppinline|unsigned| integers
+        \begin{itemize}
+          \item \cppinline|signed| integers are the same
+          \item \cppinline|unsigned| go twice as high, but no negatives
+        \end{itemize}
+        \item For specific sizes, \cppinline|#include <cstdint>| and use \jsinline{/std::u?int(8|16|32|64)_t/}
+        \item There is \textbf{no} root object class
+      \end{itemize}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
@@ -168,22 +193,7 @@ try {
   // Catch anything, but you can't access it; can only be used last
 }
   \end{cppcode}
-\end{frame}
 
-\begin{frame}[fragile=singleslide]
-  \frametitle{Fundamental Types}
-  \begin{itemize}
-    \item Sizes are not well-defined like in Java
-    \item No \verb|byte| (use \cppinline|uint8_t|)
-    \item \verb|boolean| to \cppinline|bool|
-    \item Use \cppinline|nullptr| instead of \verb|null| or \cppinline|NULL|
-    \item Signed and unsigned types
-    \item signed types are the same
-    \item unsigned types double the max value, but can't represent negative numbers
-    \item Need a specific number size?
-    \item First \cppinline|#include <cstdint>|
-    \item Then use \verb!std::u?int(8|16|32|64)_t!
-  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
