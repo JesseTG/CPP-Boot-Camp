@@ -642,179 +642,167 @@ int main() {
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{new/delete}
+  \frametitle{Declaring Classes}
   \begin{cppcode}
 #include <string>
 
 using std::string;
 
-void wasteMemory() {
-  string stack_allocated = "I disappear when I go out of scope";
-  string* wasted = new string("I only disappear when explicitly deallocated");
-
-  string* cleaned = new string("I'm about to get cleaned up properly");
-
-  delete cleaned;
-}
-
-int main() {
-  for (int i = 0; i < 10000; i++) {
-    wasteMemory();
-  }
-
-  // stack_allocated disappeared when wasteMemory() returned
-  // All instances of wasted are still in memory
-  // cleaned disappeared when "delete cleaned;" was called
-  // See: Scope vs. Lifetime
-}
-  \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile=singleslide]
-  \begin{cppcode}
-
-
-  \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile=singleslide]
-  \frametitle{Declaring Classes}
-  \begin{cppcode}
-// public/protected/private semantics same as in Java
-// no specifier == private in classes, public in structs
-
-class ItHoldsThings {
-  public: 
-    int cantBeOverridden(int a, int b) {
-      // Technically you can, but things get weird
-      return this->_integer + b;
-    }
-
-    virtual float canBeOverridden(const double d) {
-      // virtual == overrideable
-      return d * 2;
-    }
-
-    virtual void abstractMethod() = 0;
-
-  protected:
+class Person {
+  public:@\tikzmark{class_access_a}@
+    int cantBeOverridden(int a, int b) { return this->_integer + b; }@\tikzmark{class_no_override}@
+    virtual@\tikzmark{class_virtual}@ float canBeOverridden(double d) { return d * 2; }
+    virtual ~Person()@\tikzmark{class_virtual_dtor}@ {}
+  protected:@\tikzmark{class_access_b}@
     float _number;
-
-  private:
+  private:@\tikzmark{class_access_c}@
     int _integer;
-}; // Don't forget the semicolon
-// When a class is constructed, ALL of its members are too
-  \end{cppcode}
-\end{frame}
+};@\tikzmark{class_semicolon}@
 
-\begin{frame}[fragile=singleslide]
-  \frametitle{Constructors}
-  \begin{cppcode}
-#include <string>
-
-using std::string; 
-
-class StringWrapper { 
-  public: 
-    StringWrapper() { /* other code here */ } // _str == ""
-    // Default constructor can be auto-generated with some caveats (see the wiki)
-
-    StringWrapper(const string& value) : _str(value) {} // _str == value
-    // Copy constructor can be auto-generated (but see wiki)
-    // Base class constructors are called like this, too
-
-  private:
-    string _str;
-    // All members are initialized on construction, whether you like it or not
+struct IBeeGee {@\tikzmark{class_struct}@
+  string stayAlive() @\tikzmark{class_abstract}@= 0;
 };
 
-int main() { 
-  StringWrapper a;
-  StringWrapper b("There will be a copy of me in c");
-  StringWrapper c(b);
-}
+class MauriceGibb : public Person, public IBeeGee {@\tikzmark{class_inheritance}@
+  void stayAlive() override {
+    return "Well, you can tell by the way I use my walk";
+  }
+
+  float canBeOverridden(double d) override@\tikzmark{class_override}@ {
+    return Person@\tikzmark{class_super}@::canBeOverridden(d) + 23;
+  }
+};
   \end{cppcode}
+
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (3cm, 17em) node [anchor=west] {\shortstack{REQUIRED for any inheritable class}} -> ([shift={(0em,.25em)}]pic cs:class_virtual_dtor);
+    \draw (3cm, 24em) node [anchor=west] {\shortstack{Access modifiers same as in Java}} -> ([shift={(0em,.25em)}]pic cs:class_access_a);
+    \draw (4cm, 12em) node [anchor=west] {\shortstack{struct defaults to public\\class defaults to private}} -> ([shift={(0em,.25em)}]pic cs:class_struct);
+    \draw (2cm, 14em) node [anchor=west] {\shortstack{Remember the semicolon!}} -> ([shift={(0em,.25em)}]pic cs:class_semicolon);
+    \draw (3cm, 22em) node [anchor=west] {\shortstack{Allows method to be overridden}} -> ([shift={(0em,.25em)}]pic cs:class_virtual);
+    \draw (9cm, 19em) node [anchor=west] {\shortstack{Technically you can,\\but things get weird}} -> ([shift={(0em,.25em)}]pic cs:class_no_override);
+    \draw (2cm, 11em) node [anchor=north] {\shortstack{Abstract method}} -> ([shift={(0em,.25em)}]pic cs:class_abstract);
+    \draw (6cm, 4em) node [anchor=north west] {\shortstack{Marks method as an override\\(optional, but recommended)}} -> ([shift={(0em,.25em)}]pic cs:class_override);
+    \draw (2cm, 2em) node [anchor=north] {\shortstack{Call parents with class name}} -> ([shift={(0em,.25em)}]pic cs:class_super);
+    \draw (7cm, 7em) node [anchor=west] {\shortstack{Inheritance (actually six\\kinds; just use public)}} -> ([shift={(0em,.25em)}]pic cs:class_inheritance);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Destructors}
+  \frametitle{(Con|De)structors, RAII, and the Rule of 3}
   \begin{cppcode}
-// Using constructors to allocate resources and destructors to clean them up is 
-// called Resource Acquisition Is Initialization (RAII). Only needed for low-level 
-// resources; high-level classes like std::iostream do RAII themselves. 
+#include <cstdint>
+#include <cstring>
 
-#include <cstdlib> 
+using std::memcpy;
+using std::size_t;
 
-using std::malloc;
-using std::free;
-
-class LotsOfResources {
+class FloatArray@\tikzmark{raii_dont}@ {
   public:
-    LotsOfResources() {
-      _floats = new float[64];
-      _buffer = malloc(64);
+    FloatArray(size_t size) : _size@\tikzmark{raii_init}@(size), _array(new float[size]) {}@\tikzmark{raii_ctor}@
+
+    FloatArray(const FloatArray& other) : _size(other._size), _array(new float[other._size]) {@\tikzmark{raii_copyctor}@
+      memcpy(_array, other._array, other._size * sizeof@\tikzmark{raii_sizeof}@(float));
     }
 
-    ~LotsOfResources() {
-      // Called when this object's lifetime ends delete[] _floats;
-      // Remember the [] when deleting a raw array free(_buffer);
+    FloatArray& operator=(const FloatArray& other) {@\tikzmark{raii_copyeq}@
+      if (this != &other) { // Watch for self-assignment!
+        float* temp = new float[other._size];
+        memcpy(temp, other._array, other._size * sizeof(float));
+        delete[] _array;
+        _array = temp;
+        return *this;
+      }
+    }
+
+    ~FloatArray() {@\tikzmark{raii_dtor}@
+      delete[] floats;@\tikzmark{raii_dtor_b}@
     }
 
   private:
-    float* _floats;
-    void* _buffer;
+    size_t _size;
+    float* _array;
+};
+  \end{cppcode}
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (3cm, 27em) node [anchor=west] {\shortstack{Don't write this class\\(STL does it better)}} -> ([shift={(0em,.25em)}]pic cs:raii_dont);
+    \draw (5cm, 23em) node [anchor=south] {\shortstack{Member initialization syntax}} -> ([shift={(0em,.25em)}]pic cs:raii_init);
+    \draw (8cm, 22em) node [anchor=south west] {\shortstack{Anything else\\(nothing right now)}} -> ([shift={(0em,.25em)}]pic cs:raii_ctor);
+    \draw (9cm, 7em) node [anchor=north] {\shortstack{Rule of 3: You need to write one,\\you need to write them all}} -> ([shift={(0em,.25em)}]pic cs:raii_copyctor) node [pos=.5, above, sloped, anchor=north] {Copy constructor};
+    \draw (9cm, 7em) -> ([shift={(0em,.25em)}]pic cs:raii_dtor) node [pos=.5, above, sloped, anchor=north] {Destructor};
+    \draw (9cm, 7em) -> ([shift={(0em,.25em)}]pic cs:raii_copyeq) node [pos=.5, above, sloped, anchor=north] {Copy assignment};
+    \draw (4.5cm, 3em) node [anchor=north] {\shortstack{RAII: Create in ctor, delete in dtor}} -> ([shift={(0em,.25em)}]pic cs:raii_dtor_b);
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{Deleted Functions}
+  \begin{cppcode}
+#include <cstdint>
+
+using std::size_t;
+
+class FloatArray {
+  public:
+    FloatArray(size_t size) : _size(size), _array(new float[size]) {}
+
+    FloatArray(const FloatArray&) = delete;@\tikzmark{deleted_a}@
+    FloatArray& operator=(const FloatArray&) = delete;@\tikzmark{deleted_b}@
+
+    ~FloatArray() {@\tikzmark{deleted_cleanup}@
+      delete[] floats;
+    }
+
+  private:
+    size_t _size;
+    float* _array;
 };
 
 int main() {
-  LotsOfResources* resources = new LotsOfResources;
-  delete resources; // No memory leaks!
+  FloatArray stack(64);@\tikzmark{deleted_should}@
+
+  FloatArray* heap = new FloatArray(42);
+  delete heap;
+  // No memory leaks here (or in the previous slide)!
 }
   \end{cppcode}
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (8cm, 18em) node [anchor=west] {\shortstack{Forbids this special method\\(compiler error if used)}} -> ([shift={(0em,.25em)}]pic cs:deleted_a);
+    \draw (8cm, 18em) -> ([shift={(0em,.25em)}]pic cs:deleted_b);
+    \draw (4cm, 14em) node [anchor=west] {\shortstack{Still gotta clean up}} -> ([shift={(0em,.25em)}]pic cs:deleted_cleanup);
+    \draw (4cm, 6em) node [anchor=west] {\shortstack{This is how you should use RAII}} -> ([shift={(0em,.25em)}]pic cs:deleted_should);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{new/delete}
+  \frametitle{Ignoring It Better\texttrademark  With \cppinline{unique_ptr}}
   \begin{cppcode}
+#include <cstdint>
+#include <memory>
+
+using std::size_t;
+using std::unique_ptr;
+
+class FloatArray {
+  public:
+    FloatArray(size_t size) : m_size(size), m_array(make_unique<float[]>(size)) {}
+
+  private:
+    size_t m_size;
+    unique_ptr<float[]> m_array;
+};
+
+int main() {
+  FloatArray stack(64);@\tikzmark{deleted_should}@
+
+  FloatArray* heap = new FloatArray(42);
+  delete heap;
+  // No memory leaks here (or in the previous slide)!
+}
   \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile=singleslide]
-  \frametitle{Abstract classes and inheritance}
-  \begin{cppcode}
-#include <exception> 
-#include <iostream> 
-
-// There are no interfaces; use abstract classes without any concrete methods 
-struct ProgramCrasher { 
-  virtual void crash() = 0; // "= 0" means the method is abstract 
-  // virtual == method can be overridden 
-  // only one abstract method needed to define a class as abstract
-}; 
-
-struct IPastryChef { 
-  virtual void bake() = 0; 
-};
-
-struct SegfaultCrasher : public ProgramCrasher {
-  // Actually several types of inheritance; it's complicated, just use public
-
-  void crash() override {
-    int* a;
-    int b = *a;
-  }
-};
-// Multiple inheritance; don't do it if more than one parent class is not an interface
-
-struct ExceptionCrasher : public ProgramCrasher, public IPastryChef {
-  void crash() override {
-    throw std::exception();
-  }
-
-  void bake() override {
-    std::cout << "This is just my day job\n";
-  }
-};
-  \end{cppcode}
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (8cm, 18em) node [anchor=west] {\shortstack{Forbids this special method\\(compiler error if used)}} -> ([shift={(0em,.25em)}]pic cs:deleted_a);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
