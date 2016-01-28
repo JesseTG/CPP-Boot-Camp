@@ -15,9 +15,12 @@
 
 \setbeamertemplate{navigation symbols}{}
 
-\usetikzlibrary{tikzmark}
-\newminted{cpp}{linenos, autogobble, fontsize=\tiny, escapeinside=@@}
+\usetikzlibrary{tikzmark, arrows, decorations, decorations.pathreplacing}
+\newminted{cpp}{autogobble, fontsize=\tiny, escapeinside=@@}
 \newmintinline{cpp}{}
+\newmintinline{java}{}
+\newmintinline{js}{}
+\usemintedstyle{vs}
 
 \newcommand<>{\hover}[1]{\uncover#2{%
  \begin{tikzpicture}[remember picture,overlay]%
@@ -27,6 +30,9 @@
  \end{tikzpicture}}
 }
 
+\tikzset{every picture/.style={font issue=\scriptsize},
+         font issue/.style={execute at begin picture={#1\selectfont}}
+        }
 
 
 \title{C++ Boot Camp 1/2}
