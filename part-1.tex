@@ -855,97 +855,82 @@ int main() {
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Templates}
-  \begin{cppcode}
-#include <string>
-#include <vector>
+  \frametitle{Concepts}
 
-template<class T>
-class Value {
-  public:
-    Value(const T& data) : _data(data) {}
-    const T& getData() { return this->_data; }
-  private:
-    T _data;
-};
-// Templates are used A LOT in the standard library
+  \begin{itemize}
+    \item Named requirements for a type or function
+    \begin{itemize}
+      \item Kind of like compile-time interfaces
+      \item Usually (but not always) impementing certain methods
+    \end{itemize}
+    \item Types may be used in templates if they do certain things
+    \item Future language revisions will integrate them into the syntax
+  \end{itemize}
 
-using std::string; 
-using std::vector; 
-
-int main() { 
-  Value<string> str("My name is Beavis");
-  Value<vector<int>> ints({1, 2, 3, 4, 5, 6}); 
-  // Two different classes, with two different bits of machine code 
-}
-  \end{cppcode}
+  \textbf{Examples (simplified):}
+  \begin{itemize}
+    \item \cppinline{EqualityComparable} $\rightarrow$ provides \cppinline{operator==} for equality test
+    \item \cppinline{Container} $\rightarrow$ holds objects and manages their memory (via RAII)
+    \item \cppinline{SequenceContainer} $\rightarrow$ \cppinline{Container} whose elements are sequential
+    \item \cppinline{FormattedOutputFunction} $\rightarrow$ Function that outputs an object to a \cppinline{std::ostream} (like \cppinline{cout})
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
   \frametitle{Templates}
   \begin{cppcode}
 #include <iostream>
-#include <array> 
-#include <vector> 
-#include <string> 
+#include <string>
+#include <typeinfo>
 
-using namespace std; // Slide space constraints 
+using std::cout;
+using std::endl;
+using std::string; 
 
-template<class T> 
-void printIt(const T& object) { 
-  cout << object << endl; 
-} 
+template<class T>@\tikzmark{template_stl}@
+struct Value {@\tikzmark{template_class}@
+  using Type = T;@\tikzmark{template_typedef}@
+  T data;
 
-template<class Container> 
-void needsABeginMethod(Container& container) { 
-  auto iterator = container.begin(); // The begin() method returns an iterator 
-} 
+  Value(const T& d) : data(d) {}
+};
+
+template<class T>@\tikzmark{template_function}@
+void printIt(const Value<T>& val) {
+  cout << typeid(typename@\tikzmark{template_depend}@ Value<T>::Type).name() << ' ' << val.data << endl; 
+}
+
+struct Dummy {};
 
 int main() { 
-  printIt(42); // Type parameters in function templates are usually inferred 
-  printIt<float>(7.3); // You can specify them explicitly if you need to 
+  Value<string> text("My name is Beavis");@\tikzmark{template_diff_a}@
+  Value<int> number(47);@\tikzmark{template_diff_b}@
+  Value<Dummy> dummy(Dummy());@\tikzmark{template_diff_c}@
 
-  array<int, 3> ints = {1, 2, 3}; 
-  vector<int> vec = {5, 6, 7, 8, 9}; 
-  string str = "Strings are containers"; 
-
-  needsABeginMethod(ints); 
-  needsABeginMethod(vec); 
-  needsABeginMethod(str); 
-  // needsABeginMethod(47); ERROR: ints don't have such a method 
+  printIt(text);@\tikzmark{template_function_deduce}@
+  printIt(number);
+  // printIt(dummy);@\tikzmark{template_no_print}@
 }
   \end{cppcode}
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (3cm, 25em) node [anchor=south west] {\shortstack{Standard library uses\\LOTS of templates}} -> ([shift={(0em,.25em)}]pic cs:template_stl);
+    \draw (7cm, 22em) node [anchor=west] {\shortstack{Almost anything can be templated}} -> ([shift={(0em,.25em)}]pic cs:template_class) node [pos=.5, above, sloped, anchor=south] {classes};
+    \draw (7cm, 22em) -> ([shift={(0em,.25em)}]pic cs:template_typedef) node [pos=.5, above, sloped, anchor=north] {typedefs};
+    \draw (7cm, 22em) -> ([shift={(0em,.25em)}]pic cs:template_function) node [pos=.5, above, sloped, anchor=north] {(member )?functions};
+    \draw (3cm, 11em) node [anchor=west] {\shortstack{For types that depend on template parameters inside templates}} -> ([shift={(0em,.25em)}]pic cs:template_depend);
+    \draw (6cm, 7em) node [anchor=west] {\shortstack{Three different classes\\and chunks of code}} -> ([shift={(0em,.25em)}]pic cs:template_diff_a);
+    \draw (6cm, 7em) -> ([shift={(0em,.25em)}]pic cs:template_diff_b);
+    \draw (6cm, 7em) -> ([shift={(0em,.25em)}]pic cs:template_diff_c);
+    \draw (3cm, 4.5em) node [anchor=west] {\shortstack{Function type parameters can be deduced}} -> ([shift={(0em,.25em)}]pic cs:template_function_deduce);
+    \draw (3cm, 3em) node [anchor=west] {\shortstack{Error: No way to print a Dummy}} -> ([shift={(0em,.25em)}]pic cs:template_no_print);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Templates}
   \begin{cppcode}
-#include <array> 
-#include <iostream> 
-#include <typeinfo> 
-#include <string> 
 
-sing namespace std; // slide space limits 
-
-template<class T, int ArrayLength = 10> 
-class SomeTypedefs { 
-  public: 
-    SomeTypedefs() = delete; // Prevent instantiation 
-
-    typedef T Type; 
-    typedef T* Pointer; 
-    typedef T& Reference; 
-    typedef T RawArray[ArrayLength]; 
-    typedef array<T, ArrayLength> STLArray; 
-};
-// The standard library does this a lot ^
 
 int main() {
-  cout << typeid(SomeTypedefs<int>::Type).name() << endl;
-  cout << typeid(SomeTypedefs<float>::Pointer).name() << endl; 
-  cout << typeid(SomeTypedefs<string>::Reference).name() << endl; 
-  cout << typeid(SomeTypedefs<int, 14>::RawArray).name() << endl;
-  cout << typeid(SomeTypedefs<double, 3>::STLArray).name() << endl; 
 }
   \end{cppcode}
 \end{frame}
