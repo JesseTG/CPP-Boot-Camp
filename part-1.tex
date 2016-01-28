@@ -1022,21 +1022,25 @@ int main() {
 
 using std::cout; 
 using std::endl; 
-using std::ostream; 
+using std::ostream;@\tikzmark{operator_cout}@
 
-// cout is an ostream 
 struct Vector2 { 
-  float x, y; 
-  Vector2(const float x, const float y) : x(x), y(y) {} 
+  float x, y;
 
-  Vector2 operator+(const Vector2& other) { 
+  Vector2(float x, float y) : x(x), y(y) {}
+  // copy assignment and constructor are implicit
+
+  Vector2 operator+(const Vector2& other)@\tikzmark{operator_sensible}@ { 
     return Vector2(x + other.x, y + other.y); 
   } 
 }; 
 
-// This is how most types in the standard library are printed out 
-ostream& operator<<(ostream& out, const Vector2& v) { 
+ostream& operator<<@\tikzmark{operator_ostream}@(ostream& out, const Vector2& v) {
   return out << '[' << v.x << ", " << v.y << ']';
+}
+
+bool operator==(const Vector2& a, const Vector2& b)@\tikzmark{operator_eq}@ noexcept {
+  return a.x == b.x && a.y == b.y;
 }
 
 int main() {
@@ -1044,9 +1048,15 @@ int main() {
   Vector2 b(2, 1); 
   Vector2 c = a + b; 
 
-  cout << c << endl; 
+  cout << c << ' ' << a == b << endl; // [3, 3] false
 }
   \end{cppcode}
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (4cm, 25em) node [anchor=west] {\shortstack{cout is a global std::ostream}} -> ([shift={(0em,.25em)}]pic cs:operator_cout);
+    \draw (6.5cm, 16em) node [anchor=west] {\shortstack{Make a type printable (technically doesn't\\fully meet FormattedOutputFunction)}} -> ([shift={(0em,.25em)}]pic cs:operator_ostream);
+    \draw (7.5cm, 21em) node [anchor=west] {\shortstack{overloads should be sensible}} -> ([shift={(0em,.25em)}]pic cs:operator_sensible);
+    \draw (7cm, 12em) node [anchor=west] {\shortstack{Meets EqualityComparable}} -> ([shift={(0em,.25em)}]pic cs:operator_eq);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
