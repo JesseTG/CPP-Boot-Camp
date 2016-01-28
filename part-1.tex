@@ -1291,7 +1291,43 @@ int main() {
 \begin{frame}[fragile=singleslide]
   \frametitle{Iterators}
   \begin{cppcode}
+#include <array>
+#include <iostream>
+#include <string>
+
+using std::array; 
+using std::cout; 
+using std::endl; 
+using std::string; 
+
+int main() { 
+  array<string, 5> strings = {"France", "Spain", "China", "America", "Sweden"};
+
+  // No iterators
+  for (int i = 0; i < strings.size(); i++) {
+    cout << strings[i] << ' ';
+  }
+  cout << endl;
+
+  // The clunky way (but lets you use adaptors)
+  for (auto@\tikzmark{iterator_auto}@ it = strings.begin()@\tikzmark{iterator_ptr}@; it != strings.end(); it++) {
+    cout << *it << ' ';
+  }
+  cout << endl;
+
+  // The C++11 way
+  for (const string&@\tikzmark{iterator_ref}@ s : strings) {@\tikzmark{iterator_begin}@
+    cout << s << ' ';
+  }
+  cout << endl;
+}
   \end{cppcode}
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (3cm, 13em) node [anchor=west] {\shortstack{Deduce the type\\(for when its name is long)}} -> ([shift={(0em,.25em)}]pic cs:iterator_auto);
+    \draw (8cm, 8em) node [anchor=west] {\shortstack{Probably an ordinary pointer\\(but that's not your concern)}} -> ([shift={(0em,.25em)}]pic cs:iterator_ptr);
+    \draw (5cm, 5em) node [anchor=west] {\shortstack{Iteratee must provide\\begin and end methods}} -> ([shift={(0em,.25em)}]pic cs:iterator_begin);
+    \draw (3cm, 3em) node [anchor=north west] {\shortstack{Remember to iterate by reference\\(and const if not changing the data)}} -> ([shift={(0em,.25em)}]pic cs:iterator_ref);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
