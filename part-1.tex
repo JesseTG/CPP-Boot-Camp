@@ -263,28 +263,53 @@ int main() {
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Declaring Variables}
-  \begin{cppcode}
+  \frametitle{Memory Model and Lifetime}
+  \begin{columns}
+    \begin{column}{6cm}
+      \begin{itemize}
+        \item \textbf{static:} Exists for program's entire duration (on stack or in program data)\tikzmark{memory_static_a}
+        \item \textbf{automatic:} Disappears when out of scope (on stack)\tikzmark{memory_auto_a}
+        \item \textbf{dynamic:} Created and destroyed at will (on heap)\tikzmark{memory_dynamic_a}
+        \begin{itemize}
+          \item Remember to clean up (one \cppinline{delete} for every \cppinline{new})
+        \end{itemize}
+      \end{itemize}
+    \end{column}
+
+    \begin{column}{6cm}
+      \begin{cppcode}
 #include <string>
-#include <vector>
 
 using std::string;
-using std::vector;
+
+@\tikzmark{memory_static_b}@string a = "I'll always exist";
+
+void scope() {
+  @\tikzmark{memory_auto_b}@string b = "I'll die at the end of the block";
+  @\tikzmark{memory_dynamic_b}@string* c = new string("I'll die when you kill me");
+
+  delete c; // c is deleted
+  // b is deleted
+}
 
 int main() {
-  string empty; // default constructor
-  string empty2(); // default constructor with parens
-  string value = "I'm really a char*";
-  string value2("Parens are fine, too");
-  string copy = value; // Copy assignment
-  string& ref = value; // Reference assignment (points to value)
-  const string& constref = value; // Constant (read-only) reference assignment
-  // All of an object's members are initialized!
+  for (int i = 0; i < 100000; ++i) {
+    @\tikzmark{memory_dynamic_c}@string* d = new string("Oops");
+    // d is not deleted (all 100000 instances of it)
+  }
 
-  string* ptr; // Unassigned pointer; not necessarily nullptr
-  vector<int> ints = {1, 2, 3, 4, 5, 6}; // Initializer list
+  // a is deleted
 }
-  \end{cppcode}
+      \end{cppcode}
+    \end{column}
+  \end{columns}
+
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+    \draw (pic cs:memory_static_a) -> ([shift={(0em,.25em)}]pic cs:memory_static_b);
+    \draw (pic cs:memory_auto_a) -> ([shift={(0em,.25em)}]pic cs:memory_auto_b);
+    \draw (pic cs:memory_dynamic_a) -> ([shift={(0em,.25em)}]pic cs:memory_dynamic_b);
+    \draw (pic cs:memory_dynamic_a) -> ([shift={(0em,.25em)}]pic cs:memory_dynamic_c);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
