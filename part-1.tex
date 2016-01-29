@@ -105,12 +105,10 @@
 
 \begin{frame}[fragile=singleslide]
   \frametitle{C vs. C++}
-  \begin{figure}
-    \begin{tikzpicture}
-      \draw [fill=red, fill opacity=0.5, blend mode=multiply] (16,8) circle (3.8cm) node [align=center, anchor=center, fill opacity=1] {\huge{\textbf{C++}}};
-      \draw [fill=blue, fill opacity=0.5, blend mode=multiply] (12.5,8) circle (.45cm) node [align=center, anchor=center, fill opacity=1] {\small{\textbf{C}}};
-    \end{tikzpicture}
-  \end{figure}
+      \begin{tikzpicture}[align=center, blend mode=multiply, anchor=center]
+        \draw [fill=red, fill opacity=0.5] (0.4\columnwidth,8) circle (0.5\columnwidth) node [fill opacity=1] {\huge{\textbf{C++}}};
+        \draw [fill=blue, fill opacity=0.5] (-0.25,8) circle (.45cm) node [fill opacity=1] {\small{\textbf{C}}};
+      \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
