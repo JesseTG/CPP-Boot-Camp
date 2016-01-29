@@ -332,12 +332,12 @@ int main() {
     \end{column}
 
     \begin{column}{6cm}
-      \begin{tikzpicture}
-        \draw [fill=pink, ultra thick, rounded corners] (current page.north west) rectangle (6cm, 2cm);
-        \draw [fill=purple, ultra thick, rounded corners] (0cm, 2cm) rectangle (6cm, 4cm) node [align=center, anchor=center, fill=white] at (3cm, 3cm) {\huge{Stack}};
-        \draw [fill=green, ultra thick, rounded corners] (current page.north west) rectangle (6cm, 6cm);
-        \draw [fill=olive, ultra thick, rounded corners] (2cm, 9cm) rectangle +(1cm, 0.5cm) (3cm, 8cm) rectangle +(1cm, 0.5cm) (5cm, 8cm) rectangle +(1cm, 0.5cm) (0, 7cm) rectangle +(3cm, 0.5cm);
-        \draw node [align=center, anchor=center, fill=white, rounded corners] at (3cm, 8cm) {\huge{Heap}};
+      \begin{tikzpicture}[ultra thick, rounded corners]
+        \draw [fill=pink] (current page.north west) rectangle (6cm, 2cm);
+        \draw [fill=purple] (0cm, 2cm) rectangle (6cm, 4cm) node [align=center, anchor=center, fill=white] at (3cm, 3cm) {\huge{Stack}};
+        \draw [fill=green] (current page.north west) rectangle (6cm, 6cm);
+        \draw [fill=olive] (2cm, 9cm) rectangle +(1cm, 0.5cm) (3cm, 8cm) rectangle +(1cm, 0.5cm) (5cm, 8cm) rectangle +(1cm, 0.5cm) (0, 7cm) rectangle +(3cm, 0.5cm);
+        \draw node [align=center, anchor=center, fill=white] at (3cm, 8cm) {\huge{Heap}};
       \end{tikzpicture}
     \end{column}
   \end{columns}
