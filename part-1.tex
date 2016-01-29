@@ -367,8 +367,8 @@ int main() {
     \begin{column}{6cm}
       \textbf{Pointers:}
       \begin{itemize}
-        \item More prone to becoming invalid
-        \item Can represent absence of data (\cppinline{nullptr})
+        \item May be invalid (dangling)
+        \item Can represent lack of data
         \item Syntax to use and declare
         \item Address can be reassigned
       \end{itemize}
@@ -377,9 +377,9 @@ int main() {
     \begin{column}{6cm}
       \textbf{References:}
       \begin{itemize}
-        \item Must initialize properly
-        \item Always points to \textbf{one} address
-        \item No syntax to use, only to declare
+        \item Always initialized
+        \item Points to \textbf{exactly one} address
+        \item Less syntax
         \item Easier to deal with objects that shouldn't change
       \end{itemize}
     \end{column}
