@@ -79,21 +79,26 @@
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Distinct Points}
-  \begin{itemize}
-    \item Balance high-level language constructs and low-level resource management
-    \item Huge-ass language
-    \item Originally designed for C compatibility
-    \item Accumulated lots of cruft over the years
-  \end{itemize}
-\end{frame}
+  \frametitle{The Big Picture}
+  \begin{columns}
+    \begin{column}{6cm}
+      \begin{itemize}
+        \item Mix high-level syntax with low-level management
+        \begin{itemize}
+          \item Most resource management is abstracted away, though
+        \end{itemize}
+        \item Originally designed for C compatibility
+        \item Not your daddy's C++
+      \end{itemize}
+    \end{column}
 
-\begin{frame}[fragile=singleslide]
-  \frametitle{C vs. C++}
+    \begin{column}{6cm}
       \begin{tikzpicture}[align=center, blend mode=multiply, anchor=center]
         \draw [fill=red, fill opacity=0.5] (0.4\columnwidth,8) circle (0.5\columnwidth) node [fill opacity=1] {\huge{\textbf{C++}}};
         \draw [fill=blue, fill opacity=0.5] (-0.25,8) circle (.45cm) node [fill opacity=1] {\small{\textbf{C}}};
       \end{tikzpicture}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
