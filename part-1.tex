@@ -9,6 +9,8 @@
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
 
+\graphicspath{{img/}}
+
 \useoutertheme{wuerzburg}
 \useinnertheme[realshadow,corners=2pt,padding=2pt]{chamfered}
 \usecolortheme{shark}
@@ -29,7 +31,7 @@
 
 \title{C++ Boot Camp 1/2}
 \author{Jesse Talavera-Greenberg}
-\date{\today}
+\date{}
 
 % Concepts to cover:
 % const-correctness
@@ -42,8 +44,17 @@
 
 \newcommand{\cppref}[2]{\href{http://en.cppreference.com/w/cpp/#1}{\underline{#2}}}
 
-\begin{frame}
-\maketitle
+\begin{frame}[fragile=singleslide]
+  \frametitle{C++ Boot Camp 1/2}
+  \framesubtitle{Jesse Talavera-Greenberg}
+  \begin{figure}
+    \includegraphics[width=.75\columnwidth]{super-punch-out}
+    \centering
+  \end{figure}
+  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, align=left, line width=2mm]
+    \draw (3.5cm, 2cm) node [anchor=east] {\shortstack{\huge \textbf{You}}} -> (6.25cm, 3.5cm);
+    \draw (8.5cm, 5.75cm) node [anchor=west] {\shortstack{\huge \textbf{C++}}} -> (6.5cm, 5.5cm);
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}
