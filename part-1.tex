@@ -480,9 +480,10 @@ int main() {
 
     \begin{column}{6cm}
       \begin{cppcode}
-#include <string>
 #include <limits>
+#include <string>
 
+using std::numeric_limits;
 using std::string;
 
 int something(int param) { 
@@ -496,7 +497,7 @@ string& returnsALocal() {
 } 
 
 int main() { 
-  int a = std::numeric_limits<int>::max(); 
+  int a = numeric_limits<int>::max(); 
   a++; // Oops 
 
   int* pointer; // What's inside?  Beats me.
