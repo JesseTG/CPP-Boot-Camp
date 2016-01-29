@@ -195,23 +195,16 @@ int willNotThrow(int x) noexcept {@\tikzmark{except_noexcept}@
   return x * x;
 }
 
-int functionThrow(int x) try {@\tikzmark{except_function}@
-  return couldThrow(x);
-}
-catch (exception e) {
-  return x + 1;  // Can still access parameters
-}
-
 int main(int argc) {
   int a = willNotThrow(argc);
   try {  
     couldThrow(functionThrow(a));
   }
   catch (exception e)@\tikzmark{except_type}@ {
-    std::cout << e.what();
+    cout << e.what();
   }
   catch (...) {@\tikzmark{except_swallow}@
-    std::cout << "What the fuck?";
+    cout << "What the fuck?";
   }@\tikzmark{except_nofinally}@
 }
   \end{cppcode}
@@ -219,7 +212,6 @@ int main(int argc) {
   \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
     \draw (4cm, 27em) node [anchor=west] {\shortstack{Contains exception handling\\classes and functions}} -> ([shift={(.25em,.25em)}]pic cs:except_header);
     \draw (5cm, 21em) node [anchor=west] {\shortstack{Will not throw an exception\\(program terminates if it does)}} -> ([shift={(.25em,.25em)}]pic cs:except_noexcept);
-    \draw (6cm, 18em) node [anchor=west] {\shortstack{Not often used, but may come in handy}} -> ([shift={(.25em,.25em)}]pic cs:except_function);
     \draw (5cm, 9em) node [anchor=west] {\shortstack{Base exception type\\(any type can be thrown, but use these)}} -> ([shift={(.25em,.25em)}]pic cs:except_type);
     \draw (6cm, 4em) node [anchor=west] {\shortstack{No finally statement\\(use destructors instead)}} -> ([shift={(.25em,.25em)}]pic cs:except_nofinally);
   \end{tikzpicture}
