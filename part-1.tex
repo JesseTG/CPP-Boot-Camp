@@ -640,7 +640,7 @@ int main() {
     \draw (3cm, 13em) node [anchor=west] {\shortstack{Old-style enums\\(recognize, but avoid)}} -> ([shift={(0em,.25em)}]pic cs:enum_old);
     \draw (5cm, 8em) node [anchor=west] {\shortstack{Scoped enum usage}} -> ([shift={(0em,.25em)}]pic cs:enum_scoped_a);
     \draw (5cm, 8em) -> ([shift={(0em,.25em)}]pic cs:enum_scoped_b);
-    \draw (5cm, 5em) node [anchor=west] {\shortstack{Avoid this if the number may\\not be within the enum}} -> ([shift={(0em,.25em)}]pic cs:enum_ub);
+    \draw (5cm, 5em) node [anchor=west] {\shortstack{Avoid if enum is not contiguous}} -> ([shift={(0em,.25em)}]pic cs:enum_ub);
     \draw (4cm, 3em) node [anchor=west] {\shortstack{Explicitly convert enum to int}} -> ([shift={(0em,.25em)}]pic cs:enum_int);
   \end{tikzpicture}
 \end{frame}
