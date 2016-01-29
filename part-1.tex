@@ -102,14 +102,14 @@
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{The Basics}
+  \frametitle{\cppref{language/basic_concepts}{The Basics}}
   \begin{cppcode}
-#include <iostream>@\tikzmark{basic_include}@
+#include @\cppref{header/iostream}{<iostream>}@@\tikzmark{basic_include}@
 
 // Comments
 /* Block comments */
-using std::cout; @\tikzmark{basic_using_a}@
-using std::endl; @\tikzmark{basic_using_b}@
+using std::@\cppref{io/cout}{cout}@; @\tikzmark{basic_using_a}@
+using std::@\cppref{io/manip/endl}{endl}@; @\tikzmark{basic_using_b}@
 
 const int SOME_CONSTANT = 5;
 
@@ -138,27 +138,27 @@ int @\cppref{language/main_function}{main}@(int argc@\tikzmark{basic_argc}@, cha
   \end{cppcode}
 
   \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
-    \draw (4.5cm, 26em) node [anchor=west] {\shortstack{Include libraries, functions, etc.}} -> ([shift={(.25em,.25em)}]pic cs:basic_include);
+    \draw (4.5cm, 26em) node [anchor=west] {\shortstack{\cppref{preprocessor/include}{Include libraries, functions, etc.}}} -> ([shift={(.25em,.25em)}]pic cs:basic_include);
     \draw (7cm, 24em) node [anchor=west] {\shortstack{\# of command-line arguments}} -> ([shift={(.25em,.25em)}]pic cs:basic_argc);
     \draw (7cm, 21em) node [anchor=west] {\shortstack{actual arguments as\\a string array}} -> ([shift={(.25em,.25em)}]pic cs:basic_argv);
     \draw[decorate, decoration={brace}, -] ({pic cs:basic_using_a} |- {pic cs:basic_using_b}) +(0,1.5em) -- node [right, inner sep=1em] {Pulls into namespace\\(avoid long-ass prefixes)} ({pic cs:basic_using_a} |- {pic cs:basic_using_b});
-    \draw (7cm, 15em) node [anchor=west] {\shortstack{Formatted printout}} -> ([shift={(.25em,.25em)}]pic cs:basic_print);
+    \draw (7cm, 15em) node [anchor=west] {\shortstack{\cppref{io}{Formatted printout}}} -> ([shift={(.25em,.25em)}]pic cs:basic_print);
     \draw (5cm, 3em) node [anchor=west] {\shortstack{Return code (absence in main implies 0)}} -> ([shift={(.25em,.25em)}]pic cs:basic_return);
     \draw (4cm, 12em) node [anchor=west] {\shortstack{Strings not allowed\\in switch statements}} -> ([shift={(.25em,.25em)}]pic cs:basic_switch);
   \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Fundamental Types}
+  \frametitle{\cppref{language/types}{Fundamental Types}}
   \begin{columns}[t]
     \begin{column}{6cm}
       \begin{itemize}
-        \item Integer sizes \textbf{can vary} by platform, compiler, and OS
+        \item Integer sizes \cppref{language/types\#Data_models}{\textbf{can vary}} by platform, compiler, and OS
         \item No \javainline|byte| (use \cppinline|uint8_t|)
-        \item \javainline|boolean| $\rightarrow$ \cppinline|bool|
-        \item Numbers implicitly convert to \cppinline|bool| (0 $\rightarrow$ \javainline|false|, anything else $\rightarrow$ \javainline|true|)
-        \item Use \cppinline|nullptr| for null pointers, not \javainline|null| or \cppinline|NULL|
-        \item \cppinline|float| and \cppinline|double| are the same as in Java (\cppinline|long double| exists, too)
+        \item \javainline|boolean| $\rightarrow$ \cppref{language/types\#Boolean_type}{\cppinline|bool|}
+        \item Numbers \cppref{language/implicit_cast}{implicitly cast} to \cppinline|bool|
+        \item Use \cppref{language/nullptr}{\cppinline|nullptr|} for null pointers, not \javainline|null| or \cppref{types/NULL}{\cppinline|NULL|}
+        \item \cppinline|float| and \cppinline|double| exist (also \cppinline|long double|)
       \end{itemize}
     \end{column}
 
@@ -169,7 +169,7 @@ int @\cppref{language/main_function}{main}@(int argc@\tikzmark{basic_argc}@, cha
           \item \cppinline|signed| integers are the same
           \item \cppinline|unsigned| go twice as high, but no negatives
         \end{itemize}
-        \item For specific sizes, \cppinline|#include <cstdint>| and use \jsinline{/std::u?int(8|16|32|64)_t/}
+        \item For specific sizes, \cppinline|#include @\cppref{preprocessor/include}{<cstdint>}@| and use \jsinline{/std::u?int(8|16|32|64)_t/}
         \item There is \textbf{no} root object class
       \end{itemize}
     \end{column}
@@ -177,11 +177,14 @@ int @\cppref{language/main_function}{main}@(int argc@\tikzmark{basic_argc}@, cha
 \end{frame}
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Exceptions}
+  \frametitle{\cppref{language/exceptions}{Exceptions}}
   \begin{cppcode}
-#include <exception> @\tikzmark{except_header}@
+#include @\cppref{header/exception}{<exception>}@@\tikzmark{except_header}@
+#include <iostream>
 
-using std::exception;
+using std::cout;
+using std::endl;
+using std::@\cppref{error/exception}{exception}@;
 
 int couldThrow(int x) {@\tikzmark{except_nocheck}@
   if (x % 2 == 0) throw exception("No new statement (more info later)");
