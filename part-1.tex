@@ -159,7 +159,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Type Aliases}
+  \frametitle{\cppref{language/type_alias}{Type Aliases}}
 
   \cppfile{src/typedef.cpp}
 
@@ -239,7 +239,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Pointers Vs. References}
+  \frametitle{\cppref{language/pointer}{Pointers} Vs. \cppref{language/reference}{References}}
 
   \begin{itemize}
     \item Access lots of data without copying it
@@ -279,7 +279,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Pointers and References}
+  \frametitle{\cppref{language/pointer}{Pointers} Vs. \cppref{language/reference}{References} (cont'd)}
   \begin{columns}[t]
     \begin{column}{6cm}
       \textbf{Pointers:}
@@ -296,7 +296,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Undefined Behavior}
+  \frametitle{\cppref{language/ub}{Undefined Behavior}}
   \begin{columns}
     \begin{column}{6cm}
       \begin{itemize}
@@ -320,7 +320,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Namespaces}
+  \frametitle{\cppref{language/namespace}{Namespaces}}
 
   \cppfile{src/namespace.cpp}
 
@@ -337,7 +337,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{The Preprocessor}
+  \frametitle{\cppref{preprocessor}{The Preprocessor}}
 
   \cppfile{src/cpp.cpp}
 
@@ -354,7 +354,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Enumerations}
+  \frametitle{\cppref{language/enum}{Enumerations}}
 
   \cppfile{src/enum.cpp}
 
@@ -373,7 +373,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Declaring Classes}
+  \frametitle{\cppref{language/classes}{Declaring Classes}}
 
   \cppfile{src/class.cpp}
 
@@ -394,7 +394,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{(Con|De)structors, RAII, and the Rule of 3}
+  \frametitle{(\cppref{language/initializer_list}{Con}|\cppref{language/destructor}{De})structors, \cppref{language/raii}{RAII}, and the \cppref{language/rule_of_three}{Rule of 3}}
 
   \cppfile{src/raii.cpp}
 
@@ -402,9 +402,9 @@
     \draw (3cm, 27em) node  {STL does this class better} -> \refer{raii_dont};
     \draw (5cm, 23em) node [anchor=south] {Member initialization syntax} -> \refer{raii_init};
     \draw (8cm, 22em) node [anchor=south west] {Other code} -> \refer{raii_ctor};
-    \draw (9cm, 7em) node [anchor=north] {Rule of 3: You need to write one,\\you need to write them all} -> \refer{raii_copyctor} node [pos=.5, above, sloped, anchor=north] {Copy constructor};
-    \draw (9cm, 7em) -> \refer{raii_dtor} node [pos=.5, above, sloped, anchor=north] {Destructor};
-    \draw (9cm, 7em) -> \refer{raii_copyeq} node [pos=.5, above, sloped, anchor=north] {Copy assignment};
+    \draw (9cm, 7em) node [anchor=north] {Rule of 3: You need to write one,\\you need to write them all} -> \refer{raii_copyctor} node [pos=.5, above, sloped, anchor=north] {\cppref{language/copy_constructor}{Copy constructor}};
+    \draw (9cm, 7em) -> \refer{raii_dtor} node [pos=.5, above, sloped, anchor=north] {\cppref{language/destructor}{Destructor}};
+    \draw (9cm, 7em) -> \refer{raii_copyeq} node [pos=.5, above, sloped, anchor=north] {\cppref{language/copy_assignment}{Copy assignment}};
     \draw (4.5cm, 3em) node [anchor=north] {RAII: Create in ctor, delete in dtor} -> \refer{raii_dtor_b};
   \end{tikzpicture}
 \end{frame}
@@ -412,7 +412,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Deleted Functions}
+  \frametitle{\cppref{language/function\#Deleted_functions}{Deleted Functions}}
 
   \cppfile{src/deleted.cpp}
 
@@ -427,7 +427,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{\cppinline{unique_ptr}}
+  \frametitle{\cppref{memory/unique_ptr}{\cppinline{unique_ptr}}}
 
   \cppfile{src/unique.cpp}
 
@@ -441,7 +441,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Casting}
+  \frametitle{\cppref{language/expressions\#Conversions}{Casting}}
 
   \cppfile{src/cast.cpp}
 
@@ -462,7 +462,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Concepts}
+  \frametitle{\cppref{concept}{Concepts}}
 
   \begin{itemize}
     \item Named requirements for a type or function
@@ -476,17 +476,17 @@
 
   \textbf{Examples (simplified):}
   \begin{itemize}
-    \item \cppinline{EqualityComparable} $\rightarrow$ provides \cppinline{operator==} for equality test
-    \item \cppinline{Container} $\rightarrow$ holds objects and manages their memory (via RAII)
-    \item \cppinline{SequenceContainer} $\rightarrow$ \cppinline{Container} whose elements are sequential
-    \item \cppinline{FormattedOutputFunction} $\rightarrow$ Function that outputs an object to a \cppinline{std::ostream} (like \cppinline{std::cout})
+    \item \cppref{concept/EqualityComparable}{\cppinline{EqualityComparable}} $\rightarrow$ provides \cppinline{operator==} for equality test
+    \item \cppref{concept/Container}{\cppinline{Container}} $\rightarrow$ holds objects and manages their memory (via RAII)
+    \item \cppref{concept/SequenceContainer}{\cppinline{SequenceContainer}} $\rightarrow$ \cppinline{Container} whose elements are sequential
+    \item \cppref{concept/FormattedOutputFunction}{\cppinline{FormattedOutputFunction}} $\rightarrow$ Function that outputs an object to a \cppinline{std::ostream} (like \cppinline{std::cout})
   \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Templates}
+  \frametitle{\cppref{language/templates}{Templates}}
 
   \cppfile{src/template.cpp}
 
@@ -507,7 +507,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{\cppinline{assert}/\cppinline{static_assert}}
+  \frametitle{\cppref{error/assert}{\cppinline{assert}} and \cppref{language/static_assert}{\cppinline{static_assert}}}
 
   \cppfile{src/assert.cpp}
 
@@ -523,7 +523,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{\cppinline{const}}
+  \frametitle{\cppref{language/cv}{\cppinline{const}}}
 
   \cppfile{src/const.cpp}
 
@@ -542,7 +542,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Operator Overloading}
+  \frametitle{\cppref{language/operators}{Operator Overloading}}
 
   \cppfile{src/operator.cpp}
 
@@ -557,7 +557,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Data Structures}
+  \frametitle{\cppref{container}{Data Structures}}
   \begin{itemize}
     \item Remember to \cppinline{#include <class_name>}!
     \item Prefer \cppinline{std::array<SomeType, Length>} to \cppinline{SomeType[Length]}
@@ -597,7 +597,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{String to numbers and back}
+  \frametitle{\cppref{string/basic_string\#Numeric_conversions}{String to numbers and back}}
 
   \cppfile{src/stoi.cpp}
 
@@ -614,7 +614,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Regexes}
+  \frametitle{\cppref{regex}{Regexes}}
 
   \cppfile{src/regex.cpp}
 
@@ -632,7 +632,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Custom Map Keys}
+  \frametitle{\cppref{utility/hash}{Custom Map Keys}}
 
   \cppfile{src/map.cpp}
 
@@ -650,7 +650,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Random Numbers}
+  \frametitle{\cppref{numeric/random}{Random Numbers}}
 
   \cppfile{src/random.cpp}
 
@@ -665,7 +665,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Formatted Output and String Concatenation}
+  \frametitle{\cppref{io}{Formatted Output and String Concatenation}}
 
   \cppfile{src/formatted.cpp}
 
@@ -679,7 +679,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Iterators}
+  \frametitle{\cppref{iterator}{Iterators}}
 
   \cppfile{src/iterator.cpp}
 
@@ -694,7 +694,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Anonymous functions and \cppinline{<algorithm>}}
+  \frametitle{\cppref{language/lambda}{Anonymous functions} and \cppref{algorithm}{\cppinline{<algorithm>}}}
 
   \cppfile{src/lambda.cpp}
 
@@ -711,7 +711,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Time}
+  \frametitle{\cppref{chrono}{Time}}
 
   \cppfile{src/time.cpp}
 
