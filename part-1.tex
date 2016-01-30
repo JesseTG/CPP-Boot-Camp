@@ -413,6 +413,25 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
+  \frametitle{\cppref{language/cv}{\cppinline{const}}}
+
+  \cppfile{src/const.cpp}
+
+  \begin{tikzpicture}[callout]
+    \draw (9cm, 21em) node  {No side effects\\(aka state changes)} -> \refer{const_nochange};
+    \draw (9cm, 18em) node  {Immutable reference\\(no state changes)} -> \refer{const_ref};
+    \draw (9cm, 15em) node  {Mutable reference\\(state changes possible)} -> \refer{const_nonconst_ref};
+    \draw (8cm, 12em) node  {Side effects} -> \refer{const_nonconst};
+    \draw (4cm, 11em) node  {\verb|const|-dodging tricks\\are usually UB} -> \refer{const_ub};
+    \draw (8cm, 3em) node  {\verb|const| forbids it} -> \refer{const_no_cat};
+    \draw (6cm, 7em) node  {One name, two overloads\\(chosen by compiler)} -> \refer{const_overload_a};
+    \draw (6cm, 7em) -> \refer{const_overload_b};
+  \end{tikzpicture}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile=singleslide]
   \frametitle{\cppref{language/function\#Deleted_functions}{Deleted Functions}}
 
   \cppfile{src/deleted.cpp}
@@ -508,6 +527,21 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
+  \frametitle{\cppref{iterator}{Iterators}}
+
+  \cppfile{src/iterator.cpp}
+
+  \begin{tikzpicture}[callout]
+    \draw (3cm, 13em) node {Deduce the type\\(used for long names)} -> \refer{iterator_auto};
+    \draw (8cm, 8em) node {Probably an ordinary pointer\\(but who cares?)} -> \refer{iterator_ptr};
+    \draw (5cm, 5em) node {Iteratee must provide\\\verb|begin| and \verb|end| methods} -> \refer{iterator_begin};
+    \draw (3cm, 3em) node [anchor=north west] {Remember to iterate by reference\\(and \verb|const| if not changing the data)} -> \refer{iterator_ref};
+  \end{tikzpicture}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile=singleslide]
   \frametitle{\cppref{error/assert}{\cppinline{assert}} and \cppref{language/static_assert}{\cppinline{static_assert}}}
 
   \cppfile{src/assert.cpp}
@@ -518,25 +552,6 @@
     \draw (6cm, 4em) node  {OK} -> \refer{assert_ok_a};
     \draw (6cm, 4em) -> \refer{assert_ok_b};
     \draw (5cm, 2em) node  {Compiler error (as desired)} -> \refer{assert_error};
-  \end{tikzpicture}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[fragile=singleslide]
-  \frametitle{\cppref{language/cv}{\cppinline{const}}}
-
-  \cppfile{src/const.cpp}
-
-  \begin{tikzpicture}[callout]
-    \draw (9cm, 21em) node  {No side effects\\(aka state changes)} -> \refer{const_nochange};
-    \draw (9cm, 18em) node  {Immutable reference\\(no state changes)} -> \refer{const_ref};
-    \draw (9cm, 15em) node  {Mutable reference\\(state changes possible)} -> \refer{const_nonconst_ref};
-    \draw (8cm, 12em) node  {Side effects} -> \refer{const_nonconst};
-    \draw (4cm, 11em) node  {\verb|const|-dodging tricks\\are usually UB} -> \refer{const_ub};
-    \draw (8cm, 3em) node  {\verb|const| forbids it} -> \refer{const_no_cat};
-    \draw (6cm, 7em) node  {One name, two overloads\\(chosen by compiler)} -> \refer{const_overload_a};
-    \draw (6cm, 7em) -> \refer{const_overload_b};
   \end{tikzpicture}
 \end{frame}
 
@@ -675,21 +690,6 @@
     \draw (4cm, 16em) node  {Changes how \verb|float|s are displayed\\(\cppref{io/manip}{many modifiers exist})} -> \refer{formatted_modifier};
     \draw (4cm, 12em) node  {\verb|std::ostream| that writes to a \verb|string|} -> \refer{formatted_stringstream};
     \draw (5cm, 2em) node [anchor=north west] {Use \verb|stringstream| for formatting\\Use \verb|operator+| for concatenation\\Use \texttt{sto(i|u?ll?|f|l?d)} for number conversions} -> \refer{formatted_str};
-  \end{tikzpicture}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[fragile=singleslide]
-  \frametitle{\cppref{iterator}{Iterators}}
-
-  \cppfile{src/iterator.cpp}
-
-  \begin{tikzpicture}[callout]
-    \draw (3cm, 13em) node {Deduce the type\\(used for long names)} -> \refer{iterator_auto};
-    \draw (8cm, 8em) node {Probably an ordinary pointer\\(but who cares?)} -> \refer{iterator_ptr};
-    \draw (5cm, 5em) node {Iteratee must provide\\\verb|begin| and \verb|end| methods} -> \refer{iterator_begin};
-    \draw (3cm, 3em) node [anchor=north west] {Remember to iterate by reference\\(and \verb|const| if not changing the data)} -> \refer{iterator_ref};
   \end{tikzpicture}
 \end{frame}
 
