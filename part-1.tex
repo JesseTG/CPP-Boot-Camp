@@ -36,6 +36,7 @@
 
 % Macros
 \newcommand{\cppref}[2]{\href{http://en.cppreference.com/w/cpp/#1}{\underline{#2}}}
+\newcommand{\refer}[1]{([shift={(.25em,.25em)}]pic cs:#1)}
 
 % Meta
 \title{C++ Boot Camp 1/2}
@@ -106,13 +107,13 @@
   \cppfile{src/basic.cpp}
   
   \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
-    \draw (4.5cm, 26em) node [anchor=west] {\shortstack{\cppref{preprocessor/include}{Include libraries, functions, etc.}}} -> ([shift={(.25em,.25em)}]pic cs:basic_include);
-    \draw (7cm, 24em) node [anchor=west] {\shortstack{\# of command-line arguments}} -> ([shift={(.25em,.25em)}]pic cs:basic_argc);
-    \draw (7cm, 21em) node [anchor=west] {\shortstack{actual arguments as\\a string array}} -> ([shift={(.25em,.25em)}]pic cs:basic_argv);
+    \draw (4.5cm, 26em) node [anchor=west] {\shortstack{\cppref{preprocessor/include}{Include libraries, functions, etc.}}} -> \refer{basic_include};
+    \draw (7cm, 24em) node [anchor=west] {\shortstack{\# of command-line arguments}} -> \refer{basic_argc};
+    \draw (7cm, 21em) node [anchor=west] {\shortstack{actual arguments as\\a string array}} -> \refer{basic_argv};
     \draw[decorate, decoration={brace}, -] ({pic cs:basic_using_a} |- {pic cs:basic_using_b}) +(0,1.5em) -- node [right, inner sep=1em] {Pulls into namespace\\(avoid long-ass prefixes)} ({pic cs:basic_using_a} |- {pic cs:basic_using_b});
-    \draw (7cm, 15em) node [anchor=west] {\shortstack{\cppref{io}{Formatted printout}}} -> ([shift={(.25em,.25em)}]pic cs:basic_print);
-    \draw (5cm, 3em) node [anchor=west] {\shortstack{Return code (absence in main implies 0)}} -> ([shift={(.25em,.25em)}]pic cs:basic_return);
-    \draw (4cm, 12em) node [anchor=west] {\shortstack{Strings not allowed\\in switch statements}} -> ([shift={(.25em,.25em)}]pic cs:basic_switch);
+    \draw (7cm, 15em) node [anchor=west] {\shortstack{\cppref{io}{Formatted printout}}} -> \refer{basic_print};
+    \draw (5cm, 3em) node [anchor=west] {\shortstack{Return code (absence in main implies 0)}} -> \refer{basic_return};
+    \draw (4cm, 12em) node [anchor=west] {\shortstack{Strings not allowed\\in switch statements}} -> \refer{basic_switch};
   \end{tikzpicture}
 \end{frame}
 
