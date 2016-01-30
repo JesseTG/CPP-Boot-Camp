@@ -1,7 +1,7 @@
+#include <array>
 #include <iostream>
 #include <string>
-#include <array>
-#include <utility>
+#include @\cppref{header/utility}{<utility>}@
 
 using namespace std;@\tikzmark{namespace_std}@
 
@@ -15,7 +15,7 @@ namespace sbcs {@\tikzmark{namespace_nest_a}@
   }
 
   namespace cse381 {@\tikzmark{namespace_nest_c}@
-    using Team = pair<string, string>;
+    using Team = @\cppref{utility/pair}{pair}@<string, string>;
   }
 }
 

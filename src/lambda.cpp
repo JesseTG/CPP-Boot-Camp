@@ -1,13 +1,13 @@
-#include <algorithm>
+#include @\cppref{header/algorithm}{<algorithm>}@
 #include <array>
-#include <functional>
+#include @\cppref{header/functional}{<functional>}@
 #include <iostream>
 
 using std::array;
 using std::cout;
 using std::endl;
-using std::function;
-using std::transform;
+using std::@\cppref{utility/functional/function}{function}@;
+using std::@\cppref{algorithm/transform}{transform}@;
 
 int main() { 
   array<int, 10> ints = {5, 7, 1, 2, 3, 9, 2, 1, 4, 2};

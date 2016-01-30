@@ -1,5 +1,5 @@
-#include <cstdint>
-#include <memory>
+#include @\cppref{header/cstdlib}{<cstdlib>}@
+#include @\cppref{header/memory}{<memory>}@
 
 using std::size_t;
 using std::unique_ptr;@\tikzmark{unique_ptr}@

@@ -1,10 +1,10 @@
-#include <cstdint>
+#include @\cppref{header/cstdlib}{<cstdlib>}@
 
 using std::size_t;
 
 class FloatArray {
   public:
-    FloatArray(size_t size) : _size(size), _array(new float[size]) {}
+    FloatArray(size_t s) : size(s), floats(new float[s]) {}
 
     FloatArray(const FloatArray&) = delete;@\tikzmark{deleted_a}@
     FloatArray& operator=(const FloatArray&) = delete;@\tikzmark{deleted_b}@
@@ -14,8 +14,8 @@ class FloatArray {
     }
 
   private:
-    size_t _size;
-    float* _array;
+    size_t size;
+    float* floats;
 };
 
 int main() {

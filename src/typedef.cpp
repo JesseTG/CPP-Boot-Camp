@@ -1,12 +1,12 @@
-#include <array>
-#include <cstdint>
+#include @\cppref{header/array}{<array>}@
+#include @\cppref{header/cstdint}{<cstdint>}@
 #include <iostream>
-#include <typeinfo>@\tikzmark{typedef_typeinfo}@
+#include @\cppref{header/typeinfo}{<typeinfo>}@@\tikzmark{typedef_typeinfo}@
 
 using byte = std::uint8_t;@\tikzmark{typedef_using_a}@
 
 template<class T>
-using Array10 = std::array<T, 10>;@\tikzmark{typedef_using_b}@
+using Array10 = std::@\cppref{container/array}{array}@<T, 10>;@\tikzmark{typedef_using_b}@
 
 // Traditional syntax uses "typedef" keyword:@\tikzmark{typedef_prefer}@
 //    typedef existing_type new_name;

@@ -1,18 +1,19 @@
+#include <cstdlib>
 #include <iostream>
-#include <regex> // Test out regexes at @\href{https://www.regex101.com}{\underline{regex101}}@
+#include @\cppref{header/regex}{<regex>}@ // Test out regexes at @\href{https://www.regex101.com}{\underline{regex101}}@
 #include <string>
 #include <vector>
 
 using std::cout;
 using std::endl;
-using std::regex;
-using std::regex_search;@\tikzmark{regex_match}@
-using std::smatch;
+using std::@\cppref{regex/basic_regex}{regex}@;
+using std::@\cppref{regex/regex_search}{regex\_search}@;@\tikzmark{regex_match}@
+using std::@\cppref{regex/match_results}{smatch}@;
 using std::string;
 using std::vector;
 
 int main() {
-  regex secret_council("(\\b[plurandy]+\\b ?){2}"@\tikzmark{regex_syntax}@, regex::icase@\tikzmark{regex_flags}@);
+  regex secret_council("(\\b[plurandy]+\\b ?){2}"@\tikzmark{regex_syntax}@, regex::@\cppref{regex/syntax_option_type}{icase}@@\tikzmark{regex_flags}@);
   vector<string> members = {"Duran Duran", "Ayn Rand", "Paul Rudd", "Ann Druyan", "Randall Munroe"};
 
   for (const auto &m : members) {

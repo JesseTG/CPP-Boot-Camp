@@ -18,8 +18,8 @@ enum class Speakers {
 }; 
 
 enum NaturalBool {@\tikzmark{enum_old}@
-  Yes,
-  No
+  No,
+  Yes
 };
 
 int main() { 

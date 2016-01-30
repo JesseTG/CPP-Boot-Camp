@@ -1,11 +1,11 @@
-#include <cassert>
-#include <type_traits>
+#include @\cppref{header/cassert}{<cassert>}@
+#include @\cppref{header/type_traits}{<type\_traits>}@
 
 // #define NDEBUG@\tikzmark{assert_ndebug}@
 // ^ Uncomment this or define it in the build system to disable asserts
 
-using std::is_base_of;
-using std::is_same;
+using std::@\cppref{types/is_base_of}{is\_base\_of}@;
+using std::@\cppref{types/is_same}{is\_same}@;
 
 template<class T, class U>
 void failIfUnrelated() {
@@ -21,7 +21,7 @@ class Parent {};
 class Child : public Parent {};
 
 int main() {
-  assert(1 + 1 == 2);@\tikzmark{assert_use}@
+  @\cppref{error/assert}{assert}@(1 + 1 == 2);@\tikzmark{assert_use}@
 
   failIfUnrelated<int, int>();@\tikzmark{assert_ok_a}@
   failIfUnrelated<Parent, Child>();@\tikzmark{assert_ok_b}@

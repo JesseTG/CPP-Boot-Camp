@@ -1,13 +1,13 @@
-#include <chrono> 
+#include @\cppref{header/chrono}{<chrono>}@ 
 #include <iostream> 
-#include <thread>@\tikzmark{time_thread}@
+#include @\cppref{header/thread}{<thread>}@@\tikzmark{time_thread}@
 
-using std::chrono::duration_cast;@\tikzmark{time_cast}@
-using std::chrono::milliseconds;@\tikzmark{time_duration}@
-using std::chrono::system_clock;@\tikzmark{time_clock}@
+using std::chrono::@\cppref{chrono/duration/duration_cast}{duration\_cast}@;@\tikzmark{time_cast}@
+using std::chrono::@\cppref{chrono/duration#Helper_types}{milliseconds}@;@\tikzmark{time_duration}@
+using std::chrono::@\cppref{chrono/system_clock}{system\_clock}@;@\tikzmark{time_clock}@
 using std::cout;
 using std::endl;
-using std::this_thread::sleep_for;
+using std::this_thread::@\cppref{thread/sleep_for}{sleep\_for}@;
 
 const int FPS = 60;
 

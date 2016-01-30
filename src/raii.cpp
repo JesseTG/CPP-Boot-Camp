@@ -1,23 +1,23 @@
-#include <cstdint>
-#include <cstring>
+#include @\cppref{header/cstdlib}{<cstdlib>}@
+#include @\cppref{header/cstring}{<cstring>}@@\tikzmark{raii_cstring}@
 
-using std::memcpy;
+using std::@\cppref{string/byte/memcpy}{memcpy}@;@\tikzmark{raii_memcpy}@
 using std::size_t;
 
 class FloatArray@\tikzmark{raii_dont}@ {
   public:
-    FloatArray(size_t size) : _size@\tikzmark{raii_init}@(size), _array(new float[size]) {}@\tikzmark{raii_ctor}@
+    FloatArray(size_t s) : size(s)@\tikzmark{raii_init}@, floats(new float[s]) {}@\tikzmark{raii_ctor}@
 
-    FloatArray(const FloatArray& other) : _size(other._size), _array(new float[other._size]) {@\tikzmark{raii_copyctor}@
-      memcpy(_array, other._array, other._size * sizeof@\tikzmark{raii_sizeof}@(float));
+    FloatArray(const FloatArray& other) : size(other.size), floats(new float[other.size]) {@\tikzmark{raii_copyctor}@
+      memcpy(floats, other.floats, other.size * sizeof@\tikzmark{raii_sizeof}@(float));
     }
 
     FloatArray& operator=(const FloatArray& other) {@\tikzmark{raii_copyeq}@
       if (this != &other) { // Watch for self-assignment!
-        float* temp = new float[other._size];
-        memcpy(temp, other._array, other._size * sizeof(float));
-        delete[] _array;
-        _array = temp;
+        float* temp = new float[other.size];
+        memcpy(temp, other.floats, other.size * sizeof(float));
+        delete[] floats;
+        floats = temp;
         return *this;
       }
     }
@@ -27,6 +27,6 @@ class FloatArray@\tikzmark{raii_dont}@ {
     }
 
   private:
-    size_t _size;
-    float* _array;
+    size_t size;
+    float* floats;
 };

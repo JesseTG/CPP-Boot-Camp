@@ -1,13 +1,13 @@
-#include <iomanip>
+#include @\cppref{header/iomanip}{<iomanip>}@
 #include <iostream>
-#include <sstream>
+#include @\cppref{header/sstream}{<sstream>}@
 #include <string>
 
 using std::cout;
 using std::endl;
-using std::setprecision;@\tikzmark{formatted_modifier}@
+using std::@\cppref{io/manip/setprecision}{setprecision}@;@\tikzmark{formatted_modifier}@
 using std::string;
-using std::stringstream;@\tikzmark{formatted_stringstream}@
+using std::@\cppref{io/basic_stringstream}{stringstream}@;@\tikzmark{formatted_stringstream}@
 
 int main() { 
   float x = 5.6435221, y = 7.1453634545, z = -23.452354215;

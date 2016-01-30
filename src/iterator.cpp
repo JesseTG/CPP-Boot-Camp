@@ -16,13 +16,13 @@ int main() {
   }
   cout << endl;
 
-  // The clunky way (but lets you use adaptors)
+  // The clunky way (but lets you use @\cppref{iterator#Iterator_adaptors}{adaptors}@)
   for (auto@\tikzmark{iterator_auto}@ it = strings.begin()@\tikzmark{iterator_ptr}@; it != strings.end(); it++) {
     cout << *it << ' ';
   }
   cout << endl;
 
-  // The C++11 way
+  // \@cppref{language/range-for}{The C++11 way}@
   for (const string&@\tikzmark{iterator_ref}@ s : strings) {@\tikzmark{iterator_begin}@
     cout << s << ' ';
   }

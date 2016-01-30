@@ -1,7 +1,7 @@
-#include <limits>
+#include @\cppref{header/limits}{<limits>}@
 #include <string>
 
-using std::numeric_limits;
+using std::@\cppref{types/numeric_limits}{numeric\_limits}@;
 using std::string;
 
 int something(int param) { 

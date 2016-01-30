@@ -1,6 +1,6 @@
-#include <string>
+#include @\cppref{header/string}{<string>}@
 
-using std::string;
+using std::@\cppref{string/basic_string}{string}@;
 
 @\tikzmark{memory_static_b}@string a = "I'll always exist";
 

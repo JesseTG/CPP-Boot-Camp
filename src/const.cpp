@@ -7,17 +7,17 @@ const string ANOTHER_CONSTANT = "More type-safe than macros!";
 
 class ConstStuff { 
   public:
-    ConstStuff(int i, const string& s) : _data(i), _text(s) {}
+    ConstStuff(int i, const string& s) : m_data(i), m_text(s) {}
 
-    int data() const { return _data; }@\tikzmark{const_nochange}@
-    const string& text() const { return _text; }@\tikzmark{const_ref}@
-    string& text() { return _text; }@\tikzmark{const_nonconst_ref}@
+    int data() const { return m_data; }@\tikzmark{const_nochange}@
+    const string& text() const { return m_text; }@\tikzmark{const_ref}@
+    string& text() { return m_text; }@\tikzmark{const_nonconst_ref}@
 
-    void concatenate(const string& str) { this->_text += str; }@\tikzmark{const_nonconst}@
+    void concatenate(const string& str) { this->m_text += str; }@\tikzmark{const_nonconst}@
 
   private: 
-    int _data;
-    string _text; 
+    int m_data;
+    string m_text; 
 };
 
 int main() {

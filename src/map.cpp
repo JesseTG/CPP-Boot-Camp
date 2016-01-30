@@ -1,10 +1,10 @@
-#include <cstdint>
-#include <functional>
-#include <tuple>
+#include <cstdlib>
+#include @\cppref{header/functional}{<functional>}@
+#include @\cppref{header/tuple}{<tuple>}@
 
-using std::hash;
+using std::@\cppref{utility/hash}{hash}@;
 using std::size_t;
-using std::tie;
+using std::@\cppref{utility/tuple/tie}{tie}@;
 
 struct Coordinates {
   int x, y;
