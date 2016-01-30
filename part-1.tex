@@ -150,8 +150,8 @@
   \begin{tikzpicture}[callout]
     \draw (4cm, 24em) node  {Contains exception-handling functionality} -> \refer{except_header};
     \draw (5cm, 15em) node  {\cppref{language/noexcept_spec}{"I promise not to throw an exception"}} -> \refer{except_noexcept};
-    \draw (5cm, 9em) node  {Base exception type\\(any type can be thrown, but use these)} -> \refer{except_type};
-    \draw (6cm, 4em) node  {No \verb|finally| statement\\(use destructors instead)} -> \refer{except_nofinally};
+    \draw (5cm, 9em) node  {Base exception type} -> \refer{except_type};
+    \draw (6cm, 4em) node  {No \verb|finally| statement\\(use \cppref{language/destructor}{destructors} instead)} -> \refer{except_nofinally};
   \end{tikzpicture}
 \end{frame}
 
@@ -469,7 +469,7 @@
     \draw (6cm, 21em) node  {Polymorphism must be through\\pointers or references} -> \refer{cast_poly};
     \draw (5cm, 16em) node  {Explicit upcasts rarely necessary} -> \refer{cast_upcast_a};
     \draw (5cm, 16em) -> \refer{cast_upcast_b};
-    \draw (6cm, 13em) node  {\cppref{language/dynamic_cast}{Runtime type check (slow)}} -> \refer{cast_dynamic};
+    \draw (6cm, 13.5em) node  {\cppref{language/dynamic_cast}{Runtime type check (slow)}} -> \refer{cast_dynamic};
     \draw (6cm, 12em) node  {\cppref{language/static_cast}{Compile-time type assurance (fast)}} -> \refer{cast_static};
     \draw (6cm, 9em) node  {Pointer to derived (success)} -> \refer{cast_dynamic_pass};
     \draw (6cm, 8em) node  {\verb|nullptr| (failure, \verb|bad_cast| if a reference)} -> \refer{cast_dynamic_fail};

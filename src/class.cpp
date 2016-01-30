@@ -4,13 +4,13 @@ using std::string;
 
 class Person {
   public:@\tikzmark{class_access_a}@
-    int cantBeOverridden(int a, int b) { return this->_integer + b; }@\tikzmark{class_no_override}@
+    int cantBeOverridden(int a, int b) { return this->integer + b; }@\tikzmark{class_no_override}@
     virtual@\tikzmark{class_virtual}@ float canBeOverridden(double d) { return d * 2; }
     virtual ~Person()@\tikzmark{class_virtual_dtor}@ {}
   protected:@\tikzmark{class_access_b}@
-    float _number;
+    float number;
   private:@\tikzmark{class_access_c}@
-    int _integer;
+    int integer;
 };@\tikzmark{class_semicolon}@
 
 struct IBeeGee {@\tikzmark{class_struct}@
