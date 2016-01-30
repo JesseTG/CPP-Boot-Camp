@@ -242,15 +242,14 @@
   \frametitle{\cppref{language/pointer}{Pointers} Vs. \cppref{language/reference}{References}}
 
   \begin{itemize}
-    \item Access lots of data without copying it
-    \item Left dangling (\textbf{invalid}) if the referenced object is deallocated
+    \item Access data from multiple places without copying it
+    \item Left dangling (\textbf{invalid}) if the underlying object dies
     \begin{itemize}
       \item No way to check for this
-      \item Will likely cause a crash if you try to use it
+      \item Will likely crash if you try to use it
     \end{itemize}
     \item Polymorphism okay
     \item Both compile to similar machine code
-    \item Multiple pointers/references can refer to one object
   \end{itemize}
 
   \begin{columns}
@@ -308,6 +307,7 @@
           \item Best case scenario: Crash
           \item Worst case scenario: No crash
         \end{itemize}
+        \item Distinct from unspecified or implementation-defined behavior
       \end{itemize}
     \end{column}
 
