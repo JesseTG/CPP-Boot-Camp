@@ -105,13 +105,13 @@
   \cppfile{src/basic.cpp}
   
   \begin{tikzpicture}[callout]
-    \draw (4.5cm, 26em) node  {\cppref{preprocessor/include}{Include libraries, functions, etc.}} -> \refer{basic_include};
+    \draw (4.5cm, 26em) node  {\cppref{preprocessor/include}{Enable functionality}} -> \refer{basic_include};
     \draw (7cm, 24em) node  {\# of command-line arguments} -> \refer{basic_argc};
-    \draw (7cm, 21em) node  {actual arguments as\\a string array} -> \refer{basic_argv};
+    \draw (7cm, 21em) node  {string array of arguments} -> \refer{basic_argv};
     \draw[decorate, decoration={brace}, -] ({pic cs:basic_using_a} |- {pic cs:basic_using_b}) +(0,1.5em) -- node [right, inner sep=1em] {Pulls into namespace\\(avoid long-ass prefixes)} ({pic cs:basic_using_a} |- {pic cs:basic_using_b});
     \draw (7cm, 15em) node  {\cppref{io}{Formatted printout}} -> \refer{basic_print};
-    \draw (5cm, 3em) node  {Return code (absence in main implies 0)} -> \refer{basic_return};
-    \draw (4cm, 12em) node  {Strings not allowed\\in switch statements} -> \refer{basic_switch};
+    \draw (5cm, 3em) node  {Return code (absence in \verb|main| implies 0)} -> \refer{basic_return};
+    \draw (4cm, 12em) node  {Strings not allowed\\in \verb|switch| statements} -> \refer{basic_switch};
   \end{tikzpicture}
 \end{frame}
 
@@ -133,11 +133,7 @@
 
     \begin{column}{6cm}
       \begin{itemize}
-        \item \cppinline|signed| and \cppinline|unsigned| integers
-        \begin{itemize}
-          \item \cppinline|signed| integers are the same
-          \item \cppinline|unsigned| go twice as high, but no negatives
-        \end{itemize}
+        \item \cppinline|unsigned int|s have twice the range, but no negatives
         \item For specific sizes, \cppinline|#include @\cppref{preprocessor/include}{<cstdint>}@| and use \jsinline{/std::u?int(8|16|32|64)_t/}
         \item There is \textbf{no} root object class
       \end{itemize}
@@ -156,7 +152,7 @@
     \draw (4cm, 24em) node  {Contains exception handling\\classes and functions} -> \refer{except_header};
     \draw (5cm, 15em) node  {Will not throw an exception\\(program terminates if it does)} -> \refer{except_noexcept};
     \draw (5cm, 9em) node  {Base exception type\\(any type can be thrown, but use these)} -> \refer{except_type};
-    \draw (6cm, 4em) node  {No finally statement\\(use destructors instead)} -> \refer{except_nofinally};
+    \draw (6cm, 4em) node  {No \verb|finally| statement\\(use destructors instead)} -> \refer{except_nofinally};
   \end{tikzpicture}
 \end{frame}
 
@@ -168,10 +164,10 @@
   \cppfile{src/typedef.cpp}
 
   \begin{tikzpicture}[callout]
-    \draw (4cm, 22em) node  {Needed for the\\typeid operator} -> \refer{typedef_typeinfo};
-    \draw (3cm, 10.5em) node  {Difference is compile-time only} -> \refer{typedef_okay_a};
+    \draw (4cm, 22em) node  {For the \verb|typeid| operator} -> \refer{typedef_typeinfo};
+    \draw (3cm, 10.5em) node  {Same type, different names} -> \refer{typedef_okay_a};
     \draw (3cm, 10.5em) -> \refer{typedef_okay_b};
-    \draw (6cm, 16em) node  {Prefer using, but recognize typedef} -> \refer{typedef_prefer};
+    \draw (6cm, 16em) node  {Prefer \verb|using|, but recognize \verb|typedef|} -> \refer{typedef_prefer};
     \draw (10cm, 11em) node [anchor=south] {Both strings are the same\\(but implementation-defined)} -> \refer{typedef_same_a};
     \draw (10cm, 11em) -> \refer{typedef_same_b};
     \draw (6cm, 19em) node  {Another name for\\the same type} -> \refer{typedef_using_a};
@@ -186,7 +182,7 @@
   \begin{columns}
     \begin{column}{6cm}
       \begin{itemize}
-        \item \textbf{static:} Exists for program's entire duration (on stack or in program data)\tikzmark{memory_static_a}
+        \item \textbf{static:} Exists for program duration (on stack or in program data)\tikzmark{memory_static_a}
         \item \textbf{automatic:} Disappears when out of scope (on stack)\tikzmark{memory_auto_a}
         \item \textbf{dynamic:} Created and destroyed at will (on heap)\tikzmark{memory_dynamic_a}
         \begin{itemize}
@@ -235,7 +231,7 @@
 
   \begin{tikzpicture}[callout]
     \draw (4cm, 22em) node [anchor=east] {Find enough space (expensive)} -> (6.25cm, 5.25cm);
-    \draw (4cm, 3em) node [anchor=east] {Increment an address (cheap)} -> (6.25cm, 1cm);
+    \draw (4cm, 3em) node [anchor=east] {Increment an address (cheap)} -> (6.25cm, 2cm);
   \end{tikzpicture}
 \end{frame}
 
@@ -328,12 +324,12 @@
   \cppfile{src/namespace.cpp}
 
   \begin{tikzpicture}[callout]
-    \draw (6cm, 22em) node  {Don't do this (or java.util.*)} -> \refer{namespace_std};
+    \draw (6cm, 22em) node  {Don't do this (or \verb|java.util.*|)} -> \refer{namespace_std};
     \draw (5cm, 19em) node  {Nest them as much as you'd like} -> \refer{namespace_nest_a};
     \draw (5cm, 19em) -> \refer{namespace_nest_b};
     \draw (5cm, 19em) -> \refer{namespace_nest_c};
     \draw (5cm, 8em) node  {Fully-qualified name} -> \refer{namespace_qualified};
-    \draw (6cm, 4em) node  {Or bring it into the\\current namespace} -> \refer{namespace_using};
+    \draw (6cm, 4em) node  {Introduced name} -> \refer{namespace_using};
   \end{tikzpicture}
 \end{frame}
 
@@ -345,8 +341,8 @@
   \cppfile{src/cpp.cpp}
 
   \begin{tikzpicture}[callout]
-    \draw (3cm, 25em) node  {Convention: <> for third-party or\\standard library, "" for your code} -> \refer{cpp_include};
-    \draw (4cm, 21em) node  {Conditional compilation (you can also add\\\#defines through your build process)} -> \refer{cpp_define};
+    \draw (3cm, 25em) node  {Use \verb|<>| for libraries, \verb|""| for your code} -> \refer{cpp_include};
+    \draw (4cm, 21em) node  {Conditional compilation (you can also add\\\verb|#define|s through your build process)} -> \refer{cpp_define};
     \draw (3cm, 18em) node  {Uncomment these} -> \refer{cpp_windows};
     \draw (3cm, 18em) -> \refer{cpp_mac};
     \draw (4cm, 9em) node  {Contents ignored (not compiled) if on Linux} -> \refer{cpp_linux};
@@ -362,14 +358,14 @@
   \cppfile{src/enum.cpp}
 
   \begin{tikzpicture}[callout]
-    \draw (3cm, 25em) node  {Scoped integers, not objects} -> \refer{enum_not_object};
+    \draw (3cm, 25em) node  {Scoped \verb|int|s, not objects} -> \refer{enum_not_object};
     \draw (3cm, 22em) node  {Trailing comma OK} -> \refer{enum_comma};
     \draw (3cm, 17em) node  {OK to assign values} -> \refer{enum_value};
-    \draw (3cm, 13em) node  {Old-style enums\\(recognize, but avoid)} -> \refer{enum_old};
-    \draw (5cm, 8em) node  {Scoped enum usage} -> \refer{enum_scoped_a};
+    \draw (3cm, 13em) node  {Old-style \verb|enum|s\\(recognize, but avoid)} -> \refer{enum_old};
+    \draw (5cm, 8em) node  {Scoped \verb|enum| usage} -> \refer{enum_scoped_a};
     \draw (5cm, 8em) -> \refer{enum_scoped_b};
-    \draw (5cm, 5em) node  {Avoid if enum is not contiguous} -> \refer{enum_ub};
-    \draw (4cm, 3em) node  {Explicitly convert enum to int} -> \refer{enum_int};
+    \draw (5cm, 5em) node  {Avoid if \verb|enum| is not contiguous} -> \refer{enum_ub};
+    \draw (4cm, 3em) node  {Explicitly convert \verb|enum| to \verb|int|} -> \refer{enum_int};
   \end{tikzpicture}
 \end{frame}
 
@@ -381,16 +377,16 @@
   \cppfile{src/class.cpp}
 
   \begin{tikzpicture}[callout]
-    \draw (3cm, 17em) node  {REQUIRED for any inheritable class} -> \refer{class_virtual_dtor};
-    \draw (3cm, 24em) node  {Access modifiers same as in Java} -> \refer{class_access_a};
-    \draw (4cm, 12em) node  {struct defaults to public\\class defaults to private} -> \refer{class_struct};
+    \draw (3cm, 17em) node  {\textbf{REQUIRED} for base classes} -> \refer{class_virtual_dtor};
+    \draw (3cm, 24em) node  {Access modifiers same as in Java\\(but no package-private)} -> \refer{class_access_a};
+    \draw (4cm, 12em) node  {\verb|struct| defaults to \verb|public|\\\verb|class| defaults to \verb|private|} -> \refer{class_struct};
     \draw (2cm, 14em) node  {Remember the semicolon!} -> \refer{class_semicolon};
     \draw (3cm, 22em) node  {Allows method to be overridden} -> \refer{class_virtual};
     \draw (9cm, 19em) node  {Technically you can,\\but things get weird} -> \refer{class_no_override};
     \draw (2cm, 11em) node [anchor=north] {Abstract method} -> \refer{class_abstract};
-    \draw (6cm, 4em) node [anchor=north west] {Marks method as an override\\(optional, but recommended)} -> \refer{class_override};
-    \draw (2cm, 2em) node [anchor=north] {Call parents with class name} -> \refer{class_super};
-    \draw (7cm, 7em) node  {Inheritance (actually six\\kinds; just use public)} -> \refer{class_inheritance};
+    \draw (6cm, 4em) node [anchor=north west] {Marks method as an override} -> \refer{class_override};
+    \draw (2cm, 2em) node [anchor=north] {Call parents with \verb|class| name} -> \refer{class_super};
+    \draw (7cm, 7em) node  {Inheritance (actually six\\kinds; just use \verb|public|)} -> \refer{class_inheritance};
   \end{tikzpicture}
 \end{frame}
 
@@ -402,9 +398,9 @@
   \cppfile{src/raii.cpp}
 
   \begin{tikzpicture}[callout]
-    \draw (3cm, 27em) node  {Don't write this class\\(STL does it better)} -> \refer{raii_dont};
+    \draw (3cm, 27em) node  {STL does this class better} -> \refer{raii_dont};
     \draw (5cm, 23em) node [anchor=south] {Member initialization syntax} -> \refer{raii_init};
-    \draw (8cm, 22em) node [anchor=south west] {Anything else\\(nothing right now)} -> \refer{raii_ctor};
+    \draw (8cm, 22em) node [anchor=south west] {Other code} -> \refer{raii_ctor};
     \draw (9cm, 7em) node [anchor=north] {Rule of 3: You need to write one,\\you need to write them all} -> \refer{raii_copyctor} node [pos=.5, above, sloped, anchor=north] {Copy constructor};
     \draw (9cm, 7em) -> \refer{raii_dtor} node [pos=.5, above, sloped, anchor=north] {Destructor};
     \draw (9cm, 7em) -> \refer{raii_copyeq} node [pos=.5, above, sloped, anchor=north] {Copy assignment};
@@ -435,8 +431,8 @@
   \cppfile{src/unique.cpp}
 
   \begin{tikzpicture}[callout]
-    \draw (4cm, 20em) node [anchor=south west] {At most one unique\_ptr\\can manage an address} -> \refer{unique_ptr};
-    \draw (8cm, 15em) node [anchor=south] {Use make\_unique, not existing\\pointers (else you risk double-deletes)} -> \refer{unique_multiple};
+    \draw (4cm, 20em) node [anchor=south west] {At most one \verb|unique_ptr|\\can manage an address} -> \refer{unique_ptr};
+    \draw (8cm, 15em) node [anchor=south] {Use \verb|make_unique|, not existing\\pointers (else you risk double-\verb|delete|s)} -> \refer{unique_multiple};
     \draw (5cm, 8em) node  {Cleaned up with RAII} -> \refer{unique_delete};
   \end{tikzpicture}
 \end{frame}
@@ -449,13 +445,13 @@
   \cppfile{src/cast.cpp}
 
   \begin{tikzpicture}[callout]
-    \draw (6cm, 21em) node  {Polymorphism can't be done on values,\\must be pointers or references} -> \refer{cast_poly};
+    \draw (6cm, 21em) node  {Polymorphism must be through\\pointers or references} -> \refer{cast_poly};
     \draw (5cm, 16em) node  {Explicit upcasts rarely necessary} -> \refer{cast_upcast_a};
     \draw (5cm, 16em) -> \refer{cast_upcast_b};
     \draw (6cm, 13em) node  {Runtime type check (slow)} -> \refer{cast_dynamic};
     \draw (6cm, 12em) node  {Compile-time type assurance (fast)} -> \refer{cast_static};
     \draw (6cm, 9em) node  {Pointer to derived (success)} -> \refer{cast_dynamic_pass};
-    \draw (6cm, 8em) node  {nullptr (failure, exception if a reference)} -> \refer{cast_dynamic_fail};
+    \draw (6cm, 8em) node  {\verb|nullptr| (failure, \verb|bad_cast| if a reference)} -> \refer{cast_dynamic_fail};
     \draw (6cm, 6em) node  {Pointer to derived (hopefully success?)} -> \refer{cast_static_pass};
     \draw (6cm, 5em) node  {Undefined behavior (hopefully success?)} -> \refer{cast_static_fail};
     \draw (3cm, 2em) node  {You fucked up!} -> \refer{cast_ub};
@@ -471,7 +467,7 @@
     \item Named requirements for a type or function
     \begin{itemize}
       \item Kind of like compile-time interfaces
-      \item Usually (but not always) impementing certain methods
+      \item \emph{Usually} implementing certain methods
     \end{itemize}
     \item Types may be used in templates if they do certain things
     \item Future language revisions will integrate them into the syntax
@@ -482,7 +478,7 @@
     \item \cppinline{EqualityComparable} $\rightarrow$ provides \cppinline{operator==} for equality test
     \item \cppinline{Container} $\rightarrow$ holds objects and manages their memory (via RAII)
     \item \cppinline{SequenceContainer} $\rightarrow$ \cppinline{Container} whose elements are sequential
-    \item \cppinline{FormattedOutputFunction} $\rightarrow$ Function that outputs an object to a \cppinline{std::ostream} (like \cppinline{cout})
+    \item \cppinline{FormattedOutputFunction} $\rightarrow$ Function that outputs an object to a \cppinline{std::ostream} (like \cppinline{std::cout})
   \end{itemize}
 \end{frame}
 
@@ -495,7 +491,7 @@
 
   \begin{tikzpicture}[callout]
     \draw (3cm, 25em) node [anchor=south west] {Standard library uses\\LOTS of templates} -> \refer{template_stl};
-    \draw (7cm, 22em) node  {Almost anything can be templated} -> \refer{template_class} node [pos=.5, above, sloped, anchor=south] {classes};
+    \draw (7cm, 22em) node  {Almost anything can be \verb|templated|} -> \refer{template_class} node [pos=.5, above, sloped, anchor=south] {classes};
     \draw (7cm, 22em) -> \refer{template_typedef} node [pos=.5, above, sloped, anchor=north] {typedefs};
     \draw (7cm, 22em) -> \refer{template_function} node [pos=.5, above, sloped, anchor=north] {(member )?functions};
     \draw (3cm, 11em) node  {For types that depend on template parameters inside templates} -> \refer{template_depend};
@@ -503,7 +499,7 @@
     \draw (6cm, 7em) -> \refer{template_diff_b};
     \draw (6cm, 7em) -> \refer{template_diff_c};
     \draw (3cm, 4.5em) node  {Function type parameters can be deduced} -> \refer{template_function_deduce};
-    \draw (3cm, 3em) node  {Error: No way to print a Dummy} -> \refer{template_no_print};
+    \draw (3cm, 3em) node  {Error: No way to print a \verb|Dummy|} -> \refer{template_no_print};
   \end{tikzpicture}
 \end{frame}
 
@@ -515,11 +511,11 @@
   \cppfile{src/assert.cpp}
 
   \begin{tikzpicture}[callout]
-    \draw (3cm, 24em) node  {Standard "debug mode" \#define} -> \refer{assert_ndebug};
+    \draw (3cm, 24em) node  {Standard "debug mode" \verb|#define|} -> \refer{assert_ndebug};
     \draw (4cm, 8em) node  {Only run in debug builds (don't\\do side effects or error checking)} -> \refer{assert_use};
     \draw (6cm, 4em) node  {OK} -> \refer{assert_ok_a};
     \draw (6cm, 4em) -> \refer{assert_ok_b};
-    \draw (5cm, 2em) node  {Compiler error, as desired} -> \refer{assert_error};
+    \draw (5cm, 2em) node  {Compiler error (as desired)} -> \refer{assert_error};
   \end{tikzpicture}
 \end{frame}
 
@@ -535,8 +531,8 @@
     \draw (9cm, 18em) node  {Immutable reference\\(no state changes)} -> \refer{const_ref};
     \draw (9cm, 15em) node  {Mutable reference\\(state changes possible)} -> \refer{const_nonconst_ref};
     \draw (8cm, 12em) node  {Side effects} -> \refer{const_nonconst};
-    \draw (4cm, 11em) node  {Bypassing const through\\tricks is usually UB} -> \refer{const_ub};
-    \draw (8cm, 3em) node  {const forbids state changes\\(thus won't compile)} -> \refer{const_no_cat};
+    \draw (4cm, 11em) node  {\verb|const|-dodging tricks\\are usually UB} -> \refer{const_ub};
+    \draw (8cm, 3em) node  {\verb|const| forbids it} -> \refer{const_no_cat};
     \draw (6cm, 7em) node  {One name, two overloads\\(chosen by compiler)} -> \refer{const_overload_a};
     \draw (6cm, 7em) -> \refer{const_overload_b};
   \end{tikzpicture}
@@ -550,10 +546,10 @@
   \cppfile{src/operator.cpp}
 
   \begin{tikzpicture}[callout]
-    \draw (4cm, 25em) node  {cout is a global std::ostream} -> \refer{operator_cout};
-    \draw (6.5cm, 16em) node  {Make a type printable (technically doesn't\\fully meet FormattedOutputFunction)} -> \refer{operator_ostream};
+    \draw (4cm, 25em) node  {\verb|cout| is a global \verb|std::ostream|} -> \refer{operator_cout};
+    \draw (6.5cm, 16em) node  {Meets \verb|FormattedOutputFunction| \tiny{(almost)}} -> \refer{operator_ostream};
     \draw (7.5cm, 21em) node  {overloads should be sensible} -> \refer{operator_sensible};
-    \draw (7cm, 12em) node  {Meets EqualityComparable} -> \refer{operator_eq};
+    \draw (7cm, 12em) node  {Meets \verb|EqualityComparable|} -> \refer{operator_eq};
   \end{tikzpicture}
 \end{frame}
 
@@ -605,12 +601,12 @@
   \cppfile{src/stoi.cpp}
 
   \begin{tikzpicture}[callout]
-    \draw (4cm, 17em) node  {sto(i|u?ll?|f|l?d) is available, too} -> \refer{stoi_stoi};
-    \draw (4cm, 12em) node  {Or std::to\_wstring} -> \refer{stoi_wstring};
-    \draw (4cm, 10em) node  {a == 42} -> \refer{stoi_a};
-    \draw (7cm, 8em) node  {b == 9\\(strips whitespace, reads as base-16)} -> \refer{stoi_b};
-    \draw (8cm, 3em) node [anchor=north] {c == 2\\first\_nonnumeric\_char\_index == 2} -> \refer{stoi_c};
-    \draw (4cm, 3em) node  {"12"} -> \refer{stoi_back};
+    \draw (4cm, 17em) node  {\verb|sto(i|u?ll?|f|l?d)| is available, too} -> \refer{stoi_stoi};
+    \draw (4cm, 12em) node  {Or \verb|to_wstring|} -> \refer{stoi_wstring};
+    \draw (4cm, 10em) node  {\verb|a == 42|} -> \refer{stoi_a};
+    \draw (7cm, 8em) node  {\verb|b == 9|\\(strips whitespace, reads as base-16)} -> \refer{stoi_b};
+    \draw (8cm, 3em) node [anchor=north] {\verb|c == 2|\\\verb|first_nonnumeric_char_index == 2|} -> \refer{stoi_c};
+    \draw (4cm, 3em) node  {\verb|"12"|} -> \refer{stoi_back};
   \end{tikzpicture}
 \end{frame}
 
@@ -622,13 +618,13 @@
   \cppfile{src/regex.cpp}
 
   \begin{tikzpicture}[callout]
-    \draw (4cm, 23em) node  {search for finding substrings,\\match for matching whole strings} -> \refer{regex_match};
-    \draw (6cm, 17em) node [anchor=south] {ECMAScript syntax by\\default, but others available} -> \refer{regex_syntax};
+    \draw (4cm, 23em) node  {\verb|search| for finding sub\verb|string|s,\\\verb|match| for matching whole \verb|string|s} -> \refer{regex_match};
+    \draw (6cm, 17em) node [anchor=south] {ECMAScript syntax by default} -> \refer{regex_syntax};
     \draw (8cm, 16em) node  {Case insensitive flag} -> \refer{regex_flags};
-    \draw (8cm, 11em) node  {Returns true if a\\match was found} -> \refer{regex_search};
-    \draw (7cm, 8em) node  {Class to store actual match\\results and positions} -> \refer{regex_smatch_a};
+    \draw (8cm, 11em) node  {Returns \verb|true| if a\\match was found} -> \refer{regex_search};
+    \draw (7cm, 8em) node  {Stores match\\results and positions} -> \refer{regex_smatch_a};
     \draw (7cm, 8em) -> \refer{regex_smatch_b};
-    \draw (7cm, 2em) node  {Actually accessing matches} -> \refer{regex_access_match};
+    \draw (7cm, 2em) node  {Accessing matches} -> \refer{regex_access_match};
   \end{tikzpicture}
 \end{frame}
 
@@ -643,7 +639,7 @@
     \draw (6cm, 23em) node  {For use in ordered (tree-based)\\associative containers} -> \refer{map_lt};
     \draw (5cm, 13em) node  {For use in unordered (hash-based)\\associative containers} -> \refer{map_eq};
     \draw (5cm, 13em) -> \refer{map_hash};
-    \draw (8cm, 9em) node  {Required for std::hash\\specializations} -> \refer{map_arg};
+    \draw (8cm, 9em) node  {Required for \verb|std::hash|\\specializations} -> \refer{map_arg};
     \draw (8cm, 9em) -> \refer{map_result};
     \draw (8cm, 9em) -> \refer{map_func};
 
@@ -660,8 +656,8 @@
   \begin{tikzpicture}[callout]
     \draw (4cm, 12em) node  {OS/hardware's source of randomness} -> \refer{random_device};
     \draw (5cm, 10em) node  {Initialize a PRNG with a seed} -> \refer{random_init};
-    \draw (6cm, 6em) node [anchor=north west] {LOTS of distributions available\\(did you take AMS 310 yet?)} -> \refer{random_many};
-    \draw (3cm, 1em) node [anchor=north] {Or use any UniformRandomNumberGenerator\\(including random\_device, but it's slow)} -> \refer{random_concept};
+    \draw (6cm, 6em) node [anchor=north west] {\textbf{Many} distributions available\\(did you take AMS 310 yet?)} -> \refer{random_many};
+    \draw (3cm, 1em) node [anchor=north] {Or use any \verb|UniformRandomNumberGenerator|\\(including \verb|random_device|, but it's slow)} -> \refer{random_concept};
   \end{tikzpicture}
 \end{frame}
 
@@ -673,9 +669,9 @@
   \cppfile{src/formatted.cpp}
 
   \begin{tikzpicture}[callout]
-    \draw (4cm, 16em) node  {Changes how floats are printed out\\(many modifiers exist)} -> \refer{formatted_modifier};
-    \draw (4cm, 12em) node  {std::ostream that writes to a string} -> \refer{formatted_stringstream};
-    \draw (5cm, 2em) node [anchor=north west] {Use stringstream for nontrivial formats (a la printf)\\Use string::operator+ for concatenation\\Use sto(i|u?ll?|f|l?d) for number conversions} -> \refer{formatted_str};
+    \draw (4cm, 16em) node  {Changes how \verb|float|s are printed out\\(many modifiers exist)} -> \refer{formatted_modifier};
+    \draw (4cm, 12em) node  {\verb|std::ostream| that writes to a \verb|string|} -> \refer{formatted_stringstream};
+    \draw (5cm, 2em) node [anchor=north west] {Use \verb|stringstream| for nontrivial formats (a la \verb|printf|)\\Use \verb|operator+| for concatenation\\Use \verb|sto(i|u?ll?|f|l?d)| for number conversions} -> \refer{formatted_str};
   \end{tikzpicture}
 \end{frame}
 
@@ -687,10 +683,10 @@
   \cppfile{src/iterator.cpp}
 
   \begin{tikzpicture}[callout]
-    \draw (3cm, 13em) node  {Deduce the type\\(for when its name is long)} -> \refer{iterator_auto};
-    \draw (8cm, 8em) node  {Probably an ordinary pointer\\(but that's not your concern)} -> \refer{iterator_ptr};
-    \draw (5cm, 5em) node  {Iteratee must provide\\begin and end methods} -> \refer{iterator_begin};
-    \draw (3cm, 3em) node [anchor=north west] {Remember to iterate by reference\\(and const if not changing the data)} -> \refer{iterator_ref};
+    \draw (3cm, 13em) node {Deduce the type\\(used for long names)} -> \refer{iterator_auto};
+    \draw (8cm, 8em) node {Probably an ordinary pointer\\(but that's not your concern)} -> \refer{iterator_ptr};
+    \draw (5cm, 5em) node {Iteratee must provide\\\verb|begin| and \verb|end| methods} -> \refer{iterator_begin};
+    \draw (3cm, 3em) node [anchor=north west] {Remember to iterate by reference\\(and \verb|const| if not changing the data)} -> \refer{iterator_ref};
   \end{tikzpicture}
 \end{frame}
 
@@ -703,9 +699,9 @@
 
   \begin{tikzpicture}[callout]
     \draw (7cm, 18em) node  {Lambda return type\\(omit to deduce)} -> \refer{lambda_return};
-    \draw (7cm, 14em) node  {Omit parens if there are no arguments} -> \refer{lambda_parens};
-    \draw (7cm, 9em) node [anchor=south] {Capture ints by reference\\(omit \& for value capture)} -> \refer{lambda_capture};
-    \draw (3.5cm, 7em) node [anchor=south] {Run over entire ints array} -> \refer{lambda_begin};
+    \draw (7cm, 14em) node  {Omit parens if there are no args} -> \refer{lambda_parens};
+    \draw (7cm, 9em) node [anchor=south] {Capture \verb|int|s by reference\\(omit \verb|&| for value capture)} -> \refer{lambda_capture};
+    \draw (3.5cm, 7em) node [anchor=south] {Run over entire \verb|int|s array} -> \refer{lambda_begin};
     \draw (3.5cm, 7em) -> \refer{lambda_end};
     \draw (6cm, 3em) node  {Output iterator is same as input\\(so it operates in-place)} -> \refer{lambda_inplace};
   \end{tikzpicture}
@@ -719,12 +715,12 @@
   \cppfile{src/time.cpp}
 
   \begin{tikzpicture}[callout]
-    \draw (4cm, 23em) node  {Threading is a whole new\\can of worms (let's not open it)} -> \refer{time_thread};
-    \draw (6cm, 20em) node  {Convert between units of time} -> \refer{time_cast};
-    \draw (7cm, 17em) node  {Really a typedef for a generic duration\\(you can define your own units)} -> \refer{time_duration};
+    \draw (4cm, 23em) node  {Threading is complicated} -> \refer{time_thread};
+    \draw (6cm, 20em) node  {Convert between time units} -> \refer{time_cast};
+    \draw (7cm, 17em) node  {Really a \verb|typedef| for a generic duration} -> \refer{time_duration};
     \draw (6cm, 14em) node  {Several types of clocks exist} -> \refer{time_clock};
-    \draw (7cm, 11em) node  {Durations accept integers (but\\you can define float typedefs)} -> \refer{time_ctor};
-    \draw (5cm, 6em) node  {Your game's timer can\\(and should) use only std::chrono} -> \refer{time_loop};
+    \draw (7cm, 11em) node  {Durations accept \verb|int|s (but\\you can define \verb|float| typedefs)} -> \refer{time_ctor};
+    \draw (5cm, 6em) node  {Your game's timer can\\(and should) use \verb|std::chrono|} -> \refer{time_loop};
   \end{tikzpicture}
 \end{frame}
 
