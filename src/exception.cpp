@@ -19,7 +19,7 @@ int main(int argc) {
   try {  
     couldThrow(functionThrow(a));
   }
-  catch (exception e)@\tikzmark{except_type}@ {
+  catch (const exception& e)@\tikzmark{except_type}@ {
     cout << e.what();
   }
   catch (...) {@\tikzmark{except_swallow}@
