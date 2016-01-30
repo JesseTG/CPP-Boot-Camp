@@ -132,7 +132,7 @@
 
     \begin{column}{6cm}
       \begin{itemize}
-        \item \cppinline|unsigned int|s have twice the range, but no negatives
+        \item \cppinline|unsigned|s can't be negative
         \item For specific sizes, \cppinline|#include @\cppref{preprocessor/include}{<cstdint>}@| and use \jsinline{/std::u?int(8|16|32|64)_t/}
         \item There is \textbf{no} root object class
       \end{itemize}
@@ -475,7 +475,7 @@
     \item Future language revisions will integrate them into the syntax
   \end{itemize}
 
-  \textbf{Examples (simplified):}
+  \textbf{Examples:}
   \begin{itemize}
     \item \cppref{concept/EqualityComparable}{\cppinline{EqualityComparable}} $\rightarrow$ provides \cppinline{operator==} for equality test
     \item \cppref{concept/Container}{\cppinline{Container}} $\rightarrow$ holds objects and manages their memory (via RAII)
