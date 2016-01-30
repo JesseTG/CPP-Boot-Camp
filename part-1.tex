@@ -21,6 +21,8 @@
          font issue/.style={execute at begin picture={#1\selectfont}}
 }
 
+\tikzstyle{callout}=[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+
 % Minted
 \usepackage{minted}
 \newminted{cpp}{autogobble, fontsize=\tiny, escapeinside=@@}
@@ -52,7 +54,7 @@
     \includegraphics[width=.75\columnwidth]{super-punch-out}
     \centering
   \end{figure}
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, align=left, line width=2mm]
+  \begin{tikzpicture}[callout, line width=2mm]
     \draw (3.5cm, 2cm) node [anchor=east] {\shortstack{\huge \textbf{You}}} -> (6.25cm, 3.5cm);
     \draw (8.5cm, 5.75cm) node [anchor=west] {\shortstack{\huge \textbf{C++}}} -> (6.5cm, 5.5cm);
   \end{tikzpicture}
@@ -106,7 +108,7 @@
   \frametitle{\cppref{language/basic_concepts}{The Basics}}
   \cppfile{src/basic.cpp}
   
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (4.5cm, 26em) node [anchor=west] {\shortstack{\cppref{preprocessor/include}{Include libraries, functions, etc.}}} -> \refer{basic_include};
     \draw (7cm, 24em) node [anchor=west] {\shortstack{\# of command-line arguments}} -> \refer{basic_argc};
     \draw (7cm, 21em) node [anchor=west] {\shortstack{actual arguments as\\a string array}} -> \refer{basic_argv};
@@ -150,7 +152,7 @@
   
   \cppfile{src/exception.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (4cm, 27em) node [anchor=west] {\shortstack{Contains exception handling\\classes and functions}} -> ([shift={(.25em,.25em)}]pic cs:except_header);
     \draw (5cm, 21em) node [anchor=west] {\shortstack{Will not throw an exception\\(program terminates if it does)}} -> ([shift={(.25em,.25em)}]pic cs:except_noexcept);
     \draw (5cm, 9em) node [anchor=west] {\shortstack{Base exception type\\(any type can be thrown, but use these)}} -> ([shift={(.25em,.25em)}]pic cs:except_type);
@@ -163,7 +165,7 @@
 
   \cppfile{src/typedef.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (4cm, 22em) node [anchor=west] {\shortstack{Needed for the\\typeid operator}} -> ([shift={(.25em,.25em)}]pic cs:typedef_typeinfo);
     \draw (3cm, 10.5em) node [anchor=west] {\shortstack{Difference is compile-time only}} -> ([shift={(.25em,.25em)}]pic cs:typedef_okay_a);
     \draw (3cm, 10.5em) -> ([shift={(.25em,.25em)}]pic cs:typedef_okay_b);
@@ -194,7 +196,7 @@
     \end{column}
   \end{columns}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (pic cs:memory_static_a) -> ([shift={(0em,.25em)}]pic cs:memory_static_b);
     \draw (pic cs:memory_auto_a) -> ([shift={(0em,.25em)}]pic cs:memory_auto_b);
     \draw (pic cs:memory_dynamic_a) -> ([shift={(0em,.25em)}]pic cs:memory_dynamic_b);
@@ -225,7 +227,7 @@
     \end{column}
   \end{columns}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (4cm, 22em) node [anchor=east] {\shortstack{Find enough space (expensive)}} -> (6.25cm, 5.25cm);
     \draw (4cm, 3em) node [anchor=east] {\shortstack{Increment an address (cheap)}} -> (6.25cm, 1cm);
   \end{tikzpicture}
@@ -311,7 +313,7 @@
 
   \cppfile{src/namespace.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (6cm, 22em) node [anchor=west] {\shortstack{Don't do this (or java.util.*)}} -> ([shift={(0em,.25em)}]pic cs:namespace_std);
     \draw (5cm, 19em) node [anchor=west] {\shortstack{Nest them as much as you'd like}} -> ([shift={(0em,.25em)}]pic cs:namespace_nest_a);
     \draw (5cm, 19em) -> ([shift={(0em,.25em)}]pic cs:namespace_nest_b);
@@ -326,7 +328,7 @@
 
   \cppfile{src/cpp.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (3cm, 25em) node [anchor=west] {\shortstack{Convention: <> for third-party or\\standard library, "" for your code}} -> ([shift={(0em,.25em)}]pic cs:cpp_include);
     \draw (4cm, 21em) node [anchor=west] {\shortstack{Conditional compilation (you can also add\\\#defines through your build process)}} -> ([shift={(0em,.25em)}]pic cs:cpp_define);
     \draw (3cm, 18em) node [anchor=west] {\shortstack{Uncomment these}} -> ([shift={(0em,.25em)}]pic cs:cpp_windows);
@@ -341,7 +343,7 @@
 
   \cppfile{src/enum.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (3cm, 25em) node [anchor=west] {\shortstack{Scoped integers, not objects}} -> ([shift={(0em,.25em)}]pic cs:enum_not_object);
     \draw (3cm, 22em) node [anchor=west] {\shortstack{Trailing comma OK}} -> ([shift={(0em,.25em)}]pic cs:enum_comma);
     \draw (3cm, 17em) node [anchor=west] {\shortstack{OK to assign values}} -> ([shift={(0em,.25em)}]pic cs:enum_value);
@@ -358,7 +360,7 @@
 
   \cppfile{src/class.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (3cm, 17em) node [anchor=west] {\shortstack{REQUIRED for any inheritable class}} -> ([shift={(0em,.25em)}]pic cs:class_virtual_dtor);
     \draw (3cm, 24em) node [anchor=west] {\shortstack{Access modifiers same as in Java}} -> ([shift={(0em,.25em)}]pic cs:class_access_a);
     \draw (4cm, 12em) node [anchor=west] {\shortstack{struct defaults to public\\class defaults to private}} -> ([shift={(0em,.25em)}]pic cs:class_struct);
@@ -377,7 +379,7 @@
 
   \cppfile{src/raii.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (3cm, 27em) node [anchor=west] {\shortstack{Don't write this class\\(STL does it better)}} -> ([shift={(0em,.25em)}]pic cs:raii_dont);
     \draw (5cm, 23em) node [anchor=south] {\shortstack{Member initialization syntax}} -> ([shift={(0em,.25em)}]pic cs:raii_init);
     \draw (8cm, 22em) node [anchor=south west] {\shortstack{Anything else\\(nothing right now)}} -> ([shift={(0em,.25em)}]pic cs:raii_ctor);
@@ -393,7 +395,7 @@
 
   \cppfile{src/deleted.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (8cm, 18em) node [anchor=west] {\shortstack{Forbids this special method\\(compiler error if used)}} -> ([shift={(0em,.25em)}]pic cs:deleted_a);
     \draw (8cm, 18em) -> ([shift={(0em,.25em)}]pic cs:deleted_b);
     \draw (4cm, 14em) node [anchor=west] {\shortstack{Still gotta clean up}} -> ([shift={(0em,.25em)}]pic cs:deleted_cleanup);
@@ -406,7 +408,7 @@
 
   \cppfile{src/unique.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (4cm, 20em) node [anchor=south west] {\shortstack{At most one unique\_ptr\\can manage an address}} -> ([shift={(0em,.25em)}]pic cs:unique_ptr);
     \draw (8cm, 15em) node [anchor=south] {\shortstack{Use make\_unique, not existing\\pointers (else you risk double-deletes)}} -> ([shift={(0em,.25em)}]pic cs:unique_multiple);
     \draw (5cm, 8em) node [anchor=west] {\shortstack{Cleaned up with RAII}} -> ([shift={(0em,.25em)}]pic cs:unique_delete);
@@ -418,7 +420,7 @@
 
   \cppfile{src/cast.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (6cm, 21em) node [anchor=west] {\shortstack{Polymorphism can't be done on values,\\must be pointers or references}} -> ([shift={(0em,.25em)}]pic cs:cast_poly);
     \draw (5cm, 16em) node [anchor=west] {\shortstack{Explicit upcasts rarely necessary}} -> ([shift={(0em,.25em)}]pic cs:cast_upcast_a);
     \draw (5cm, 16em) -> ([shift={(0em,.25em)}]pic cs:cast_upcast_b);
@@ -459,7 +461,7 @@
 
   \cppfile{src/template.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (3cm, 25em) node [anchor=south west] {\shortstack{Standard library uses\\LOTS of templates}} -> ([shift={(0em,.25em)}]pic cs:template_stl);
     \draw (7cm, 22em) node [anchor=west] {\shortstack{Almost anything can be templated}} -> ([shift={(0em,.25em)}]pic cs:template_class) node [pos=.5, above, sloped, anchor=south] {classes};
     \draw (7cm, 22em) -> ([shift={(0em,.25em)}]pic cs:template_typedef) node [pos=.5, above, sloped, anchor=north] {typedefs};
@@ -478,7 +480,7 @@
 
   \cppfile{src/assert.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (3cm, 24em) node [anchor=west] {\shortstack{Standard "debug mode" \#define}} -> ([shift={(0em,.25em)}]pic cs:assert_ndebug);
     \draw (4cm, 8em) node [anchor=west] {\shortstack{Only run in debug builds (don't\\do side effects or error checking)}} -> ([shift={(0em,.25em)}]pic cs:assert_use);
     \draw (6cm, 4em) node [anchor=west] {\shortstack{OK}} -> ([shift={(0em,.25em)}]pic cs:assert_ok_a);
@@ -492,7 +494,7 @@
 
   \cppfile{src/const.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (9cm, 21em) node [anchor=west] {\shortstack{No side effects\\(aka state changes)}} -> ([shift={(0em,.25em)}]pic cs:const_nochange);
     \draw (9cm, 18em) node [anchor=west] {\shortstack{Immutable reference\\(no state changes)}} -> ([shift={(0em,.25em)}]pic cs:const_ref);
     \draw (9cm, 15em) node [anchor=west] {\shortstack{Mutable reference\\(state changes possible)}} -> ([shift={(0em,.25em)}]pic cs:const_nonconst_ref);
@@ -509,7 +511,7 @@
 
   \cppfile{src/operator.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (4cm, 25em) node [anchor=west] {\shortstack{cout is a global std::ostream}} -> ([shift={(0em,.25em)}]pic cs:operator_cout);
     \draw (6.5cm, 16em) node [anchor=west] {\shortstack{Make a type printable (technically doesn't\\fully meet FormattedOutputFunction)}} -> ([shift={(0em,.25em)}]pic cs:operator_ostream);
     \draw (7.5cm, 21em) node [anchor=west] {\shortstack{overloads should be sensible}} -> ([shift={(0em,.25em)}]pic cs:operator_sensible);
@@ -560,7 +562,7 @@
 
   \cppfile{src/stoi.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (4cm, 17em) node [anchor=west] {\shortstack{sto(i|u?ll?|f|l?d) is available, too}} -> ([shift={(0em,.25em)}]pic cs:stoi_stoi);
     \draw (4cm, 12em) node [anchor=west] {\shortstack{Or std::to\_wstring}} -> ([shift={(0em,.25em)}]pic cs:stoi_wstring);
     \draw (4cm, 10em) node [anchor=west] {\shortstack{a == 42}} -> ([shift={(0em,.25em)}]pic cs:stoi_a);
@@ -575,7 +577,7 @@
 
   \cppfile{src/regex.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (4cm, 23em) node [anchor=west] {\shortstack{search for finding substrings,\\match for matching whole strings}} -> ([shift={(0em,.25em)}]pic cs:regex_match);
     \draw (6cm, 17em) node [anchor=south] {\shortstack{ECMAScript syntax by\\default, but others available}} -> ([shift={(0em,.25em)}]pic cs:regex_syntax);
     \draw (8cm, 16em) node [anchor=west] {\shortstack{Case insensitive flag}} -> ([shift={(0em,.25em)}]pic cs:regex_flags);
@@ -591,7 +593,7 @@
 
   \cppfile{src/map.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (6cm, 23em) node [anchor=west] {\shortstack{For use in ordered (tree-based)\\associative containers}} -> ([shift={(0em,.25em)}]pic cs:map_lt);
     \draw (5cm, 13em) node [anchor=west] {\shortstack{For use in unordered (hash-based)\\associative containers}} -> ([shift={(0em,.25em)}]pic cs:map_eq);
     \draw (5cm, 13em) -> ([shift={(0em,.25em)}]pic cs:map_hash);
@@ -607,7 +609,7 @@
 
   \cppfile{src/random.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (4cm, 12em) node [anchor=west] {\shortstack{OS/hardware's source of randomness}} -> ([shift={(0em,.25em)}]pic cs:random_device);
     \draw (5cm, 10em) node [anchor=west] {\shortstack{Initialize a PRNG with a seed}} -> ([shift={(0em,.25em)}]pic cs:random_init);
     \draw (6cm, 6em) node [anchor=north west] {\shortstack{LOTS of distributions available\\(did you take AMS 310 yet?)}} -> ([shift={(0em,.25em)}]pic cs:random_many);
@@ -620,7 +622,7 @@
 
   \cppfile{src/formatted.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (4cm, 16em) node [anchor=west] {\shortstack{Changes how floats are printed out\\(many modifiers exist)}} -> ([shift={(0em,.25em)}]pic cs:formatted_modifier);
     \draw (4cm, 12em) node [anchor=west] {\shortstack{std::ostream that writes to a string}} -> ([shift={(0em,.25em)}]pic cs:formatted_stringstream);
     \draw (5cm, 2em) node [anchor=north west] {\shortstack{Use stringstream for nontrivial formats (a la printf)\\Use string::operator+ for concatenation\\Use sto(i|u?ll?|f|l?d) for number conversions}} -> ([shift={(0em,.25em)}]pic cs:formatted_str);
@@ -632,7 +634,7 @@
 
   \cppfile{src/iterator.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (3cm, 13em) node [anchor=west] {\shortstack{Deduce the type\\(for when its name is long)}} -> ([shift={(0em,.25em)}]pic cs:iterator_auto);
     \draw (8cm, 8em) node [anchor=west] {\shortstack{Probably an ordinary pointer\\(but that's not your concern)}} -> ([shift={(0em,.25em)}]pic cs:iterator_ptr);
     \draw (5cm, 5em) node [anchor=west] {\shortstack{Iteratee must provide\\begin and end methods}} -> ([shift={(0em,.25em)}]pic cs:iterator_begin);
@@ -645,7 +647,7 @@
 
   \cppfile{src/lambda.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (7cm, 18em) node [anchor=west] {\shortstack{Lambda return type\\(omit to deduce)}} -> ([shift={(0em,.25em)}]pic cs:lambda_return);
     \draw (7cm, 14em) node [anchor=west] {\shortstack{Omit parens if there are no arguments}} -> ([shift={(0em,.25em)}]pic cs:lambda_parens);
     \draw (7cm, 9em) node [anchor=south] {\shortstack{Capture ints by reference\\(omit \& for value capture)}} -> ([shift={(0em,.25em)}]pic cs:lambda_capture);
@@ -660,7 +662,7 @@
 
   \cppfile{src/time.cpp}
 
-  \begin{tikzpicture}[remember picture, ->, >=stealth, overlay, red, ultra thick, align=left]
+  \begin{tikzpicture}[callout]
     \draw (4cm, 23em) node [anchor=west] {\shortstack{Threading is a whole new\\can of worms (let's not open it)}} -> ([shift={(0em,.25em)}]pic cs:time_thread);
     \draw (6cm, 20em) node [anchor=west] {\shortstack{Convert between units of time}} -> ([shift={(0em,.25em)}]pic cs:time_cast);
     \draw (7cm, 17em) node [anchor=west] {\shortstack{Really a typedef for a generic duration\\(you can define your own units)}} -> ([shift={(0em,.25em)}]pic cs:time_duration);
