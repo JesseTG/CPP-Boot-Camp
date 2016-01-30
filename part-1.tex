@@ -83,6 +83,7 @@
         \item Originally designed for C compatibility
         \item High-level abstractions
         \item Low-level resource management
+        \item OOP is entirely optional
         \item Follow along in-browser on \href{http://coliru.stacked-crooked.com/}{Coliru} and \href{http://www.cppreference.com}{cppreference.com}
       \end{itemize}
     \end{column}
@@ -106,7 +107,7 @@
   \begin{tikzpicture}[callout]
     \draw (4.5cm, 26em) node  {\cppref{preprocessor/include}{Enable functionality}} -> \refer{basic_include};
     \draw (7cm, 24em) node  {\# of command-line arguments} -> \refer{basic_argc};
-    \draw (7cm, 21em) node  {string array of arguments} -> \refer{basic_argv};
+    \draw (7cm, 21em) node  {Actual arguments} -> \refer{basic_argv};
     \draw[decorate, decoration={brace}, -] ({pic cs:basic_using_a} |- {pic cs:basic_using_b}) +(0,1.5em) -- node [right, inner sep=1em] {Pulls into namespace\\(avoid long-ass prefixes)} ({pic cs:basic_using_a} |- {pic cs:basic_using_b});
     \draw (7cm, 15em) node  {\cppref{io}{Formatted printout}} -> \refer{basic_print};
     \draw (5cm, 3em) node  {Return code (absence in \verb|main| implies 0)} -> \refer{basic_return};
