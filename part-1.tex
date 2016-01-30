@@ -178,43 +178,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
-  \frametitle{Memory Model and Lifetime}
+  \frametitle{A Common Memory Model}
   \begin{columns}
     \begin{column}{6cm}
       \begin{itemize}
-        \item \textbf{static:} Exists for program duration (on stack or in program data)\tikzmark{memory_static_a}
-        \item \textbf{automatic:} Disappears when out of scope (on stack)\tikzmark{memory_auto_a}
-        \item \textbf{dynamic:} Created and destroyed at will (on heap)\tikzmark{memory_dynamic_a}
-        \begin{itemize}
-          \item Remember to clean up (one \cppinline{delete} for every \cppinline{new})
-        \end{itemize}
-      \end{itemize}
-    \end{column}
-
-    \begin{column}{6cm}
-      \cppfile{src/memory.cpp}
-    \end{column}
-  \end{columns}
-
-  \begin{tikzpicture}[callout]
-    \draw (pic cs:memory_static_a) -> \refer{memory_static_b};
-    \draw (pic cs:memory_auto_a) -> \refer{memory_auto_b};
-    \draw (pic cs:memory_dynamic_a) -> \refer{memory_dynamic_b};
-    \draw (pic cs:memory_dynamic_a) -> \refer{memory_dynamic_c};
-  \end{tikzpicture}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[fragile=singleslide]
-  \frametitle{Memory Model and Lifetime (cont'd)}
-  \begin{columns}
-    \begin{column}{6cm}
-      \begin{itemize}
-        \item Stack allocation is fast, but size must be known at compile time
-        \item Heap allocation is flexible, but slow
+        \item Stack is fast, but size must be known at compile time
+        \item Heap is flexible, but slow
         \item Details vary by compiler, OS, and hardware
-        \item \textbf{All objects of a given type are the same size.}
+        \item \textbf{All objects of a given type are the same size}
       \end{itemize}
     \end{column}
 
@@ -232,6 +203,36 @@
   \begin{tikzpicture}[callout]
     \draw (4cm, 22em) node [anchor=east] {Find enough space (expensive)} -> (6.25cm, 5.25cm);
     \draw (4cm, 3em) node [anchor=east] {Increment an address (cheap)} -> (6.25cm, 2cm);
+  \end{tikzpicture}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile=singleslide]
+  \frametitle{\cppref{language/scope}{Scope} and \cppref{language/lifetime}{Lifetime} (cont'd)}
+  \begin{columns}
+    \begin{column}{6cm}
+      \begin{itemize}
+        \item \textbf{static:} Exists for program duration (on stack or in program data)\tikzmark{memory_static_a}
+        \item \textbf{automatic:} Disappears when out of scope (on stack)\tikzmark{memory_auto_a}
+        \item \textbf{dynamic:} Created and destroyed at will (on heap)\tikzmark{memory_dynamic_a}
+        \begin{itemize}
+          \item Use one \cppinline{delete} for every \cppinline{new}
+          \item Or avoid \cppinline{new} entirely (better)
+        \end{itemize}
+      \end{itemize}
+    \end{column}
+
+    \begin{column}{6cm}
+      \cppfile{src/memory.cpp}
+    \end{column}
+  \end{columns}
+
+  \begin{tikzpicture}[callout]
+    \draw (pic cs:memory_static_a) -> \refer{memory_static_b};
+    \draw (pic cs:memory_auto_a) -> \refer{memory_auto_b};
+    \draw (pic cs:memory_dynamic_a) -> \refer{memory_dynamic_b};
+    \draw (pic cs:memory_dynamic_a) -> \refer{memory_dynamic_c};
   \end{tikzpicture}
 \end{frame}
 
