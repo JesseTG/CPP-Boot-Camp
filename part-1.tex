@@ -1,48 +1,48 @@
 %!TEX options = -shell-escape
 
 \documentclass[glossy]{beamer}
-\usepackage[utf8]{inputenc} % Unicode support (Umlauts etc.)
-\usepackage{graphicx} % Add pictures to your document
-\usepackage{hyperref} % Add a link to your document
-\usepackage{minted}
-\usepackage{tikz}
+
+% Fonts
+\usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
 
-\graphicspath{{img/}}
-
+% Beamer
 \useoutertheme{wuerzburg}
 \useinnertheme[realshadow,corners=2pt,padding=2pt]{chamfered}
 \usecolortheme{shark}
 
 \setbeamertemplate{navigation symbols}{}
 
+% Tikz
+\usepackage{tikz}
 \usetikzlibrary{tikzmark, arrows, decorations, decorations.pathreplacing}
+\tikzset{every picture/.style={font issue=\scriptsize},
+         font issue/.style={execute at begin picture={#1\selectfont}}
+}
+
+% Minted
+\usepackage{minted}
 \newminted{cpp}{autogobble, fontsize=\tiny, escapeinside=@@}
+\newmintedfile{cpp}{autogobble, fontsize=\tiny, escapeinside=@@}
 \newmintinline{cpp}{escapeinside=@@}
 \newmintinline{java}{}
 \newmintinline{js}{}
 \usemintedstyle{vs}
 
-\tikzset{every picture/.style={font issue=\scriptsize},
-         font issue/.style={execute at begin picture={#1\selectfont}}
-        }
+% GraphicX
+\usepackage{graphicx}
+\graphicspath{{img/}}
 
+% Macros
+\newcommand{\cppref}[2]{\href{http://en.cppreference.com/w/cpp/#1}{\underline{#2}}}
 
+% Meta
 \title{C++ Boot Camp 1/2}
 \author{Jesse Talavera-Greenberg}
 \date{}
 
-% Concepts to cover:
-% const-correctness
-% Value semantics
-% OOP
-% Exception safety
-% C++ vs C
-% Concepts
 \begin{document}
-
-\newcommand{\cppref}[2]{\href{http://en.cppreference.com/w/cpp/#1}{\underline{#2}}}
 
 \begin{frame}[fragile=singleslide]
   \frametitle{C++ Boot Camp 1/2}
