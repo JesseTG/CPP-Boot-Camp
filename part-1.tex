@@ -60,6 +60,8 @@
   \end{tikzpicture}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{Disclaimers}
   \begin{itemize}
@@ -71,6 +73,8 @@
   \end{itemize}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{This Week}
   \begin{itemize}
@@ -80,6 +84,8 @@
     \item Go to \href{www.cppreference.com}{www.cppreference.com} to follow code in-browser
   \end{itemize}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
   \frametitle{The Big Picture}
@@ -101,6 +107,8 @@
   \end{columns}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{\cppref{language/basic_concepts}{The Basics}}
   \cppfile{src/basic.cpp}
@@ -115,6 +123,8 @@
     \draw (4cm, 12em) node [anchor=west] {\shortstack{Strings not allowed\\in switch statements}} -> \refer{basic_switch};
   \end{tikzpicture}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
   \frametitle{\cppref{language/types}{Fundamental Types}}
@@ -144,6 +154,8 @@
   \end{columns}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{\cppref{language/exceptions}{Exceptions}}
   
@@ -156,6 +168,8 @@
     \draw (6cm, 4em) node [anchor=west] {\shortstack{No finally statement\\(use destructors instead)}} -> ([shift={(.25em,.25em)}]pic cs:except_nofinally);
   \end{tikzpicture}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
   \frametitle{Type Aliases}
@@ -173,6 +187,8 @@
     \draw (6cm, 19em) -> ([shift={(.25em,.25em)}]pic cs:typedef_using_b);
   \end{tikzpicture}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
   \frametitle{Memory Model and Lifetime}
@@ -200,6 +216,8 @@
     \draw (pic cs:memory_dynamic_a) -> ([shift={(0em,.25em)}]pic cs:memory_dynamic_c);
   \end{tikzpicture}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
   \frametitle{Memory Model and Lifetime (cont'd)}
@@ -229,6 +247,8 @@
     \draw (4cm, 3em) node [anchor=east] {\shortstack{Increment an address (cheap)}} -> (6.25cm, 1cm);
   \end{tikzpicture}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
   \frametitle{Pointers Vs. References}
@@ -268,6 +288,8 @@
   \end{columns}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{Pointers and References}
   \begin{columns}[t]
@@ -282,6 +304,8 @@
     \end{column}
   \end{columns}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
   \frametitle{Undefined Behavior}
@@ -305,6 +329,8 @@
   \end{columns}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{Namespaces}
 
@@ -320,6 +346,8 @@
   \end{tikzpicture}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{The Preprocessor}
 
@@ -334,6 +362,8 @@
     \draw (5cm, 3em) node [anchor=west] {\shortstack{Intentional compiler error}} -> ([shift={(0em,.25em)}]pic cs:cpp_error);
   \end{tikzpicture}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
   \frametitle{Enumerations}
@@ -351,6 +381,8 @@
     \draw (4cm, 3em) node [anchor=west] {\shortstack{Explicitly convert enum to int}} -> ([shift={(0em,.25em)}]pic cs:enum_int);
   \end{tikzpicture}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
   \frametitle{Declaring Classes}
@@ -371,6 +403,8 @@
   \end{tikzpicture}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{(Con|De)structors, RAII, and the Rule of 3}
 
@@ -387,6 +421,8 @@
   \end{tikzpicture}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{Deleted Functions}
 
@@ -400,6 +436,8 @@
   \end{tikzpicture}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{\cppinline{unique_ptr}}
 
@@ -411,6 +449,8 @@
     \draw (5cm, 8em) node [anchor=west] {\shortstack{Cleaned up with RAII}} -> ([shift={(0em,.25em)}]pic cs:unique_delete);
   \end{tikzpicture}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
   \frametitle{Casting}
@@ -430,6 +470,8 @@
     \draw (3cm, 2em) node [anchor=west] {\shortstack{You fucked up!}} -> ([shift={(0em,.25em)}]pic cs:cast_ub);
   \end{tikzpicture}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
   \frametitle{Concepts}
@@ -453,6 +495,8 @@
   \end{itemize}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{Templates}
 
@@ -472,6 +516,8 @@
   \end{tikzpicture}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{\cppinline{assert}/\cppinline{static_assert}}
 
@@ -485,6 +531,8 @@
     \draw (5cm, 2em) node [anchor=west] {\shortstack{Compiler error, as desired}} -> ([shift={(0em,.25em)}]pic cs:assert_error);
   \end{tikzpicture}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
   \frametitle{\cppinline{const}}
@@ -503,6 +551,8 @@
   \end{tikzpicture}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{Operator Overloading}
 
@@ -515,6 +565,8 @@
     \draw (7cm, 12em) node [anchor=west] {\shortstack{Meets EqualityComparable}} -> ([shift={(0em,.25em)}]pic cs:operator_eq);
   \end{tikzpicture}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
   \frametitle{Data Structures}
@@ -554,6 +606,8 @@
   \end{columns}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{String to numbers and back}
 
@@ -568,6 +622,8 @@
     \draw (4cm, 3em) node [anchor=west] {\shortstack{"12"}} -> ([shift={(0em,.25em)}]pic cs:stoi_back);
   \end{tikzpicture}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
   \frametitle{Regexes}
@@ -585,6 +641,8 @@
   \end{tikzpicture}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{Custom Map Keys}
 
@@ -601,6 +659,8 @@
   \end{tikzpicture}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{Random Numbers}
 
@@ -614,6 +674,8 @@
   \end{tikzpicture}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{Formatted Output and String Concatenation}
 
@@ -625,6 +687,8 @@
     \draw (5cm, 2em) node [anchor=north west] {\shortstack{Use stringstream for nontrivial formats (a la printf)\\Use string::operator+ for concatenation\\Use sto(i|u?ll?|f|l?d) for number conversions}} -> ([shift={(0em,.25em)}]pic cs:formatted_str);
   \end{tikzpicture}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
   \frametitle{Iterators}
@@ -638,6 +702,8 @@
     \draw (3cm, 3em) node [anchor=north west] {\shortstack{Remember to iterate by reference\\(and const if not changing the data)}} -> ([shift={(0em,.25em)}]pic cs:iterator_ref);
   \end{tikzpicture}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
   \frametitle{Anonymous functions and \cppinline{<algorithm>}}
@@ -654,6 +720,8 @@
   \end{tikzpicture}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[fragile=singleslide]
   \frametitle{Time}
 
@@ -668,6 +736,8 @@
     \draw (5cm, 6em) node [anchor=west] {\shortstack{Your game's timer can\\(and should) use only std::chrono}} -> ([shift={(0em,.25em)}]pic cs:time_loop);
   \end{tikzpicture}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile=singleslide]
   \frametitle{Next Week}
