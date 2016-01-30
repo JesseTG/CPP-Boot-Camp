@@ -23,6 +23,6 @@ int main(int argc) {
     cout << e.what();
   }
   catch (...) {@\tikzmark{except_swallow}@
-    cout << "What the fuck?";
-  }@\tikzmark{except_nofinally}@
+    cout << "What the fuck?";@\tikzmark{except_nofinally}@
+  }
 }
